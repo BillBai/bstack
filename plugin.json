@@ -1,0 +1,14 @@
+{
+  "name": "bstack",
+  "version": "0.1.0",
+  "description": "Personal user-invoked skills for repository workflow setup, migration, and multi-agent configuration.",
+  "author": {
+    "name": "billbai",
+    "url": "https://github.com/BillBai"
+  },
+  "repository": "https://github.com/BillBai/bstack",
+  "license": "MIT",
+  "skills": [
+    "./skills/bstack-setup"
+  ]
+}

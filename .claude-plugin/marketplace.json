@@ -1,0 +1,21 @@
+{
+  "name": "bstack",
+  "owner": {
+    "name": "billbai",
+    "url": "https://github.com/BillBai"
+  },
+  "description": "Personal user-invoked engineering workflow and multi-agent skills.",
+  "plugins": [
+    {
+      "name": "bstack",
+      "source": "./",
+      "description": "User-invoked skills for repository workflow setup, migration, and incremental updates.",
+      "category": "engineering",
+      "keywords": [
+        "workflow",
+        "agents",
+        "bootstrap"
+      ]
+    }
+  ]
+}

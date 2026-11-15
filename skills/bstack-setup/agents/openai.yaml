@@ -1,0 +1,6 @@
+interface:
+  display_name: "bstack Setup"
+  short_description: "Bootstrap, migrate, or update repository workflow and multi-agent docs"
+  default_prompt: "Inspect this repository and run the appropriate bstack-setup bootstrap, migrate, or update workflow."
+policy:
+  allow_implicit_invocation: false
