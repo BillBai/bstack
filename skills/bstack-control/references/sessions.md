@@ -29,8 +29,8 @@ On the owner's word to start a piece of work:
 
 The wait loop notifies you when a session settles. Read its screen
 ([herdr.md](herdr.md), "Read a screen"), classify it ([status.md](status.md), "Needs
-you"), update `status.md`, and tell the owner only when it needs them: what it waits on,
-in one line, with the tab. Then restart the wait loop for that session.
+you"), update `status.md`, and tell the owner only when it needs them, as a **pointer**
+([status.md](status.md), "Pointers"). Then restart the wait loop for that session.
 
 ## Check
 

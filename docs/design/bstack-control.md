@@ -273,6 +273,16 @@ With an empty list, the chief-of-staff summarizes the projects alone.
 Reason: internal tool names cannot appear in this public repository (D6), and a new source
 needs only an edit to one file. The owner chose A ("A") on 2026-11-15.
 
+### D20. Pointers, not copies
+
+When a work session waits on the owner, a coordinator reports a pointer: the session, the
+tab, and the kind of wait in one line (such as "grill question 4 of about 7"). It does not
+repeat the question's text, background, options, or recommendation; the owner reads and
+answers them in the work session's tab.
+
+The owner, 2026-11-16 (project name omitted): "我发现现在的 <project>-control 里面，总是把工作 agent 的 grill 问题原样输出让我回答，
+这不好，这是重复冗余。不要这样做".
+
 ## Next step
 
 The owner said to write the skill ("写", 2026-11-15). Pushing this repository needs the

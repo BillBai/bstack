@@ -81,7 +81,7 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
   a work session opens itself (the workflow's review tabs, `implement-spec` worktrees)
   belong to that work session.
 - **Screens for state, files for conclusions.** Read a session's screen to learn its state
-  and the question it waits on. Take results and progress from files: the work's records,
+  and the kind of question it waits on; report that as a pointer, not a copy. Take results and progress from files: the work's records,
   its branch's commits, or a report file it writes.
 - **Keep `status.md` current.** Rewrite it whenever a session's state changes, so a
   restart, a new day, or the chief-of-staff can rebuild the picture from it. Its format and

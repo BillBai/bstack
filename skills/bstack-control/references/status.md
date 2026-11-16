@@ -12,7 +12,7 @@ content shown to the owner. Both keep one order, so the owner can read either in
 Updated: <YYYY-MM-DD HH:MM>
 
 ## Needs you
-1. `<session>` (tab `<label>`): <what it waits on, one line>.
+1. `<session>` (tab `<label>`): <pointer, see "Pointers">.
 
 ## Overlaps
 - `<a>` and `<b>` both change <area>. Plan order: `<a>` lands first; `<b>` rebases after.
@@ -54,6 +54,14 @@ A session does not need the owner when:
 
 A definition too wide fills the recap with noise; one too narrow misses a session that is
 blocked. When unsure, read the screen again rather than guess.
+
+## Pointers
+
+When a session waits on the owner, the owner reads and answers it in that session's tab.
+Report a **pointer** to it: the session, the tab, and the kind of wait, in one line, such
+as "fix-login (tab fix-login): grill question 4 of about 7" or "add-cache: approve
+`to-tickets`". The question's text, background, options, and recommendation stay in the
+work session's tab; a coordinator that copies them makes the owner read everything twice.
 
 ## Recap
 

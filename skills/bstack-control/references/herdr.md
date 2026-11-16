@@ -60,7 +60,8 @@ subagent of its own finishing. Read the screen before reporting progress.
 - While it is idle: `herdr agent read <name> --source recent-unwrapped --lines <N>`.
   This source works only while the agent is idle.
 
-Use the screen for state and for the question a session waits on. Take results from files.
+Use the screen for state and for the kind of question a session waits on. Take results
+from files.
 
 ## Resume after the machine slept (Claude Code)
 
