@@ -17,6 +17,40 @@ session，把这种模式通过 skills 定下来".
 
 The owner, 2026-11-15, on where it lives: "我希望是一个 bstack 里面的 skills".
 
+## Goals
+
+The owner works on several projects at once and also handles small tasks between them:
+customer questions, consultations, ad-hoc ideas, organizing files on the computer, and
+agent configuration. The aim is to reduce the owner's mental load. Sessions above the work
+dispatch tasks, track their state, gather information, and give recaps. The actual work
+happens in separate work sessions.
+
+1. **One control session per project.** Each project has its own Herdr workspace, and its
+   first tab holds the project's control session (for example `<project> control`).
+2. **Entry and recap.** When the owner comes to a project (the first time each day, or after
+   switching from another project), the control session reports the project's progress
+   and what needs the owner's attention, then recommends the next work session and its
+   workflow.
+3. **Any kind of work session.** A work session may drive one change, discuss a milestone
+   or iteration plan, run a retro (whole-codebase review or refactoring), handle a trivial
+   task, or do work outside the workflow.
+4. **What matters most:** tracking state across sessions, and complete handoffs to new
+   sessions. Saving setup steps comes next. The safety rules (no stage skipping, no
+   answering, landing, or removing on the owner's behalf) are the floor.
+5. **A chief-of-staff session across projects** (to be designed after the control
+   session). It works in its own directory, a chief workspace that lists the projects the
+   owner follows, and has its own Herdr workspace. It can talk with the control sessions,
+   look at work sessions, produce what needs the owner's attention, and do document work
+   such as monthly reports. Its role is still open.
+6. **Model:** the control session runs on the Medium tier.
+7. **Worktree location:** worktrees live in `<project>_workspace/worktrees/`. The bstack
+   setup should state this.
+
+The owner, 2026-11-15 (project and platform names omitted): "我希望 control session
+减轻我的心智负担。帮我派发任务，跟进任务的状态，汇总信息，帮我 recap 等，但是实际的工作，还是在各个具体的
+agent session 里面工作。" and "control session 使用 Medium tier 的 model 就行了。" and
+"worktree，都放在 <project>_workspace/worktrees/ 目录".
+
 ## Decisions
 
 ### D1. How general the skill is
