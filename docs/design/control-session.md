@@ -1,7 +1,6 @@
 # Control-session skill: design decisions
 
-Status: grill in progress (2026-11-15). No skill is written yet. The file name is
-provisional until the skills' names are decided. The design now covers two roles: the
+Status: grill complete (2026-11-15). No skill is written yet. The design now covers two roles: the
 per-project control session and the cross-project chief-of-staff session.
 
 ## The mode
@@ -168,9 +167,45 @@ check out a gitignored file. The owner chose A ("A") on 2026-11-15, after asking
 worktree would not see settings configured on the main branch ("为啥看不到？我 master 上配置好了，
 以后能看到啊").
 
-## Open questions
+### D11. One skill, split by role
 
-1. What each skill holds as rules versus what the work-session brief template holds, and
-   which become separate files (brief template, status table, wait loop).
-2. The skills' names and listing lines, and which `bstack-setup` references mention them
-   (including the worktree directory from D7).
+One skill holds both roles, laid out like `bstack-setup`:
+
+```
+skills/bstack-control/
+├── SKILL.md              shared rules; decides the role, then reads only that role's file
+├── roles/control.md      the project control session: recap, dispatch, tracking
+├── roles/chief.md        the chief-of-staff: daily summary, outside work, documents
+└── references/
+    ├── work-brief.md     the work-session brief template
+    ├── status.md         the format of `status.md`
+    └── herdr.md          Herdr mechanics and lessons (load `/herdr` first)
+```
+
+The role follows from the working directory: a directory holding the project list is the
+chief workspace; otherwise the session is a project's control session.
+
+Reason: the shared rules and Herdr mechanics are written once, a session reads only its
+role's file, and the layout matches `bstack-setup`. Two skills would either duplicate the
+shared part or depend on a cross-skill path that a plugin install can break.
+
+### D12. The name
+
+`bstack-control`, invoked as `/bstack-control`. Its description is a listing line only,
+because bstack skills set `disable-model-invocation: true`.
+
+### D13. Changes to `bstack-setup` and the README
+
+1. `skills/bstack-setup/references/docs/guide/workflow.md`, section 2, states that
+   worktrees live in `<project>_workspace/worktrees/` (D7).
+2. The README's skill table gets a row for `bstack-control`.
+3. The workflow does not describe the control session; a project works the same without
+   it.
+
+D11 to D13: the owner agreed to all three recommendations ("都同意") on 2026-11-15.
+
+## Next step
+
+The grill is complete. The skill is written only on the owner's instruction, using
+`mattpocock-skills:writing-for-agents`. Pushing this repository needs the owner's
+instruction.
