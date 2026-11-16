@@ -1,6 +1,6 @@
 # bstack-control: design decisions
 
-Status: grill complete (2026-11-15). No skill is written yet. The design now covers two roles: the
+Status: grill reopened (2026-11-15) for one open question. No skill is written yet. The design now covers two roles: the
 per-project control session and the cross-project chief-of-staff session.
 
 ## The mode
@@ -203,6 +203,49 @@ because bstack skills set `disable-model-invocation: true`.
    it.
 
 D11 to D13: the owner agreed to all three recommendations ("都同意") on 2026-11-15.
+
+### D14. Overlap check
+
+At each recap and before dispatching a new work session, the control session compares the
+files each active branch changes against the main branch (`git diff --name-only`) and
+judges overlap by area, not only by exact path. It reports an overlap to the owner, who
+decides which work lands first. Work sessions do not settle an overlap between themselves.
+A work session and its own review tabs or implementation worktrees do not overlap with
+each other.
+
+### D15. What counts as needing the owner
+
+`references/status.md` lists both sides. Needs the owner: a session blocked on an approval
+or question dialog; a last reply that asks the owner for a decision or action not yet
+given, including an action a permission check refused; a session reporting a failure it
+cannot fix; a host problem. Does not need the owner: waiting on CI or on another person's
+approval; text in a session's input box (often the agent's suggested reply); a question
+the owner already answered.
+
+### D16. A fixed recap layout
+
+A recap is readable in seconds and keeps one order: needs you, overlaps, working, waiting,
+idle, host. The host line covers problems seen in practice, such as the machine having
+slept or low disk space.
+
+D14 to D16 come from a published write-up of a similar practice
+(halcight.dev, "managing a dozen agents"). The owner agreed to all three ("1 2 3 同意") on
+2026-11-15.
+
+### D17. Sessions a work session opens itself
+
+There is no depth limit. A work session opens review tabs and, with `implement-spec`,
+its own worktrees for tickets; the project workflow requires both. The control session
+counts them as part of that work session in its status table and overlap check, and does
+not close them.
+
+The owner rejected a two-level limit: "工作 session 自己开 review tab 是我们 workflow 的规定。
+工作 session 也可能使用 implement-spec，就是自己开 worktree 的形式实现 tickets，这都是我们的工作流的一部分".
+
+## Open questions
+
+1. Periodic polling. The owner, 2026-11-15: "轮询不一定是为了获取状态，可能也是为了获取信息".
+   Which information, polled by which role, and how often, is open.
 
 ## Next step
 
