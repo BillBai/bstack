@@ -88,7 +88,8 @@ Inspect `git status` and the current branch before editing. Start each implement
 change on its own branch (`feat/m<x>-i<y>-<slug>`) from the agreed base, and resume an
 existing change on its working branch unless the owner instructs otherwise. Preserve
 unrelated uncommitted edits. Use separate Git worktrees when parallel agents edit code at
-the same time.
+the same time, and place them in `<project>_workspace/worktrees/<name>/`, beside the main
+checkout.
 
 Read project skill configurations before running Matt Pocock workflow stages:
 

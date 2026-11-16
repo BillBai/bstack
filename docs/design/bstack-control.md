@@ -1,7 +1,8 @@
 # bstack-control: design decisions
 
-Status: grill complete (2026-11-15). No skill is written yet. The design now covers two roles: the
-per-project control session and the cross-project chief-of-staff session.
+Status: grill complete (2026-11-15); the skill is in `skills/bstack-control/`. The design
+covers two roles: the per-project control session and the cross-project chief-of-staff
+session.
 
 ## The mode
 
@@ -37,11 +38,11 @@ happens in separate work sessions.
 4. **What matters most:** tracking state across sessions, and complete handoffs to new
    sessions. Saving setup steps comes next. The safety rules (no stage skipping, no
    answering, landing, or removing on the owner's behalf) are the floor.
-5. **A chief-of-staff session across projects** (to be designed after the control
-   session). It works in its own directory, a chief workspace that lists the projects the
+5. **A chief-of-staff session across projects** (designed together with the control
+   session, D4). It works in its own directory, a chief workspace that lists the projects the
    owner follows, and has its own Herdr workspace. It can talk with the control sessions,
    look at work sessions, produce what needs the owner's attention, and do document work
-   such as monthly reports. Its role is still open.
+   such as monthly reports. D5 sets its first duties.
 6. **Model:** the control session runs on the Medium tier.
 7. **Worktree location:** worktrees live in `<project>_workspace/worktrees/`. The bstack
    setup should state this.
@@ -274,6 +275,5 @@ needs only an edit to one file. The owner chose A ("A") on 2026-11-15.
 
 ## Next step
 
-The grill is complete. The skill is written only on the owner's instruction, using
-`mattpocock-skills:writing-for-agents`. Pushing this repository needs the owner's
-instruction.
+The owner said to write the skill ("写", 2026-11-15). Pushing this repository needs the
+owner's instruction.

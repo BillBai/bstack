@@ -9,6 +9,7 @@
   "repository": "https://github.com/BillBai/bstack",
   "license": "MIT",
   "skills": [
-    "./skills/bstack-setup"
+    "./skills/bstack-setup",
+    "./skills/bstack-control"
   ]
 }

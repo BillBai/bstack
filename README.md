@@ -44,6 +44,7 @@ Pick either `install.sh` symlinks or plugin installation per agent, not both, to
 | Command | Mode | Description |
 | --- | --- | --- |
 | [`/bstack-setup`](./skills/bstack-setup/SKILL.md) | User-invoked only | Bootstrap a new repository, migrate an existing repository, or incrementally update an already-adopted repository to the `bstack` engineering workflow and multi-agent configuration. |
+| [`/bstack-control`](./skills/bstack-control/SKILL.md) | User-invoked only | Run a project's control session or the cross-project chief-of-staff in Herdr: recap the state, dispatch work sessions into their own worktrees and tabs, track them, and keep a status file. |
 
 ### Companion skills
 
