@@ -1,6 +1,6 @@
 # bstack-control: design decisions
 
-Status: grill reopened (2026-11-15) for one open question. No skill is written yet. The design now covers two roles: the
+Status: grill complete (2026-11-15). No skill is written yet. The design now covers two roles: the
 per-project control session and the cross-project chief-of-staff session.
 
 ## The mode
@@ -263,10 +263,14 @@ The default interval is 30 minutes and can be changed. Entering a project or ask
 recap refreshes at once. The owner chose A ("A") on 2026-11-15, after noting:
 "轮询不一定是为了获取状态，可能也是为了获取信息".
 
-## Open questions
+### D19. The chief-of-staff's outside sources
 
-1. Which outside sources the chief-of-staff polls (for example chat, mail, code hosting,
-   issue tracker), which decides the tools it needs.
+The skill names no source. The chief workspace holds a `sources.md` that lists each
+source and the skill or command that reads it; the skill defines only that file's format.
+With an empty list, the chief-of-staff summarizes the projects alone.
+
+Reason: internal tool names cannot appear in this public repository (D6), and a new source
+needs only an edit to one file. The owner chose A ("A") on 2026-11-15.
 
 ## Next step
 
