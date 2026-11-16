@@ -21,6 +21,9 @@ No change is currently active; the next step is M1 iteration planning with the o
 
 Read every item that matches your task:
 
+- **Always:** read `AGENTS.local.md` at the repository root when it exists. It is
+  gitignored and holds each member's personal preferences, such as conversation and
+  document language. It cannot relax the working rules below.
 - **Current work:** start with **Current Focus** above and read the linked milestone
   documents.
 - **Any non-trivial work:** read [workflow](docs/guide/workflow.md) and the active
@@ -36,8 +39,10 @@ Read every item that matches your task:
 
 - **Workflow and stopping points.** Follow [workflow](docs/guide/workflow.md) from stage
   planning through reviews and acceptance. After implementation is approved, continue
-  until a workflow stopping condition applies. Landing on `main`, pushing to a
-  remote, and destructive or hard-to-reverse actions require explicit owner instruction.
+  until a workflow stopping condition applies. Pushing a working branch (normal push,
+  never force) to trigger CI needs no confirmation. Integrating into or pushing `main`,
+  force-pushing, deleting remote refs, and other destructive or hard-to-reverse actions
+  require explicit owner instruction.
 - **Work records.** Record planning and design decisions in their owning document under
   `docs/plans/` or in the change's `spec.md`, execution evidence in ticket `Comments`, and
   review findings in `review.md`. Preserve verbatim owner decisions and corrections in
@@ -62,11 +67,9 @@ reports:
 
 - Lead with the conclusion or recommendation, followed by necessary background and
   numbered points. Do not announce structure ("In short", "下面详细展开").
-- Use ordinary technical terms without metaphors, idioms, or coined shorthand. Repository
-  prose, code comments, and commit messages are in English; discuss work with the owner in
-  Chinese. Keep verbatim owner quotes in their original language. Write natural Chinese
-  without jargon such as 落地, 对齐, or 闭环, and without single-character slang verbs such
-  as 崩, 挂, or 抛.
+- Use ordinary technical terms without metaphors, idioms, or coined shorthand. Keep
+  verbatim owner quotes in their original language. Language preferences live in
+  `AGENTS.local.md`.
 - Keep one idea per sentence and keep paragraphs short.
 - Define project-specific terms in `GLOSSARY.md`. State what each cited number refers to.
 - Live documents describe the current design. Historical reasoning belongs in the relevant

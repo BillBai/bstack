@@ -15,7 +15,7 @@ Explore first, present findings and proposed file actions to the user, confirm, 
 Inspect the current repository and its immediate parent directory without modifying anything:
 
 - Run `git status`, check the current branch, `git remote -v`, and Git `user.name` / `user.email`.
-- Check root files: `README.md`, `AGENTS.md`, `CLAUDE.md` (note whether it is a regular file or a symlink), `GLOSSARY.md`, and legacy `CONTEXT.md` / `CONTEXT-MAP.md`.
+- Check root files: `README.md`, `AGENTS.md`, `AGENTS.local.md` (and whether `.gitignore` ignores it), `CLAUDE.md` (note whether it is a regular file or a symlink), `GLOSSARY.md`, and legacy `CONTEXT.md` / `CONTEXT-MAP.md`.
 - Check directories: `docs/` (`guide/`, `plans/`, `agents/`, `topics/`, `reports/`, `adr/`), `work-docs/`, `.scratch/`, `issues/`, `.agents/`, `.claude/`, `.codex/`, `.pi/`.
 - Check parent directory (`..`): whether this repository lives inside a multi-repository workspace (`../AGENTS.md`) or beside read-only sibling reference checkouts (`../ref/`).
 
@@ -29,7 +29,7 @@ Select the matching workflow (an explicit user argument `bootstrap`, `migrate`, 
 
 ## 3. Rules across all workflows
 
-- **Language and tone:** discuss with the owner in natural Chinese unless the owner speaks another language; write repository prose, code comments, and commit messages in English unless the owner specifies another repository language. Lead with recommendations and never announce structure ("In short", "下面详细展开"). Write natural Chinese without jargon (`落地`, `对齐`, `闭环`) and without single-character slang verbs (`崩`, `挂`, `抛`).
+- **Language and tone:** follow the repository's `AGENTS.local.md` when it exists. Otherwise discuss with the owner in natural Chinese unless the owner speaks another language; write repository prose, code comments, and commit messages in English unless the owner specifies another repository language. Lead with recommendations and never announce structure ("In short", "下面详细展开"). Write natural Chinese without jargon (`落地`, `对齐`, `闭环`) and without single-character slang verbs (`崩`, `挂`, `抛`).
 - **Question pacing:** ask one to three focused questions at a time, and ask heavy structural or product decisions alone. Give a recommended answer and brief reason for every question.
 - **No silent overwrites:** never overwrite or delete existing project rules, documentation, code, or uncommitted edits without presenting the concrete file plan and getting explicit user confirmation.
 - **Preserve global settings:** never edit user-global directories (`~/.claude`, `~/.agents`, `~/.codex`, `~/.pi`, `~/.gemini`).
@@ -38,3 +38,4 @@ Select the matching workflow (an explicit user argument `bootstrap`, `migrate`, 
   1. `CLAUDE.md` at the repository root is a regular file (not a symlink) containing `@AGENTS.md`.
   2. Every relative Markdown link and `#heading` anchor across modified and created Markdown files resolves to an existing file and heading, with zero leftover `<...>` template placeholders.
   3. `git diff --check` reports zero whitespace errors.
+  4. `.gitignore` contains `/AGENTS.local.md`, and `git ls-files AGENTS.local.md` prints nothing.

@@ -9,8 +9,10 @@ Daily model tiers, provider IDs, and task-routing rules are maintained in
 Set up the primary agents **Claude Code** and **Codex**, along with **`pi`** for internal
 model providers; **`agy`** (Antigravity) is optional while under evaluation.
 
-Keep API credentials, authentication tokens, and personal preferences in user-global
-configuration rather than committing them to this repository.
+Keep API credentials and authentication tokens in user-global configuration rather than
+committing them to this repository. Put personal agent preferences for this repository,
+such as conversation and document language, in a root `AGENTS.local.md`. Git ignores it;
+start from the team's suggested defaults if the owner shares them.
 
 ## 2. Skills and helper tools
 

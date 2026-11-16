@@ -141,7 +141,7 @@ and wait for explicit instruction before starting the next stage:
 
 ### Conversation briefing for specs and tickets
 
-Give the owner enough concrete detail in Chinese to decide without opening every file:
+Give the owner enough concrete detail in their conversation language to decide without opening every file:
 
 1. **What the change does and why:** the problem and observable result after the change.
 2. **Every decision:** what was chosen, what alternative was weighed, and why.
@@ -212,21 +212,22 @@ targeted verification without automatically restarting all regular review rounds
 Changes to product code, tests, build files, or CI scripts must pass the applicable remote
 CI pipeline on the reviewed candidate commit before landing (once remote CI is
 established). Documentation-only changes use documentation checks and are exempt from
-product CI; before remote CI exists, state that explicitly in verification notes. Pushing
-a working branch solely to trigger remote CI requires owner permission if not already
-granted, and does not authorize landing.
+product CI; before remote CI exists, state that explicitly in verification notes. Push the
+working branch to trigger remote CI without asking (normal push only, never force-push).
+A branch push does not authorize landing.
 
 Present a final acceptance summary covering delivered behavior, test/CI and review results,
 all `pending owner confirmation` decisions for the owner to confirm, and any deferred
 items. Once confirmed, remove the `pending owner confirmation` markers.
 
-Landing on `main` and pushing to the remote require explicit owner instruction:
+Landing requires explicit owner instruction. This covers integrating into `main` and
+pushing `main`:
 
 1. Record acceptance in `spec.md`, update `progress.md` and `AGENTS.md` **Current Focus**
    as appropriate, and commit on the working branch.
 2. Verify branch cleanliness and applicable CI status, then integrate onto `main`
    without rewriting shared history.
-3. Push requested refs when instructed and verify remote commit SHAs. Do not delete
+3. Push `main` when instructed and verify remote commit SHAs. Do not delete
    branches or worktrees unless asked.
 
 ## 6. Retro

@@ -32,6 +32,8 @@ Read the reference files under [`../references/`](../references/) and adapt ever
   - `README.md` — based on [`../references/root-README.md`](../references/root-README.md); concise statement of what the project is and what components this repository owns (no workflow boilerplate).
   - `AGENTS.md` — based on [`../references/root-AGENTS.md`](../references/root-AGENTS.md). Keep `Current Focus` accurate for the repository's immediate next step.
   - `CLAUDE.md` — regular file (never a symlink) containing exactly `@AGENTS.md`.
+  - `AGENTS.local.md` — based on [`../references/root-AGENTS.local.md`](../references/root-AGENTS.local.md), adjusted to the owner's language preferences. Never commit it.
+  - `.gitignore` — create it or append `/AGENTS.local.md`; never overwrite existing entries.
   - `GLOSSARY.md` — based on [`../references/GLOSSARY.md`](../references/GLOSSARY.md), seeded with confirmed project terms (or minimal clean header if no domain terms exist yet).
 - **`docs/`:**
   - `docs/README.md` — based on [`../references/docs/README.md`](../references/docs/README.md).
@@ -53,4 +55,5 @@ Run verification checks before reporting completion:
 1. Confirm `test -f CLAUDE.md && test ! -L CLAUDE.md` and `CLAUDE.md` equals `@AGENTS.md`.
 2. Check that zero unresolved `<...>` placeholders remain across created Markdown files.
 3. Validate every local Markdown link and `#heading` anchor across `README.md`, `AGENTS.md`, `GLOSSARY.md`, `docs/**/*.md`, and `work-docs/**/*.md` (plus `../AGENTS.md` if touched).
-4. Run `git diff --check` (or whitespace check on untracked files) and report exact verification results to the owner. Ask whether to commit locally or make adjustments.
+4. Confirm `.gitignore` contains `/AGENTS.local.md` and `git ls-files AGENTS.local.md` prints nothing.
+5. Run `git diff --check` (or whitespace check on untracked files) and report exact verification results to the owner. Ask whether to commit locally or make adjustments.
