@@ -63,11 +63,11 @@ with Next.
 
 ```text
 Needs you
-1. r3-errors (tab r3-errors): grill question 4 waits for your answer.
+1. fix-login (tab fix-login): grill question 4 waits for your answer.
 Overlaps: none
-Working: r4-objc (implementing ticket 02)
-Waiting: r2-modules (CI on 1a2b3c4)
+Working: add-cache (implementing ticket 02)
+Waiting: split-config (CI on 1a2b3c4)
 Idle: none
 Host: OK
-Next: answer r3's question, then start r5 (planned after r4).
+Next: answer fix-login's question, then start rate-limit (planned after add-cache).
 ```

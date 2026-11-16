@@ -15,15 +15,23 @@ outside the workflow. Cite files and commits rather than restating them.
 
 You are a work session. A <control session | chief-of-staff> opened you and tracks your
 state; the owner (the human user) works with you directly in this tab. Read
-`AGENTS.local.md` for the owner's preferences when it exists.
+`<path to AGENTS.local.md>` for the owner's preferences.
+<Control session: `AGENTS.local.md` in the worktree. Chief-of-staff: the chief workspace's
+`AGENTS.local.md`. Leave the sentence out when the file does not exist.>
 
 ## Where you work
 
+<Project work:>
 - Worktree: `<path>` (your cwd). Branch: `<branch>`, created from `<main>` at `<commit>`.
 - Records: `<where this work's records go, per the project's workflow>`.
 - <Submodules or setup this worktree lacks, and the project document that says how to
   prepare them.>
-- Never edit the main checkout (`<path>`).
+- Edit only this worktree; the main checkout (`<path>`) stays untouched.
+
+<Outside work:>
+- Directory: `<chief workspace>/work/<name>/` (your cwd), a plain directory for this work's
+  notes and outputs.
+- <Files, folders, or systems the work reads or changes, and which of them are read-only.>
 
 ## The work
 

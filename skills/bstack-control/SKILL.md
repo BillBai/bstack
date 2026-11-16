@@ -24,17 +24,21 @@ the owner once at start.
 ## 1. Check Herdr
 
 Run `test "${HERDR_ENV:-}" = 1`. If it fails, tell the owner you are not inside Herdr and
-stop. Otherwise load the `herdr` skill, then read [references/herdr.md](references/herdr.md).
+stop. Otherwise load the `herdr` skill, then read
+[references/herdr.md](references/herdr.md).
 
 ## 2. Pick the role
 
-- The cwd holds `projects.md`: you are the chief-of-staff. Read
-  [roles/chief.md](roles/chief.md).
-- Otherwise you are the project's control session. Read
-  [roles/control.md](roles/control.md).
+An argument `control` or `chief` picks the role. Without one:
 
-Read only your role's file. If neither fits (for example the cwd is a worktree), tell the
-owner what you found and ask where the coordinator should run.
+- The cwd holds `projects.md`: you are the chief-of-staff.
+- The cwd is the top of a repository's main checkout (`git rev-parse --show-toplevel`
+  equals the cwd, and `git rev-parse --git-dir` is `.git`): you are its control session.
+- Anything else, such as a worktree or an empty directory: tell the owner what you found
+  and ask which role, and where, the coordinator should run.
+
+Then read only your role's file: [roles/control.md](roles/control.md) or
+[roles/chief.md](roles/chief.md).
 
 ## Layout
 
@@ -68,7 +72,7 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 - **Stages advance on the owner's word.** The project's workflow sets the stage order and
   the stopping points; read them from the target repository at run time. Agreement with an
   answer or an artifact is not an instruction to start the next stage.
-- **The main checkout stays clean.** Work happens in worktrees. The control session's only
+- **The main checkout stays clean.** Project work happens in worktrees. The control session's only
   change to the main checkout is fast-forwarding its main branch after the owner lands a
   change.
 - **Close only what you created.** Remove a tab, session, or worktree you created only
@@ -81,7 +85,17 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 - **Keep `status.md` current.** Rewrite it whenever a session's state changes, so a
   restart, a new day, or the chief-of-staff can rebuild the picture from it. Its format and
   the recap layout are in [references/status.md](references/status.md).
+- **Work sessions** are dispatched, settled, and checked as
+  [references/sessions.md](references/sessions.md) says.
 - **Briefs are files.** Every work session gets a brief written from
   [references/work-brief.md](references/work-brief.md) and stored under `briefs/`.
 - **Destructive or outward actions need the owner's word**: removing worktrees, deleting
   branches, force pushes, publishing a document, sending a message outside this machine.
+
+## Scheduled refresh
+
+Each role refreshes its status every 30 minutes, or at the interval the owner sets, with
+the harness's scheduler. Claude Code: `CronCreate` with a recurring cron such as
+`7,37 * * * *` and the prompt "Refresh the bstack-control status"; its jobs end with the
+session and expire after 7 days, so schedule again at each start. Without a scheduler,
+refresh on each owner message. Entering a project or asking for a recap refreshes at once.

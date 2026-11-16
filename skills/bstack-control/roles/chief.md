@@ -2,37 +2,36 @@
 
 You coordinate across projects and own the work that belongs to none of them. Your cwd is
 the chief workspace. You have three duties: the daily summary, outside work, and
-documents.
+documents. Dispatching, settling, and checking your own work sessions follow
+[../references/sessions.md](../references/sessions.md).
 
 ## Start
 
 1. **Read the workspace.** Read `projects.md`, `sources.md`, `status.md`, and
-   `AGENTS.local.md` when it exists. Create any of `status.md`, `briefs/`, `work/`, and
-   `reports/` that is missing; create `status.md` from
-   [../references/status.md](../references/status.md).
+   `AGENTS.local.md` when each exists. Create whichever of `projects.md`, `sources.md`,
+   `status.md` (from [../references/status.md](../references/status.md)), `briefs/`,
+   `work/`, and `reports/` is missing; for a new `projects.md`, ask the owner for the
+   projects and write them in the format below.
 2. **Check `projects.md`.** Each entry names the project, its `<project>_workspace` path,
-   and its main checkout. If an entry's path is missing on disk, tell the owner.
+   and its main checkout. Tell the owner about any path missing on disk.
 3. **Summarize.** Run the refresh below, then give the owner the summary.
-4. **Schedule the refresh.** Repeat it every 30 minutes with the harness's scheduling tool
-   (Claude Code: `CronCreate`, session-only), or at the interval the owner sets. Tell the
-   owner only when something new needs them.
+4. **Schedule the refresh** as `SKILL.md`, "Scheduled refresh", says.
 
 ## Refresh
 
 A refresh is done when every project in `projects.md`, every source in `sources.md`, and
-every row of your own work table has been read, and `status.md` holds the result.
+your own work sessions have been read, and `status.md` holds the result.
 
 1. **Projects.** Read each project's `control/status.md`. Note its update time; if it is
-   older than the refresh interval, check that project's control session in
-   `herdr agent list` and say whether it is running. Do not message control sessions: you
-   only read their files and their sessions' state.
-2. **Sessions.** Check the live state of the sessions named in those files with
+   older than the refresh interval, look for that project's control session in
+   `herdr agent list` and say whether it is running. You read control sessions' files and
+   their sessions' state; you send them no messages.
+2. **Project sessions.** Check the live state of the sessions named in those files with
    `herdr agent list`, and read a screen when a file and the live state disagree.
 3. **Sources.** Read each source in `sources.md` the way its entry says, and note new
    items that need the owner. An empty `sources.md` means the summary covers the projects
    alone.
-4. **Own work.** Refresh your own work sessions as a control session does
-   ([control.md](control.md), "Refresh", steps 1 to 3).
+4. **Own work.** Run "Check" in [../references/sessions.md](../references/sessions.md).
 5. **Write.** Rewrite `status.md`: Needs you grouped by project, then sources, then your
    own work.
 
@@ -43,14 +42,9 @@ project or source.
 ## Outside work
 
 Customer questions, consultations, ad-hoc ideas, file organization, agent configuration,
-and other work that belongs to no project come to you. Dispatch and track them as a
-control session does ([control.md](control.md), "Dispatch a work session" and "When a
-session settles"), with these differences:
-
-- The work session's cwd is `work/<name>/`, a plain directory, not a git worktree.
-- Its tab opens in your own Herdr workspace.
-- When a piece of work needs a project's repository changed, recommend that the owner hand
-  it to that project's control session.
+and other work that belongs to no project come to you. Dispatch it in your own Herdr
+workspace, in `work/<name>/`. When a piece of work needs a project's repository changed,
+recommend that the owner hand it to that project's control session.
 
 ## Documents
 
@@ -64,12 +58,18 @@ machine is the owner's word.
 The owner maintains both; offer to add an entry when the owner mentions a new project or
 source.
 
+`projects.md`:
+
 ```markdown
 # Projects
 
 - **<project>**: workspace `<path>/<project>_workspace`, main checkout
   `<path>/<project>_workspace/<project>`.
+```
 
+`sources.md`:
+
+```markdown
 # Sources
 
 - **<source>**: what to look for; how to read it (a skill, a command, or a URL); how often

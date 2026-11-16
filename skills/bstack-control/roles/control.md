@@ -1,6 +1,8 @@
 # Control session
 
 You coordinate one project. Your cwd is its main checkout, `<project>_workspace/<project>/`.
+Dispatching, settling, and checking work sessions follow
+[../references/sessions.md](../references/sessions.md).
 
 ## Start
 
@@ -9,38 +11,34 @@ You coordinate one project. Your cwd is its main checkout, `<project>_workspace/
    branch, the stage order, the stopping points, the landing and push rules, the record
    paths, and the CI. Where they are silent, ask the owner and use the answer for this
    session.
-2. **Prepare the workspace.** Make sure `../worktrees/` and `../control/briefs/` exist.
-   Create `../control/status.md` from [../references/status.md](../references/status.md)
-   if it is missing. If the main checkout has no `AGENTS.local.md`, tell the owner that
-   work sessions will see no personal preferences, and offer to create one.
-3. **Recap.** Run the refresh below, then give the owner the recap.
-4. **Schedule the refresh.** Repeat the refresh every 30 minutes with the harness's
-   scheduling tool (Claude Code: `CronCreate`, session-only), or at the interval the owner
-   sets. Without a scheduler, refresh on each owner message. When a refresh finds
+2. **Check the layout** against the one in `SKILL.md`. Report each mismatch to the owner
+   and wait for the answer before creating anything:
+   - the parent directory is not named `<project>_workspace`;
+   - `git worktree list` shows worktrees outside `../worktrees/` (the project still uses
+     another directory; it moves them when it adopts this layout);
+   - `AGENTS.local.md` is missing, or Git does not ignore it
+     (`git check-ignore -q AGENTS.local.md` fails): work sessions would see no personal
+     preferences, or the link would show as untracked in every worktree.
+3. **Prepare.** Create whichever of `../worktrees/`, `../control/briefs/`, and
+   `../control/status.md` (from [../references/status.md](../references/status.md)) is
+   missing.
+4. **Recap.** Run the refresh below, then give the owner the recap.
+5. **Schedule the refresh** as `SKILL.md`, "Scheduled refresh", says. When a refresh finds
    something new under Needs you or Overlaps, tell the owner; otherwise update the file
    silently.
 
 ## Refresh
 
-A refresh brings `../control/status.md` up to date. It is done when every row in the work
-table has been checked against Git and Herdr, and every section of the file holds the
-current state.
+A refresh brings `../control/status.md` up to date. It is done when the work sessions are
+checked in both directions and every section of the file holds the current state.
 
-1. **Sessions.** Read `status.md`. Check each row against `git worktree list` and
-   `herdr agent list`. A session that is gone while its worktree remains becomes "session
-   closed; worktree kept" under Needs you, with the offer to reopen it.
-2. **State.** For each live work session, read its screen
-   ([../references/herdr.md](../references/herdr.md), "Read a screen") and classify it with
-   the rules in [../references/status.md](../references/status.md), "Needs you".
-3. **Progress.** For each work item, read its records and branch: `git log` on the branch
-   since the main branch, the Status and Stage lines of its spec or tickets, and new review
-   comments. Write one line of what it has produced, not only whether it waits.
-4. **Main branch and CI.** `git fetch`, then note new commits on the main branch and the CI
+1. **Work sessions.** Run "Check" in [../references/sessions.md](../references/sessions.md).
+2. **Main branch and CI.** `git fetch`, then note new commits on the main branch and the CI
    results the project's docs say how to read.
-5. **Overlaps.** Run the overlap check below.
-6. **Host.** Note anything that stops sessions: the machine slept (sessions stopped with an
+3. **Overlaps.** Run the overlap check below.
+4. **Host.** Note anything that stops sessions: the machine slept (sessions stopped with an
    error), low disk space, a service the project needs that is down.
-7. **Write.** Rewrite `status.md` with the time of this refresh.
+5. **Write.** Rewrite `status.md` with the time of this refresh.
 
 ## Overlap check
 
@@ -59,36 +57,6 @@ plan, or the planned order in `status.md`):
   directions: put it under Needs you and ask the owner.
 
 The work sessions do not settle an overlap between themselves.
-
-## Dispatch a work session
-
-On the owner's word to start a piece of work:
-
-1. **Propose.** Give the owner the name (`[a-z][a-z0-9_-]{0,31}`, also the Herdr agent
-   name and the tab label), the branch name in the project's convention, the base, the
-   agent kind (default: your own kind), and the stage you take the owner to authorize. Wait
-   for agreement or corrections.
-2. **Create the worktree.** From the main checkout:
-   `git worktree add -b <branch> ../worktrees/<name> <base>`. Then link the personal
-   preferences: `ln -s ../../<project>/AGENTS.local.md ../worktrees/<name>/AGENTS.local.md`
-   when the main checkout has that file. Uninitialized submodules stay uninitialized; the
-   brief says how the project initializes them.
-3. **Write the brief** to `../control/briefs/<name>.md` from
-   [../references/work-brief.md](../references/work-brief.md).
-4. **Open the session**, following [../references/herdr.md](../references/herdr.md),
-   "Open a work session".
-5. **Record and track.** Add the row to `status.md`, start the wait loop
-   ([../references/herdr.md](../references/herdr.md), "Wait loop"), and tell the owner
-   which tab holds the session.
-
-Work that edits nothing in the repository, such as a question to investigate, still gets
-its own worktree unless the owner says otherwise, so the main checkout stays clean.
-
-## When a session settles
-
-The wait loop notifies you when a session settles. Read its screen, classify it, update
-`status.md`, and tell the owner only when it needs them: what it waits on, in one line,
-with the tab. Then restart the wait loop for that session.
 
 ## After a landing
 

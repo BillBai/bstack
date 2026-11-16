@@ -25,12 +25,13 @@ topology.
 To be notified when a session settles, run in a background shell:
 
 ```bash
-herdr agent wait <name> --until working --timeout <ms>; herdr agent wait <name>
+herdr agent wait <name> --until working && herdr agent wait <name>
 ```
 
-The first wait returns when the session starts working, the second when it settles
-(`idle`, `done`, or `blocked`). The harness notifies you when the shell exits. Restart the
-loop after each notification while you track the session.
+Without `--timeout` each wait has no time limit. The first returns when the session starts
+working, the second when it settles (`idle`, `done`, or `blocked`). The harness notifies
+you when the shell exits. Restart the loop after each notification while you track the
+session.
 
 A session can turn `working` without input: idle compaction, or a background shell or
 subagent of its own finishing. Read the screen before reporting progress.
