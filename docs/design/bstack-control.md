@@ -1,4 +1,4 @@
-# Control-session skill: design decisions
+# bstack-control: design decisions
 
 Status: grill complete (2026-11-15). No skill is written yet. The design now covers two roles: the
 per-project control session and the cross-project chief-of-staff session.
