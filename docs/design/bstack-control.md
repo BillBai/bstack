@@ -208,8 +208,15 @@ D11 to D13: the owner agreed to all three recommendations ("都同意") on 2026-
 
 At each recap and before dispatching a new work session, the control session compares the
 files each active branch changes against the main branch (`git diff --name-only`) and
-judges overlap by area, not only by exact path. It reports an overlap to the owner, who
-decides which work lands first. Work sessions do not settle an overlap between themselves.
+judges overlap by area, not only by exact path. On an overlap it first looks for the order
+in the project's plan (for example the change plan or the order of planned changes).
+When the plan sets the order, the report states it as information, such as which branch
+lands first and which one rebases after. The control session asks the owner only when the
+plan does not set the order, or when the two pieces of work change the same behavior in
+different directions. Work sessions do not settle an overlap between themselves.
+
+Revised after the owner, 2026-11-15: "报告给你，由你决定谁先合入 这个也存疑，其实很多时候，谁先合入，
+就是看计划的顺序而已".
 A work session and its own review tabs or implementation worktrees do not overlap with
 each other.
 
@@ -242,10 +249,24 @@ not close them.
 The owner rejected a two-level limit: "工作 session 自己开 review tab 是我们 workflow 的规定。
 工作 session 也可能使用 implement-spec，就是自己开 worktree 的形式实现 tickets，这都是我们的工作流的一部分".
 
+### D18. Periodic polling for information
+
+Polling gathers information, not only state, and is split by role:
+
+- A control session polls its own project: CI results, new review comments, new commits
+  on the main branch, and a progress summary of each work session (what it produced, not
+  only whether it waits). It writes them into `status.md`.
+- The chief-of-staff polls sources outside the projects and reads each project's
+  `status.md`, then summarizes what needs the owner.
+
+The default interval is 30 minutes and can be changed. Entering a project or asking for a
+recap refreshes at once. The owner chose A ("A") on 2026-11-15, after noting:
+"轮询不一定是为了获取状态，可能也是为了获取信息".
+
 ## Open questions
 
-1. Periodic polling. The owner, 2026-11-15: "轮询不一定是为了获取状态，可能也是为了获取信息".
-   Which information, polled by which role, and how often, is open.
+1. Which outside sources the chief-of-staff polls (for example chat, mail, code hosting,
+   issue tracker), which decides the tools it needs.
 
 ## Next step
 
