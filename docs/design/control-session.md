@@ -1,7 +1,8 @@
 # Control-session skill: design decisions
 
-Status: grill in progress (2026-11-15). The skill is not written yet. The file name is
-provisional until the skill's name is decided.
+Status: grill in progress (2026-11-15). No skill is written yet. The file name is
+provisional until the skills' names are decided. The design now covers two roles: the
+per-project control session and the cross-project chief-of-staff session.
 
 ## The mode
 
@@ -88,6 +89,14 @@ session's own kind.
 Reason: `install.sh` links bstack skills into Claude Code, Codex, pi, and Gemini skill
 directories, but the mode has run only on Claude Code. The Claude Code lessons are
 verified and worth keeping; marking them keeps them from misleading another agent.
+
+### D4. Scope of this round
+
+The control session and the chief-of-staff session are designed and built together in
+this round, rather than the control session first.
+
+The owner chose option B on 2026-11-15 ("B"), over building the control session first with
+a fixed state file that the chief-of-staff reads later.
 
 ## Open questions
 
