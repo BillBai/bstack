@@ -146,14 +146,22 @@ tracked file would conflict with the rule that the control session edits nothing
 main checkout, and would fill the history with status churn. The owner chose A ("A") on
 2026-11-15.
 
+### D9. How the chief-of-staff learns each project's state
+
+It only reads: each project's `control/status.md`, plus `herdr agent list` and
+`herdr agent read` for live session state. It sends no messages to control sessions. In
+turn, a control session updates `status.md` at once whenever its state changes.
+
+Reason: a message to a control session is typed into its tab and can mix with the owner's
+own typing there. The owner chose A ("10A") on 2026-11-15.
+
 ## Open questions
 
-1. How the chief-of-staff and the control sessions talk: file reads only, or Herdr
-   messages too.
-2. What each skill holds as rules versus what the work-session brief template holds, and
+1. What each skill holds as rules versus what the work-session brief template holds, and
    which become separate files (brief template, status table, wait loop).
-3. Where personal and machine settings come from (reply language, a first prompt such as
-   `/i-have-adhd`, the workspace root), given that a new worktree sees neither the main
-   checkout's agent memory nor its gitignored `AGENTS.local.md`.
-4. The skills' names and listing lines, and which `bstack-setup` references mention them
+2. Where personal and machine settings come from (reply language, a first prompt such as
+   `/i-have-adhd`, the workspace root). Checked on 2026-11-15: Claude Code sessions in a
+   git worktree use the main checkout's memory directory, so memory is shared. A gitignored
+   `AGENTS.local.md` is not checked out into a new worktree by `git worktree add`.
+3. The skills' names and listing lines, and which `bstack-setup` references mention them
    (including the worktree directory from D7).
