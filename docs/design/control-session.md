@@ -126,17 +126,34 @@ that uses another directory renames it when it migrates to bstack (`git worktree
 after closing the sessions running in those worktrees). The owner chose A ("8 A") on
 2026-11-15.
 
+### D8. Where the state lives
+
+Each project keeps its control-session state in `<project>_workspace/control/`, beside
+`worktrees/`, outside git:
+
+- `status.md`: the status table (work item, branch, session, stage, waiting on whom), what
+  needs the owner, the next step, and to-dos and ideas the owner mentioned.
+- `briefs/<name>.md`: each work session's brief.
+
+The chief workspace has the same structure, plus a list of the projects with each
+project's workspace path. The repository's own records (Current Focus, spec Status lines)
+stay the source of project progress; `status.md` holds only what the repository does not.
+On start, a control session reads `status.md` and checks it against `git worktree list`
+and `herdr agent list`.
+
+Reason: `/private/tmp` is cleared on reboot, and Herdr sessions end with a reboot. A
+tracked file would conflict with the rule that the control session edits nothing in the
+main checkout, and would fill the history with status churn. The owner chose A ("A") on
+2026-11-15.
+
 ## Open questions
 
-1. Where the state file lives, what it holds, and how a restarted control session or the
-   chief-of-staff rebuilds the status table from it, `git worktree list`, and
-   `herdr agent list`.
-2. How the chief-of-staff and the control sessions talk: file reads only, or Herdr
+1. How the chief-of-staff and the control sessions talk: file reads only, or Herdr
    messages too.
-3. What each skill holds as rules versus what the work-session brief template holds, and
+2. What each skill holds as rules versus what the work-session brief template holds, and
    which become separate files (brief template, status table, wait loop).
-4. Where personal and machine settings come from (reply language, a first prompt such as
+3. Where personal and machine settings come from (reply language, a first prompt such as
    `/i-have-adhd`, the workspace root), given that a new worktree sees neither the main
    checkout's agent memory nor its gitignored `AGENTS.local.md`.
-5. The skills' names and listing lines, and which `bstack-setup` references mention them
+4. The skills' names and listing lines, and which `bstack-setup` references mention them
    (including the worktree directory from D7).
