@@ -98,11 +98,45 @@ this round, rather than the control session first.
 The owner chose option B on 2026-11-15 ("B"), over building the control session first with
 a fixed state file that the chief-of-staff reads later.
 
+### D5. The chief-of-staff's first duties
+
+1. **Daily summary.** It reads each project's control-session state and reports what needs
+   the owner's attention today, and in which project.
+2. **Entry for work outside the projects.** Customer questions, consultations, ad-hoc
+   ideas, organizing files, and agent configuration go to the chief-of-staff. It opens
+   work sessions in the chief workspace, briefs them, and tracks them, as a control
+   session does for project work.
+3. **Document work.** It writes documents such as monthly reports from the projects'
+   records.
+
+It does not pass the owner's instructions on to a control session in the first version;
+the owner tells a project's control session directly in that project's Herdr workspace.
+
+The owner chose a, b, and c ("6 abc") on 2026-11-15.
+
+### D6. Names in this public repository
+
+No project or internal platform names appear in bstack; records use placeholders such as
+`<project>`. The owner chose C ("7 C") on 2026-11-15.
+
+### D7. The worktree directory
+
+The skills and the bstack setup references use `<project>_workspace/worktrees/`. A project
+that uses another directory renames it when it migrates to bstack (`git worktree move`,
+after closing the sessions running in those worktrees). The owner chose A ("8 A") on
+2026-11-15.
+
 ## Open questions
 
-4. What the skill holds as rules versus what the change-brief template holds, and which
-   become files in the skill (brief template, status table, wait loop).
-5. Where a restarted control session gets the project state and the status table.
-6. Where personal and machine settings come from (reply language, a first prompt such as
-   `/i-have-adhd`, the worktree root, the brief directory).
-7. The skill's name and listing line, and whether `bstack-setup` references point to it.
+1. Where the state file lives, what it holds, and how a restarted control session or the
+   chief-of-staff rebuilds the status table from it, `git worktree list`, and
+   `herdr agent list`.
+2. How the chief-of-staff and the control sessions talk: file reads only, or Herdr
+   messages too.
+3. What each skill holds as rules versus what the work-session brief template holds, and
+   which become separate files (brief template, status table, wait loop).
+4. Where personal and machine settings come from (reply language, a first prompt such as
+   `/i-have-adhd`, the workspace root), given that a new worktree sees neither the main
+   checkout's agent memory nor its gitignored `AGENTS.local.md`.
+5. The skills' names and listing lines, and which `bstack-setup` references mention them
+   (including the worktree directory from D7).
