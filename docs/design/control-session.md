@@ -155,13 +155,22 @@ turn, a control session updates `status.md` at once whenever its state changes.
 Reason: a message to a control session is typed into its tab and can mix with the owner's
 own typing there. The owner chose A ("10A") on 2026-11-15.
 
+### D10. Where personal settings live
+
+The owner's preferences stay in the main checkout's gitignored `AGENTS.local.md`, the
+bstack convention. When a control session creates a worktree, it links that worktree's
+`AGENTS.local.md` to the main checkout's file. A brief then says only to read
+`AGENTS.local.md`; it does not copy the preferences. Claude Code memory needs nothing: a
+session in a git worktree already uses the main checkout's memory directory.
+
+Reason: one source, readable by Claude Code and Codex alike; `git worktree add` does not
+check out a gitignored file. The owner chose A ("A") on 2026-11-15, after asking why a
+worktree would not see settings configured on the main branch ("为啥看不到？我 master 上配置好了，
+以后能看到啊").
+
 ## Open questions
 
 1. What each skill holds as rules versus what the work-session brief template holds, and
    which become separate files (brief template, status table, wait loop).
-2. Where personal and machine settings come from (reply language, a first prompt such as
-   `/i-have-adhd`, the workspace root). Checked on 2026-11-15: Claude Code sessions in a
-   git worktree use the main checkout's memory directory, so memory is shared. A gitignored
-   `AGENTS.local.md` is not checked out into a new worktree by `git worktree add`.
-3. The skills' names and listing lines, and which `bstack-setup` references mention them
+2. The skills' names and listing lines, and which `bstack-setup` references mention them
    (including the worktree directory from D7).
