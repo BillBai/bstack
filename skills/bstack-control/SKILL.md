@@ -29,7 +29,8 @@ stop. Otherwise load the `herdr` skill, then read
 
 ## 2. Pick the role
 
-An argument `control` or `chief` picks the role. Without one:
+An argument picks the role: `control`, `control <path to a main checkout>` (opens that
+project's control session in its own Herdr workspace), or `chief`. Without one:
 
 - The cwd holds `projects.md`: you are the chief-of-staff.
 - The cwd is the top of a repository's main checkout (`git rev-parse --show-toplevel`
@@ -72,9 +73,9 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 - **Stages advance on the owner's word.** The project's workflow sets the stage order and
   the stopping points; read them from the target repository at run time. Agreement with an
   answer or an artifact is not an instruction to start the next stage.
-- **The main checkout stays clean.** Project work happens in worktrees. The control session's only
-  change to the main checkout is fast-forwarding its main branch after the owner lands a
-  change.
+- **The main checkout stays clean.** Project work happens in worktrees. The control
+  session's only change to the main checkout is fast-forwarding its main branch after the
+  owner lands a change.
 - **Close only what you created.** Remove a tab, session, or worktree you created only
   with the owner's permission, and keep branches. Tabs, review sessions, and worktrees that
   a work session opens itself (the workflow's review tabs, `implement-spec` worktrees)

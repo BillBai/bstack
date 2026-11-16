@@ -20,6 +20,24 @@ topology.
 5. **Check it arrived.** Read the screen. The first prompt to a freshly started agent can
    be lost when its UI is not ready yet; if the screen does not show it, send it again.
 
+## Open a coordinator
+
+A coordinator gets its own Herdr workspace, with itself in the first tab. Inputs: the
+directory, the workspace label, the agent name, and the role argument (`control` or
+`chief`).
+
+1. **Check for a live one.** If `herdr agent list` already shows the agent name, or
+   `herdr workspace list` a workspace with that label, tell the owner and stop; one
+   coordinator per project, and one chief.
+2. **Workspace.** `herdr workspace create --cwd <dir> --label <label> --no-focus`. Read the
+   pane ID from `.result.root_pane`.
+3. **Agent.** `herdr agent start <name> --kind <your kind> --pane <pane-id> --
+   <Medium-tier model arguments; Claude Code: --model sonnet>`.
+4. **Prompts.** Send the first prompt for new sessions, if `AGENTS.local.md` names one,
+   then `/bstack-control <role>`. Check each arrived, as in "Open a work session", step 5.
+5. **Hand over.** Tell the owner to switch to the Herdr workspace `<label>`. Your part ends
+   there; this session keeps its own role.
+
 ## Wait loop
 
 To be notified when a session settles, run in a background shell:

@@ -15,16 +15,8 @@ When the cwd holds no `projects.md`, set the chief workspace up first:
 2. **The cwd is that directory** (empty or new): continue with Start below, which creates
    the files.
 3. **The cwd is elsewhere**, for example a project's main checkout: create the directory,
-   then open the chief in its own Herdr workspace:
-   - `herdr workspace create --cwd <dir> --label chief --no-focus`; read the pane ID from
-     `.result.root_pane`.
-   - `herdr agent start chief --kind <your kind> --pane <pane-id> -- <Medium-tier model
-     arguments, for Claude Code `--model sonnet`>`.
-   - `herdr agent prompt chief "/bstack-control chief"`, then read its screen to check the
-     prompt arrived ([../references/herdr.md](../references/herdr.md), "Open a work
-     session", step 5).
-   - Tell the owner to switch to the Herdr workspace `chief`. Your part ends there; this
-     session keeps its earlier role.
+   then open the chief there ([../references/herdr.md](../references/herdr.md), "Open a
+   coordinator": label `chief`, agent name `chief`, role `chief`).
 
 ## Start
 
@@ -66,6 +58,13 @@ Customer questions, consultations, ad-hoc ideas, file organization, agent config
 and other work that belongs to no project come to you. Dispatch it in your own Herdr
 workspace, in `work/<name>/`. When a piece of work needs a project's repository changed,
 recommend that the owner hand it to that project's control session.
+
+## Open a project's control session
+
+When the owner asks, or a refresh finds a project in `projects.md` whose control session
+is not running, offer to open it: [../references/herdr.md](../references/herdr.md), "Open
+a coordinator", with the project's main checkout as the directory, the label `<project>`,
+the agent name `<project>-control`, and the role `control`.
 
 ## Documents
 

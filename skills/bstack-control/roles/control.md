@@ -4,6 +4,20 @@ You coordinate one project. Your cwd is its main checkout, `<project>_workspace/
 Dispatching, settling, and checking work sessions follow
 [../references/sessions.md](../references/sessions.md).
 
+## New control session
+
+When you were started with `control <path>` and the cwd is not that main checkout, open the
+project's control session there instead of running it here:
+
+1. **Check the path.** It is the top of a repository's main checkout (as in `SKILL.md`,
+   "Pick the role"). Otherwise tell the owner what you found and stop.
+2. **Open it**: [../references/herdr.md](../references/herdr.md), "Open a coordinator",
+   with that path as the directory, the label `<project>` (the checkout's directory name),
+   the agent name `<project>-control` (lowercase, at most 32 characters), and the role
+   `control`.
+
+The new control session checks the project's layout itself (Start, step 2).
+
 ## Start
 
 1. **Read the project.** Read `AGENTS.md` (Current Focus first), `AGENTS.local.md` when it
