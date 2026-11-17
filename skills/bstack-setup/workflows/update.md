@@ -12,7 +12,8 @@ Divide repository files into three categories before comparing:
    - `README.md`
    - `GLOSSARY.md`
    - `docs/plans/**`
-   - `docs/topics/**`, `docs/reports/**`, `docs/adr/**`
+   - `docs/arch/**`, `docs/topics/**`, `docs/reports/**`, `docs/adr/**`, `docs/archive/**`
+   - `.agents/hooks/**` (compare only the layout and the guard rules in `docs/agents/agent-setup.md`; never overwrite scripts)
    - `work-docs/**`
    - `AGENTS.local.md` (member-owned and gitignored; never compare or overwrite)
    - Verify only that structural conventions still hold (for example, if a future `bstack` update introduces a new required directory or metadata convention, note it as an optional structural suggestion without touching project content).

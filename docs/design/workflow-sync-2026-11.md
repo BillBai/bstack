@@ -1,6 +1,6 @@
 # Workflow sync 2026-11: design decisions
 
-Status: grill complete (2026-11-16). The skill edits wait for the owner's instruction.
+Status: grill complete (2026-11-16); the skill edits are made (2026-11-16) and not pushed.
 
 ## The task
 
@@ -396,5 +396,5 @@ then chose A ("2 A"): any topic, but no relaxing of the working rules.
 
 ## Next step
 
-Edit the skills on the owner's instruction (stage 4 of the session brief). Pushing this
-repository needs the owner's instruction.
+The owner reviews the edited skills. Pushing this repository needs the owner's
+instruction.

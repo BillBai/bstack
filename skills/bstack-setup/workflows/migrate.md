@@ -15,15 +15,17 @@ Read existing project files thoroughly before proposing changes:
 
 Present a concrete summary of what exists and a categorized file plan:
 
-- **Create:** missing standard files from [`../references/`](../references/) (`docs/README.md`, `docs/guide/workflow.md`, `docs/agents/{agent-setup,agent-environment,domain,issue-tracker,triage-labels}.md`, `work-docs/backlog.md`, `.gitkeep` files for empty `docs/{topics,reports,adr}/`).
+- **Create:** missing standard files from [`../references/`](../references/) (`docs/README.md`, `docs/arch/architecture.md`, `docs/guide/workflow.md`, `docs/agents/{agent-setup,agent-environment,domain,issue-tracker,triage-labels}.md`, `work-docs/backlog.md`, `.gitkeep` files for empty `docs/{topics,reports,adr,archive}/`).
 - **Merge (preserve all project knowledge):**
   - Merge existing project-specific commands, architecture notes, and coding rules from old `AGENTS.md` / `CLAUDE.md` into the new `AGENTS.md` (or extract bulky build/architecture guides into `docs/guide/<topic>.md` and link them under `AGENTS.md` `## Required reading`) alongside the standard `Working rules` and `Writing` sections from [`../references/root-AGENTS.md`](../references/root-AGENTS.md).
-  - Move personal preferences found in old agent files (conversation or document language, tone) into a gitignored `AGENTS.local.md` based on [`../references/root-AGENTS.local.md`](../references/root-AGENTS.local.md), and append `/AGENTS.local.md` to `.gitignore` (create or append, never overwrite).
+  - Move personal rules found in old agent files or the owner's agent memories (conversation or document language, tone, how to explain and report) into a gitignored `AGENTS.local.md` based on [`../references/root-AGENTS.local.md`](../references/root-AGENTS.local.md), and append `/AGENTS.local.md` to `.gitignore` (create or append, never overwrite).
   - Convert `CLAUDE.md` into a regular file containing `@AGENTS.md` (if `CLAUDE.md` was a symlink or held standalone instructions, migrate its unique instructions into `AGENTS.md` first, then replace the symlink with the regular file).
 - **Move (`git mv`):**
   - Legacy `CONTEXT.md` → `GLOSSARY.md` (updating format if needed to match `domain-modeling`).
-  - Existing plans/roadmaps → `docs/plans/`, standalone technical notes → `docs/topics/`, architectural decisions → `docs/adr/`, guides → `docs/guide/`.
-  - Existing `.scratch/` or local issue files → either migrate active items into `work-docs/m<x>-i<y>-<slug>/` or leave historical closed notes where agreed.
+  - Existing plans/roadmaps → `docs/plans/`, the current architecture → `docs/arch/`, standalone technical notes → `docs/topics/`, architectural decisions → `docs/adr/`, guides → `docs/guide/`, superseded designs, plans, and records → `docs/archive/`.
+  - Entries of a `decision-log.md` → the documents that own their topics (`milestone.md`, `iteration.md`, or a `design/` document), keeping the owner's quoted words and dates.
+  - Existing hook scripts → `.agents/hooks/`, with each tool's configuration reduced to an adapter that points at them.
+  - Existing `.scratch/` or local issue files → either migrate active items into `work-docs/<change>/` or leave historical closed notes where agreed.
 - **Keep untouched:** all source code, tests, build configs, user-global settings, and any existing docs the owner prefers to keep in place.
 
 Confirm 1 to 3 key choices with recommended answers:

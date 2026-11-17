@@ -42,17 +42,31 @@ In `pi`, the `tencent-intranet` provider also exposes `claude-opus-5.5`,
 
 ## Selecting an agent, model, and thinking effort
 
+### Roles
+
+- **Implementation and code review:** only the Large and XL tiers of the Claude and OpenAI
+  families implement, merge `implement-spec` work, or run a regular or expert code review.
+- **Design review of a spec:** a family other than the implementer's, preferably a third
+  family that neither implements nor runs the expert review. The current design reviewer
+  is Gemini 4 Carbon at its highest effort (`gemini-4-carbon-high`) through `agy`.
+- **Lightweight tasks:** the Medium or Small tier may locate code and documents, look up
+  facts in reference checkouts or upstream documentation, read a long build log and point
+  to the failing step, or summarize reference source with file and line citations. A
+  lightweight task reads and reports only: it does not edit the repository, commit, or
+  run a review or gate, and it does not replace the main agent's diagnosis. Its output is
+  a lead; the main agent checks the cited files and lines before relying on it.
+
 ### Task routing
 
 - **Same-family subtasks** (codebase exploration, parallel implementation slices, and
   same-family regular code reviews): use the active harness's built-in **subagent**
   mechanism with a fresh context.
-- **Cross-family tasks** (independent expert reviews, architecture second opinions, and
-  cross-checking hard bugs): prefer the target family's **native agent**:
+- **Cross-family tasks** (independent expert reviews, design reviews, architecture second
+  opinions, and cross-checking hard bugs): prefer the target family's **native agent**:
   - When Claude Code is the main agent, prefer **Codex**; when Codex is the main agent,
     prefer **Claude Code**.
-  - Use **`agy`** or **`pi`** models as supplementary perspectives or when explicitly
-    requested by the owner.
+  - Use **`agy`** for the design review, and **`agy`** or **`pi`** models as
+    supplementary perspectives or when explicitly requested by the owner.
 
 ### Thinking effort reference
 
@@ -64,6 +78,26 @@ Use these levels as defaults unless the task or owner specifies otherwise:
 - **Codebase exploration and straightforward implementation:** `Large` with `high` or
   `medium` effort (or `Medium` tier for lightweight lookups).
 - **When uncertain:** inherit the main agent's current model and effort, or ask the owner.
+
+### Permission for `pi` runs
+
+When the main agent runs in Claude Code or Codex, it asks the owner before the first `pi`
+run, whether a lightweight task or a fallback run. The permission covers the scope the
+owner states, such as one task, the session, or the change. When the main agent runs in
+`pi`, it uses `pi` without asking.
+
+When a stage's harness (Claude Code or Codex) is unavailable, the same task may run in
+`pi` on the model for the same tier and family. The task, its read-only or writing mode,
+its round limits, and its pass conditions stay the same. The record of the result (for a
+review, `review.md`) names the unavailable harness, the reason, and the `pi` model and
+effort that ran.
+
+### Unavailable models
+
+Before dispatch, confirm that the runner accepts the requested model and effort; after the
+run, confirm the model the run reports. When a required model is unavailable, report it
+and record any substitution. Do not substitute silently, and do not count the missing
+step as passed. For the design review, the owner decides the substitute.
 
 ## Dispatching tasks and collecting results
 
@@ -77,6 +111,10 @@ Use these levels as defaults unless the task or owner specifies otherwise:
   or conclusion to an explicit output file (such as a temporary directory from `mktemp -d`
   or session scratch space) and read that file from the main agent. Do not scrape Herdr
   terminal output to recover conclusions, as screen buffers can truncate content.
+- **`agy` has no read-only mode:** its plan mode keeps the edit and shell tools. The
+  brief forbids edits and shell commands, and the main agent checks afterward that the
+  worktree is unchanged. Without interaction, `agy -p "<brief>"` cannot ask for a shell
+  permission and returns no answer if it tries one.
 - **Tool permissions:** match permissions to the task — for example, read-only access for
   reviews and investigations, and scoped write access for implementation slices.
 

@@ -72,6 +72,10 @@ plan, or the planned order in `status.md`):
 
 The work sessions do not settle an overlap between themselves.
 
+When the owner considers letting two changes implement at once, report the overlap check's
+result for that pair: the project's workflow allows it only when they change no shared area
+and the plan sets no dependency between them.
+
 ## After a landing
 
 The owner lands a change in its work session. On the owner's word afterwards:
@@ -84,4 +88,9 @@ The owner lands a change in its work session. On the owner's word afterwards:
    branch. Before removing a worktree, check that it and any initialized submodule are
    clean and that the submodule's commit is on its remote; a worktree with an initialized
    submodule needs `git worktree remove --force`.
-3. **Propose the next work** from the project's plan and `status.md`.
+3. **Remind about a change planned beside it.** When a work session planned the next change
+   while this one was implemented, tell the owner that its session rebases onto the new
+   main branch and checks its spec and tickets against the landed code before it
+   implements. Report it as a pointer to that session; do not message the session unless
+   the owner asks.
+4. **Propose the next work** from the project's plan and `status.md`.

@@ -13,6 +13,8 @@ Summarize what exploration found (repository path, remote, Git identity, parent 
    - **Full milestone baseline (recommended when initial milestones are ready to scope):** also settle the milestone sequence in `docs/plans/roadmap.md`, draft `docs/plans/m1-<slug>/milestone.md` and `iteration-plan.md`, and optionally record bootstrap decisions and verbatim owner quotes in `work-docs/m0-i0-project-bootstrap/spec.md`.
 3. **Optional workspace modules (ask only when relevant or ambiguous):**
    - **Sibling reference checkouts (`../ref/`):** include `docs/guide/prior-art-and-refs.md` when the project uses read-only reference repositories under `../ref/` (recommended: **yes** if `../ref/` already exists, **no** otherwise).
+   - **Agent hooks (`.agents/hooks/`):** add the destructive-git guard described in [`../references/docs/agents/agent-setup.md`](../references/docs/agents/agent-setup.md) with adapters for the owner's agent tools (recommended: **yes** when agents run with broad shell permissions).
+   - **Remote CI:** when the project has or plans remote CI, list its ignored paths (records and agent guidance) in the build guide and plan a project skill or script that finds a commit's build, waits for it in the background, and reads a failing job's logs. bstack ships no such script.
    - **Parent workspace `../AGENTS.md`:** create or update a concise parent routing `../AGENTS.md` modeled on [`../references/workspace-AGENTS.md`](../references/workspace-AGENTS.md) only when this repository sits inside a multi-repository parent workspace and the owner confirms.
 
 ## 2. Draft preview and confirm
@@ -32,7 +34,7 @@ Read the reference files under [`../references/`](../references/) and adapt ever
   - `README.md` — based on [`../references/root-README.md`](../references/root-README.md); concise statement of what the project is and what components this repository owns (no workflow boilerplate).
   - `AGENTS.md` — based on [`../references/root-AGENTS.md`](../references/root-AGENTS.md). Keep `Current Focus` accurate for the repository's immediate next step.
   - `CLAUDE.md` — regular file (never a symlink) containing exactly `@AGENTS.md`.
-  - `AGENTS.local.md` — based on [`../references/root-AGENTS.local.md`](../references/root-AGENTS.local.md), adjusted to the owner's language preferences. Never commit it.
+  - `AGENTS.local.md` — based on [`../references/root-AGENTS.local.md`](../references/root-AGENTS.local.md), adjusted to the owner's language and working preferences. Never commit it.
   - `.gitignore` — create it or append `/AGENTS.local.md`; never overwrite existing entries.
   - `GLOSSARY.md` — based on [`../references/GLOSSARY.md`](../references/GLOSSARY.md), seeded with confirmed project terms (or minimal clean header if no domain terms exist yet).
 - **`docs/`:**
@@ -41,7 +43,8 @@ Read the reference files under [`../references/`](../references/) and adapt ever
   - `docs/guide/prior-art-and-refs.md` — include only when `../ref/` is enabled, based on [`../references/docs/guide/prior-art-and-refs.md`](../references/docs/guide/prior-art-and-refs.md). **When omitted, remove all links and bullets referencing `prior-art-and-refs.md` or `../ref/` from `AGENTS.md`, `docs/README.md`, `docs/agents/agent-setup.md`, and `milestone.md`.**
   - `docs/agents/{agent-setup.md, agent-environment.md, domain.md, issue-tracker.md, triage-labels.md}` — based on [`../references/docs/agents/`](../references/docs/agents/).
   - `docs/plans/roadmap.md` (and `docs/plans/m1-<slug>/{milestone.md, iteration-plan.md}` when using full milestone baseline, renaming `m1-skeleton` links to the real `m1-<slug>` directory).
-  - `docs/topics/.gitkeep`, `docs/reports/.gitkeep`, `docs/adr/.gitkeep` for empty directories.
+  - `docs/arch/architecture.md` — based on [`../references/docs/arch/architecture.md`](../references/docs/arch/architecture.md), filled with what is known; leave a short note where the design is not settled yet.
+  - `docs/topics/.gitkeep`, `docs/reports/.gitkeep`, `docs/adr/.gitkeep`, `docs/archive/.gitkeep` for empty directories.
 - **`work-docs/`:**
   - `work-docs/backlog.md` — based on [`../references/work-docs/backlog.md`](../references/work-docs/backlog.md) (omit the example row if no deferred items exist yet, leaving an empty table or clean note).
   - Optional `work-docs/m0-i0-project-bootstrap/spec.md` when recording initial product/bootstrap decisions and verbatim owner quotes.

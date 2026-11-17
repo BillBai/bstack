@@ -48,7 +48,7 @@ Pick either `install.sh` symlinks or plugin installation per agent, not both, to
 
 ### Companion skills
 
-`bstack-setup` configures repositories to work directly with [Matt Pocock's engineering skills](https://github.com/mattpocock/skills) (`grill-with-docs`, `grilling`, `domain-modeling`, `to-spec`, `to-tickets`, `implement`, `implement-spec`, `code-review`, and `tdd`), wiring their local issue-tracker, triage-label, and glossary conventions to `work-docs/m<x>-i<y>-<slug>/` and `GLOSSARY.md`. Repositories set up with `/bstack-setup` do not need to run `/setup-matt-pocock-skills`.
+`bstack-setup` configures repositories to work directly with [Matt Pocock's engineering skills](https://github.com/mattpocock/skills) (`grill-with-docs`, `grilling`, `domain-modeling`, `to-spec`, `to-tickets`, `implement`, `implement-spec`, `code-review`, and `tdd`), wiring their local issue-tracker, triage-label, and glossary conventions to `work-docs/<change>/` and `GLOSSARY.md`. Repositories set up with `/bstack-setup` do not need to run `/setup-matt-pocock-skills`.
 
 ## Updating the workflow or agent configuration
 

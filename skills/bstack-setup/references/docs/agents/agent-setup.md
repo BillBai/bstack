@@ -25,12 +25,27 @@ start from the team's suggested defaults if the owner shares them.
 Project-specific skill settings live in [domain.md](domain.md),
 [issue-tracker.md](issue-tracker.md), and [triage-labels.md](triage-labels.md).
 
-## 3. Reference checkouts
+## 3. Agent hooks
+
+Hook scripts live in `.agents/hooks/` as the canonical implementations. Each agent tool
+keeps only a thin adapter or configuration that points at them (for example
+`.claude/settings.json` or `.codex/hooks.json`), and `.agents/hooks/README.md` lists the
+scripts and the adapters. A git hook in the same directory is enabled once per clone with
+`git config core.hooksPath "$(git rev-parse --show-toplevel)/.agents/hooks"`.
+
+A recommended guard runs before each shell command and blocks git commands that discard
+work or rewrite a branch: `reset --hard`, `clean` with `-f`, `checkout .` and `restore .`,
+`stash drop` and `stash clear`, `branch -D`, and `push` with `--force`, `-f`,
+`--force-with-lease`, or a `+refspec`. It reads only real git invocations, not git text
+inside quotes, messages, or heredocs, and blocks with exit code 2, which every tool treats
+as a denial.
+
+## 4. Reference checkouts
 
 Clone read-only prior-art and upstream reference repositories into `../ref/` in the parent
 workspace as needed; see [prior-art-and-refs.md](../guide/prior-art-and-refs.md).
 
-## 4. Environment check
+## 5. Environment check
 
 Before starting a change on a new setup, verify that:
 
