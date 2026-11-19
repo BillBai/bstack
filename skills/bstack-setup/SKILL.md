@@ -16,7 +16,7 @@ Inspect the current repository and its immediate parent directory without modify
 
 - Run `git status`, check the current branch, `git remote -v`, and Git `user.name` / `user.email`.
 - Check root files: `README.md`, `AGENTS.md`, `AGENTS.local.md` (and whether `.gitignore` ignores it), `CLAUDE.md` (note whether it is a regular file or a symlink), `GLOSSARY.md`, and legacy `CONTEXT.md` / `CONTEXT-MAP.md`.
-- Check directories: `docs/` (`arch/`, `guide/`, `plans/`, `agents/`, `topics/`, `reports/`, `adr/`, `archive/`), `work-docs/`, `.scratch/`, `issues/`, `.agents/` (including `.agents/hooks/`), `.claude/`, `.codex/`, `.pi/`.
+- Check directories: `docs/` (`arch/`, `guide/`, `plans/`, `agents/`, `topics/`, `reports/`, `adr/`, `archive/`), `work-docs/`, `.scratch/`, `issues/`, `.agents/` (including `.agents/hooks/` and `.agents/hooks.json`), `.claude/`, `.codex/`, `.pi/`.
 - Check CI: the pipeline configuration, its ignored paths, and any script or skill that finds and waits for a build.
 - Check parent directory (`..`): whether this repository lives inside a multi-repository workspace (`../AGENTS.md`) or beside read-only sibling reference checkouts (`../ref/`).
 

@@ -10,8 +10,10 @@ topology.
 
 1. **Tab.** `herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <worktree or work
    dir> --label <name> --no-focus`. Read the pane ID from `.result.root_pane`.
-2. **Agent.** `herdr agent start <name> --kind <kind> --pane <pane-id>`. Pass native
-   arguments, such as a model, after `--`.
+2. **Agent.** `herdr agent start <name> --kind <kind> --pane <pane-id> -- <explicit args>`.
+   Pass explicit native arguments — model, reasoning effort or thinking level, and any
+   required harness flags (for example `--add-dir <dir>` for `agy` when accessing files
+   outside the working directory) — after `--`.
 3. **First prompt.** If `AGENTS.local.md` names a first prompt for new sessions (for
    example a slash command such as `/i-have-adhd`), send it alone with `herdr agent prompt
    <name> "<text>" --wait`.
@@ -23,16 +25,18 @@ topology.
 ## Open a coordinator
 
 A coordinator gets its own Herdr workspace, with itself in the first tab. Inputs: the
-directory, the workspace label, the agent name, and the role argument (`control` or
-`chief`).
+directory, the workspace label, the agent name, the role argument (`control` or `chief`),
+and the harness and model the owner chooses for the coordinator.
 
 1. **Check for a live one.** If `herdr agent list` already shows the agent name, or
    `herdr workspace list` a workspace with that label, tell the owner and stop; one
    coordinator per project, and one chief.
 2. **Workspace.** `herdr workspace create --cwd <dir> --label <label> --no-focus`. Read the
    pane ID from `.result.root_pane`.
-3. **Agent.** `herdr agent start <name> --kind <your kind> --pane <pane-id> --
-   <Medium-tier model arguments; Claude Code: --model sonnet>`.
+3. **Agent.** `herdr agent start <name> --kind <coordinator kind> --pane <pane-id> --
+   <coordinator model arguments>`. Ask the owner which harness and model to use if they
+   have not stated a coordinator preference; `bstack-control` imposes no required model or
+   tier.
 4. **Prompts.** Send the first prompt for new sessions, if `AGENTS.local.md` names one,
    then `/bstack-control <role>`. Check each arrived, as in "Open a work session", step 5.
 5. **Hand over.** Tell the owner to switch to the Herdr workspace `<label>`. Your part ends
@@ -40,7 +44,7 @@ directory, the workspace label, the agent name, and the role argument (`control`
 
 ## Wait loop
 
-To be notified when a session settles, run in a background shell:
+Active mode only. To be notified when a session settles, run in a background shell:
 
 ```bash
 herdr agent wait <name> --until working && herdr agent wait <name>

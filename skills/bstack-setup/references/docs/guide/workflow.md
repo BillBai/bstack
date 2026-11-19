@@ -216,8 +216,9 @@ with fresh context and read-only access, so that a design problem is found befor
 is written. Use the design reviewer named in
 [agent-environment.md](../agents/agent-environment.md): a family other than the
 implementer's, preferably a third family that neither implements nor runs the expert
-review. The brief names the files to read (the spec, the source design and decisions it
-cites, the architecture, and the glossary) and the output file for the report.
+review (or the opposite primary family in a fresh-context session when the project uses
+only two families). The brief names the files to read (the spec, the source design and
+decisions it cites, the architecture, and the glossary) and the output file for the report.
 
 The reviewer acts as an independent senior engineer. The following are prompts for
 judgment, not a complete list:
@@ -423,15 +424,18 @@ Select runners, models, thinking levels, and Herdr tabs according to
 and read-only access to repository files:
 
 1. **Regular review (`code-review`, up to 3 rounds).** Dispatch separate Standards and
-   Spec subagents using the Large tier of the main agent's family with `xhigh` effort. The
+   Spec subagents using the Large tier of the main agent's family at its highest supported
+   effort (`xhigh`, or the model's highest effort). The
    brief includes the architecture invariants. The Spec reviewer also checks that formal
    decisions and code match recorded owner quotes without narrowing or widening them, and
    that each implementation detail recorded in the spec leaves the design and goals as
    they are.
 2. **Expert review (up to 2 rounds).** After regular review converges, dispatch an
-   independent read-only reviewer from a different model family (Claude Code and Codex
-   review each other by default, or use an owner-specified family). The implementer never
-   acts as its own expert reviewer. Prompts for judgment, not a checklist: architecture,
+   independent read-only reviewer from another available primary model family (per
+   [agent-environment.md](../agents/agent-environment.md), or an owner-specified family).
+   The implementer never acts as its own expert reviewer. When a restricted third family
+   is permitted by the project, the owner may request one optional extra review round on
+   that family after expert review. Prompts for judgment, not a checklist: architecture,
    responsibilities, and simpler alternatives; concurrency and lifetime; resource and
    performance costs; error propagation and edge cases; realistic test gaps. Findings
    state concrete triggers, consequences, and evidence, and distinguish reproduced

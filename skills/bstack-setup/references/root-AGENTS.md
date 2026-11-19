@@ -68,9 +68,9 @@ Read every item that matches your task:
 - **Reference checkouts.** Keep `../ref/` checkouts in the parent workspace read-only. New
   implementation lives in this repository.
 - **Agent guidance.** Edit `AGENTS.md` and `.agents/` (including the hook scripts in
-  `.agents/hooks/`) as the canonical sources. Keep `CLAUDE.md` and per-tool directories
-  (`.claude/`, `.codex/`, `.pi/`) as thin wiring that points at them, and preserve
-  user-global settings.
+  `.agents/hooks/`) as the canonical sources. Keep `CLAUDE.md`, `.agents/hooks.json`
+  (`agy`), and per-tool directories (`.claude/`, `.codex/`, `.pi/`) as thin wiring that
+  points at them, and preserve user-global settings.
 
 ## Writing
 

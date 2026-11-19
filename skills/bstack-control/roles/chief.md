@@ -27,8 +27,13 @@ When the cwd holds no `projects.md`, set the chief workspace up first:
    projects and write them in the format below.
 2. **Check `projects.md`.** Each entry names the project, its `<project>_workspace` path,
    and its main checkout. Tell the owner about any path missing on disk.
-3. **Summarize.** Run the refresh below, then give the owner the summary.
-4. **Schedule the refresh** as `SKILL.md`, "Scheduled refresh", says.
+3. **Summarize.** Run the refresh below, then give the owner the summary. If the owner has
+   not stated a default work-session agent kind for this session yet, ask which agent
+   kind (and model, if any) to use by default for dispatched sessions; the owner can
+   change it at any time in conversation.
+4. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in
+   active mode, schedule the recurring refresh; in pull mode, refresh on each owner
+   message.
 
 ## Refresh
 

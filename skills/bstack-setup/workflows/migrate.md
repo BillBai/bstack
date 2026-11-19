@@ -6,7 +6,7 @@ Use this workflow when bringing an existing codebase or legacy documentation/age
 
 Read existing project files thoroughly before proposing changes:
 
-1. **Agent and entry files:** `README.md`, `AGENTS.md`, `CLAUDE.md` (note if symlinked), `GEMINI.md`, `.agents/`, `.claude/`, `.codex/`, `.pi/`. Extract every project-specific rule: build/test/lint commands, architecture invariants, directory layout notes, security boundaries, and coding conventions.
+1. **Agent and entry files:** `README.md`, `AGENTS.md`, `CLAUDE.md` (note if symlinked), `GEMINI.md`, `.agents/` (including `.agents/hooks/` and `.agents/hooks.json`), `.claude/`, `.codex/`, `.pi/`. Extract every project-specific rule: build/test/lint commands, architecture invariants, directory layout notes, security boundaries, and coding conventions.
 2. **Domain and ADR docs:** `GLOSSARY.md`, `GLOSSARY-MAP.md`, legacy `CONTEXT.md` / `CONTEXT-MAP.md`, and any existing `adr/` or `decisions/` directories.
 3. **Plans, docs, and issue tracking:** existing `docs/**`, roadmaps, design notes, `.scratch/**`, `issues/**`, or `work-docs/**`.
 4. **Repository state:** current Git branch, uncommitted changes (`git status`), build manifests (`Cargo.toml`, `CMakeLists.txt`, `package.json`, `pyproject.toml`, etc.), CI workflows, and sibling `../ref/` or parent `../AGENTS.md`.

@@ -8,9 +8,11 @@ its role.
 On the owner's word to start a piece of work:
 
 1. **Propose.** Give the owner the name (`[a-z][a-z0-9_-]{0,31}`, also the Herdr agent
-   name and the tab label), the agent kind (default: your own kind), the stage you take the
-   owner to authorize, and, for the control session, the branch in the project's
-   convention and its base. Wait for agreement or corrections.
+   name and the tab label), the agent kind and explicit model/effort (using the default
+   the owner chose for this coordinator session, or asking the owner if none is set; never
+   inherit the coordinator's own kind and do not rely on a repository-hardcoded default),
+   the stage you take the owner to authorize, and, for the control session, the branch in
+   the project's convention and its base. Wait for agreement or corrections.
 2. **Create the place it works.**
    - *Control session:* from the main checkout,
      `git worktree add -b <branch> ../worktrees/<name> <base>`. When the main checkout has
@@ -22,12 +24,13 @@ On the owner's word to start a piece of work:
    - *Chief-of-staff:* `mkdir work/<name>`, a plain directory.
 3. **Write the brief** to `briefs/<name>.md` from [work-brief.md](work-brief.md).
 4. **Open the session** ([herdr.md](herdr.md), "Open a work session").
-5. **Record and track.** Add the row to `status.md`, start the wait loop
-   ([herdr.md](herdr.md), "Wait loop"), and tell the owner which tab holds the session.
+5. **Record and track.** Add the row to `status.md`. In active mode, start the wait loop
+   ([herdr.md](herdr.md), "Wait loop"); in pull mode, skip the wait loop. Tell the owner
+   which tab holds the session.
 
 ## Settle
 
-The wait loop notifies you when a session settles. Read its screen
+Active mode only. The wait loop notifies you when a session settles. Read its screen
 ([herdr.md](herdr.md), "Read a screen"), classify it ([status.md](status.md), "Needs
 you"), update `status.md`, and tell the owner only when it needs them, as a **pointer**
 ([status.md](status.md), "Pointers"). Then restart the wait loop for that session.

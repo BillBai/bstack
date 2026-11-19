@@ -36,10 +36,14 @@ The new control session checks the project's layout itself (Start, step 2).
 3. **Prepare.** Create whichever of `../worktrees/`, `../control/briefs/`, and
    `../control/status.md` (from [../references/status.md](../references/status.md)) is
    missing.
-4. **Recap.** Run the refresh below, then give the owner the recap.
-5. **Schedule the refresh** as `SKILL.md`, "Scheduled refresh", says. When a refresh finds
-   something new under Needs you or Overlaps, tell the owner; otherwise update the file
-   silently.
+4. **Recap.** Run the refresh below, then give the owner the recap. If the owner has not
+   stated a default work-session agent kind for this session yet, ask which agent kind
+   (and model, if any) to use by default for dispatched sessions; the owner can change it
+   at any time in conversation.
+5. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in
+   active mode, schedule the recurring refresh (telling the owner only when a refresh
+   finds something new under Needs you or Overlaps, otherwise updating `status.md`
+   silently); in pull mode, refresh on each owner message.
 
 ## Refresh
 

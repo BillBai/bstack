@@ -18,8 +18,9 @@ There are two coordinator roles:
 - **Chief-of-staff**: one across all projects. It runs in its own Herdr workspace, with its
   cwd in the chief workspace, and handles work that belongs to no project.
 
-Coordinators run on the Medium tier (Claude Code: Sonnet). If you run on another tier, tell
-the owner once at start.
+Coordinators impose no required harness, model, or tier; the owner chooses them when
+starting the session. Work sessions do not inherit the coordinator's agent kind or model
+(see [references/sessions.md](references/sessions.md)).
 
 ## 1. Check Herdr
 
@@ -93,10 +94,21 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 - **Destructive or outward actions need the owner's word**: removing worktrees, deleting
   branches, force pushes, publishing a document, sending a message outside this machine.
 
-## Scheduled refresh
+## Operating modes: active and pull
 
-Each role refreshes its status every 30 minutes, or at the interval the owner sets, with
-the harness's scheduler. Claude Code: `CronCreate` with a recurring cron such as
-`7,37 * * * *` and the prompt "Refresh the bstack-control status"; its jobs end with the
-session and expire after 7 days, so schedule again at each start. Without a scheduler,
-refresh on each owner message. Entering a project or asking for a recap refreshes at once.
+A coordinator runs in one of two modes based on its harness:
+
+- **Active mode** (harnesses with a built-in recurring scheduler and background completion
+  notifications, such as Claude Code or `agy`):
+  - Run the Herdr wait loop for tracked work sessions
+    ([references/herdr.md](references/herdr.md), "Wait loop").
+  - Schedule a recurring refresh every 30 minutes, or at the interval the owner sets,
+    using the harness's scheduler (Claude Code: `CronCreate` with a recurring cron such as
+    `7,37 * * * *`; `agy`: `schedule` with a cron expression and the prompt "Refresh the
+    bstack-control status"). Scheduled jobs end with the session, so schedule again at
+    each start.
+- **Pull mode** (harnesses without a recurring scheduler or background completion
+  notifications, such as `pi` or Codex):
+  - Do not start wait loops or fake a recurring schedule.
+  - Refresh on every owner message before answering, and whenever the owner enters the
+    project or asks for a recap.
