@@ -12,8 +12,12 @@ topology.
    dir> --label <name> --no-focus`. Read the pane ID from `.result.root_pane`.
 2. **Agent.** `herdr agent start <name> --kind <kind> --pane <pane-id> -- <explicit args>`.
    Pass explicit native arguments — model, reasoning effort or thinking level, and any
-   required harness flags (for example `--add-dir <dir>` for `agy` when accessing files
-   outside the working directory) — after `--`.
+   required harness flags — after `--`. When starting `agy` through Herdr, pass
+   `--dangerously-skip-permissions` (and `--add-dir <dir>` when accessing files outside
+   the working directory) so the session does not stall on interactive trust or
+   permission prompts; for review sessions, the brief forbids modifying tracked repository
+   files or leaving non-ignored untracked files (gitignored build outputs are fine), and
+   the caller verifies `git status --porcelain` afterward.
 3. **First prompt.** If `AGENTS.local.md` names a first prompt for new sessions (for
    example a slash command such as `/i-have-adhd`, or `/skill:i-have-adhd` in `pi`), send
    it alone with `herdr agent prompt <name> "<text>" --wait`.

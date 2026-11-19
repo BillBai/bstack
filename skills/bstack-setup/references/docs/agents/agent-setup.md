@@ -6,10 +6,10 @@ Daily model tiers, provider IDs, and task-routing rules are maintained in
 
 ## 1. Agent CLIs
 
-Set up the primary interactive agents you use — **Codex**, **`agy` (Antigravity)**, and
-**Claude Code** — along with **`pi`** for supplementary and backup model providers, and
-**`herdr`** (recommended) for launching and observing delegated cross-family sessions in
-separate tabs.
+Set up the primary interactive agents you use — **Claude Code**, **Codex**, and **`agy`
+(Antigravity)** — along with **Cursor CLI (`agent` / `cursor-agent`)** and **`pi`** for
+supplementary and backup model providers, and **`herdr`** (recommended) for launching and
+observing delegated cross-family sessions in separate tabs.
 
 Keep API credentials and authentication tokens in user-global configuration rather than
 committing them to this repository. Put personal agent preferences for this repository,
@@ -36,9 +36,10 @@ Project-specific skill settings live in [domain.md](domain.md),
 
 Hook scripts live in `.agents/hooks/` as the canonical implementations. Each agent tool
 keeps only a thin adapter or configuration that points at them (for example
-`.claude/settings.json`, `.codex/hooks.json`, `.agents/hooks.json` for `agy`, and
-`.pi/extensions/` for `pi`), and `.agents/hooks/README.md` lists the scripts and the
-adapters. A git hook in the same directory is enabled once per clone with
+`.claude/settings.json`, `.codex/hooks.json`, `.agents/hooks.json` for `agy`,
+`.cursor/hooks.json` for Cursor CLI, and `.pi/extensions/` for `pi`), and
+`.agents/hooks/README.md` lists the scripts and the adapters. A git hook in the same
+directory is enabled once per clone with
 `git config core.hooksPath "$(git rev-parse --show-toplevel)/.agents/hooks"`.
 
 A recommended guard runs before each shell command and blocks git commands that discard

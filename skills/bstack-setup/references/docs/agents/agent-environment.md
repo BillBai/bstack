@@ -7,34 +7,37 @@ this document maps them to a family, runner, model ID, and reasoning effort.
 
 ## Available agents and runners
 
+- **Claude Code:** primary interactive agent and native runner for the Claude family.
 - **Codex:** primary interactive agent and native runner for the OpenAI GPT family.
 - **`agy` (Antigravity):** primary interactive agent and native runner for the Gemini
   family.
-- **Claude Code:** primary interactive agent and native runner for the Claude family (when
-  natively available).
+- **Cursor CLI (`agent` / `cursor-agent`):** supplementary interactive and review runner
+  exposing limited Claude (`opus` / `sonnet`) and Gemini 4 (`carbon` / `neon`) models
+  plus `grok-4.7`.
 - **`pi`:** interactive agent and CLI runner for additional model families and for
   restricted backup endpoints (such as Claude when Claude Code is unavailable).
 - **Herdr:** terminal multiplexer. When `HERDR_ENV=1`, cross-family agents run in their
   own Herdr tab so the owner can inspect their sessions directly.
 
 A change's **model family** is the family of the model it runs on (Claude, OpenAI, or
-Gemini), not the harness. In `pi`, the selected model determines the family. Review rules
-compare model families.
+Gemini), not the harness. In `pi` and Cursor CLI, the selected model determines the
+family. Review rules compare model families.
 
 ## Runner availability and project policy
 
 Configure this section per repository to match the current environment and project rules:
 
-- **Primary available families:** OpenAI (Codex) and Gemini (`agy`); add Claude (Claude
-  Code) when natively available.
-- **Restricted backup channels:** when a primary family's native harness is unavailable,
-  `pi` may provide a backup endpoint with lower quota and higher latency (for example
-  `<provider>/claude-opus-5.5`). A restricted backup channel is never used for interactive
-  planning, implementation, regular reviews, or coordinators; reserve it for low-frequency
-  read-only reviews.
+- **Primary families:** Claude (Claude Code), OpenAI (Codex), and Gemini (`agy`). Keep
+  the repository ready to operate cleanly when any single primary harness (such as Claude
+  Code) is temporarily unavailable.
+- **Restricted or limited channels:** when a primary harness is unavailable, `pi` or
+  Cursor CLI may provide limited-quota or higher-latency endpoints for that family (for
+  example `<provider>/claude-opus-5.5` in `pi`, or `claude-opus-5-5` in Cursor CLI).
+  Restricted channels are not used for routine interactive planning, implementation, or
+  coordinators; reserve them for owner-selected reviews or targeted tasks.
 - **Disabled families:** if a project forbids a family by policy (for example a no-Claude
-  project), state that restriction here; review routing then uses only the permitted
-  families.
+  project), state that restriction here; review candidates then exclude that family across
+  every runner (`claude`, `cursor`, and `pi`).
 
 ## Model tiers by family
 
@@ -43,16 +46,18 @@ other families start at Large.
 
 | Family | XL | Large | Medium | Small | Native Agent / Runner |
 | --- | --- | --- | --- | --- | --- |
-| Claude | Fable | Opus | Sonnet | Haiku | Claude Code (restricted backup: `pi`) |
+| Claude | Fable | Opus | Sonnet | Haiku | Claude Code (also limited in Cursor CLI; backup in `pi`) |
 | OpenAI | N/A | Astra | Sol | Terra | Codex |
-| Gemini | N/A | Carbon, Neon | Carbon, Neon | Hydrogen | `agy` |
+| Gemini | N/A | Carbon, Neon | Carbon, Neon | Hydrogen | `agy` (Carbon / Neon also limited in Cursor CLI) |
+| Grok | N/A | N/A | N/A | Grok-4.7 | Cursor CLI |
 | Kimi | N/A | N/A | Kimi-K3.1-Pro | N/A | `pi` |
 | DeepSeek | N/A | N/A | N/A | DeepSeek-Flash | `pi` |
 | GLM | N/A | N/A | N/A | GLM | `pi` |
 
 `Carbon` and `Neon` both cover Gemini's Large and Medium slots while their relative
-strength is being evaluated. Add any additional project-configured `pi` families to this
-table when used.
+strength is being evaluated. In Cursor CLI, only `claude-opus-5-5`, `claude-sonnet-5-5`,
+`gemini-4-carbon`, `gemini-4-neon`, and `grok-4.7` are used; other Cursor models are
+excluded. Add any additional project-configured `pi` families to this table when used.
 
 ## Current model versions and identifiers
 
@@ -61,16 +66,19 @@ Replace `<provider>` with your configured `pi` provider name.
 
 | Tier model | Current version | Runner / provider model ID |
 | --- | --- | --- |
-| Fable / Opus / Sonnet / Haiku | Claude Fable 5.2 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5 | Native tiers in Claude Code (backup via `pi`: `<provider>/claude-opus-5.5`, `<provider>/claude-sonnet-5.5`) |
-| Astra / Sol / Terra | GPT-6.2 Astra / GPT-6.2 Sol / GPT-6.1 Terra | `gpt-6.2-astra` / `gpt-6.2-sol` / `gpt-6.1-terra` |
-| Carbon / Neon / Hydrogen | Gemini 4 Carbon / Gemini 4 Neon / Gemini 4 Hydrogen | `gemini-4-carbon` / `gemini-4-neon` / `gemini-4-hydrogen` |
-| Kimi-K3.1-Pro | Kimi K3.1 Pro | `<provider>/kimi-k3.1-pro` |
-| DeepSeek-Flash | DeepSeek-V4.1-Flash | `<provider>/deepseek-v4.1-flash` |
-| GLM | GLM-5.3 | `<provider>/glm-5.3` |
+| Fable / Opus / Sonnet / Haiku | Claude Fable 5.2 / Opus 5.5 / Sonnet 5.5 / Haiku 5.5 | Claude Code: `fable` / `opus` / `sonnet` / `haiku`; Cursor CLI: `claude-opus-5-5-<effort>` / `claude-sonnet-5-5-<effort>`; `pi` backup: `<provider>/claude-opus-5.5` / `<provider>/claude-sonnet-5.5` |
+| Astra / Sol / Terra | GPT-6.2 Astra / GPT-6.2 Sol / GPT-6.1 Terra | Codex: `gpt-6.2-astra` / `gpt-6.2-sol` / `gpt-6.1-terra` |
+| Carbon / Neon / Hydrogen | Gemini 4 Carbon / Gemini 4 Neon / Gemini 4 Hydrogen | `agy` / Cursor CLI: `gemini-4-carbon` / `gemini-4-neon` / `gemini-4-hydrogen` (Cursor CLI uses `<id>-<effort>`, Carbon / Neon only) |
+| Grok-4.7 | Grok 4.7 | Cursor CLI: `grok-4.7-<effort>` |
+| Kimi-K3.1-Pro | Kimi K3.1 Pro | `pi`: `<provider>/kimi-k3.1-pro` |
+| DeepSeek-Flash | DeepSeek-V4.1-Flash | `pi`: `<provider>/deepseek-v4.1-flash` |
+| GLM | GLM-5.3 | `pi`: `<provider>/glm-5.3` |
 
 In `agy`, `gemini-4-neon` and `gemini-4-hydrogen` support `low`, `medium`, `high`, and
 `xhigh`, while `gemini-4-carbon` supports `low`, `medium`, and `high`. In `pi`, pass
-`<provider>/<id>` with `--thinking <level>` or the `<provider>/<id>:<level>` suffix.
+`<provider>/<id>` with `--thinking <level>` or the `<provider>/<id>:<level>` suffix. In
+Cursor CLI, model IDs encode effort (for example `claude-opus-5-5-xhigh`,
+`gemini-4-neon-xhigh`, `grok-4.7-high`).
 
 ## Selecting an agent, model, and thinking effort
 
@@ -78,9 +86,9 @@ In `agy`, `gemini-4-neon` and `gemini-4-hydrogen` support `low`, `medium`, `high
 
 - **Eligibility for implementation and code review:** only the **Large** and **XL** tiers
   of the primary families (Claude, OpenAI, Gemini) implement, merge `implement-spec` work,
-  or run regular, design, or expert reviews. A family on a restricted backup runner (`pi`)
-  does not implement or run routine multi-round work; it is eligible only for low-frequency
-  read-only reviews when the owner chooses it.
+  or run regular, design, or expert reviews. Restricted channels (`pi` backup or limited
+  Cursor CLI models) do not replace primary interactive development; use them only when
+  the owner selects them.
 - **Review selection (always owner-confirmed):** never start a review stage or pick a
   reviewer model automatically. Before each of the three review stages — **spec design
   review**, **regular code review**, and **expert review** — stop and ask the owner
@@ -111,8 +119,8 @@ In `agy`, `gemini-4-neon` and `gemini-4-hydrogen` support `low`, `medium`, `high
   harness's built-in **subagent** mechanism with a fresh context.
 - **Cross-family tasks** (reviews where the owner picks another family, architecture
   second opinions, and cross-checking hard bugs): invoke the target family's native agent
-  (Codex for OpenAI, `agy` for Gemini, Claude Code for Claude), or `pi` when that family
-  is only available through a restricted backup provider.
+  (Claude Code for Claude, Codex for OpenAI, `agy` for Gemini), or Cursor CLI / `pi` when
+  chosen by the owner or when a native harness is unavailable.
 
 ### Thinking effort reference
 
@@ -131,15 +139,15 @@ Use these levels as defaults unless the task or owner specifies otherwise:
 When the owner explicitly selects a `pi` model during review confirmation, that choice
 authorizes the `pi` run without a second permission prompt.
 
-For ad-hoc lightweight tasks or unexpected harness fallbacks from Codex, `agy`, or Claude
-Code, ask the owner before the first `pi` run; the permission covers the scope the owner
-states (one task, the session, or the change). When the main agent runs in `pi`, it uses
-`pi` without asking.
+For ad-hoc lightweight tasks or unexpected harness fallbacks from Claude Code, Codex,
+`agy`, or Cursor CLI, ask the owner before the first `pi` run; the permission covers the
+scope the owner states (one task, the session, or the change). When the main agent runs in
+`pi`, it uses `pi` without asking.
 
 When a stage's native harness is unavailable and `pi` stands in as a fallback on the same
-tier and family, the task, its read-only or writing mode, its round limits, and its pass
-conditions stay the same. Record the unavailable harness, the reason, and the `pi` model
-and effort that ran (for a review, in `review.md`).
+tier and family, the task, its boundaries, its round limits, and its pass conditions stay
+the same. Record the unavailable harness, the reason, and the `pi` model and effort that
+ran (for a review, in `review.md`).
 
 ### Unavailable models
 
@@ -153,69 +161,60 @@ missing step as passed.
 ### Execution and Herdr integration
 
 - **Inside Herdr (`HERDR_ENV=1`):** for every cross-family dispatch (for example Codex
-  dispatching `agy`, `agy` dispatching Codex, or either dispatching `pi`), open a new
-  **Herdr tab** (`--no-focus`, not a split pane) so the owner can inspect the external
-  agent's session directly. Do not fall back to print mode (`agy -p`) when Herdr is
-  available.
+  dispatching `agy`, `agy` dispatching Codex, or any harness dispatching `claude`,
+  `cursor`, or `pi`), open a new **Herdr tab** (`--no-focus`, not a split pane) so the
+  owner can inspect the external agent's session directly. Do not fall back to print mode
+  (such as `agy -p`) when Herdr is available.
 - **Explicit launch arguments:** always specify the working directory (`--cwd`), model,
   and reasoning effort or thinking level explicitly rather than relying on user defaults.
 - **Outside Herdr (or in a desktop app):** invoke the external agent CLI non-interactively
   with the same explicit model, effort, and directory arguments.
-- **File-based result handoff:** export pinned inputs (diff, commit list) to a temporary
-  directory outside the repository (`<dir>`, such as from `mktemp -d`), instruct the
-  reviewer to write its complete report to an explicit file in `<dir>`, and read that file
-  from the main agent. Do not rely on terminal scrollback alone when a report file can be
-  written.
+- **File-based result handoff (always, never screen-scraping):** export pinned inputs
+  (diff, commit list) to a temporary directory outside the repository (`<dir>`, such as
+  from `mktemp -d`), and instruct **every** Herdr-launched reviewer to write its complete
+  report to `<dir>/<report>.md`. Use Herdr (`herdr agent wait` / `read`) only to monitor
+  session state (`working`, `idle`, `blocked`, `done`), and always read the complete
+  review report from `<dir>/<report>.md` rather than scraping Herdr terminal scrollback.
 
-### Harness-specific read-only review notes
+### Unified reviewer permissions and Herdr launch table
 
-- **Codex (`--kind codex`):** launch via Herdr with explicit working directory, model,
-  reasoning effort, and read-only sandbox:
+All review stages (spec design, regular, and expert) share one simple permission model
+across every harness:
 
-  ```sh
-  herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo-dir> --label <label> --no-focus
-  herdr agent start <name> --kind codex --pane <root-pane> -- \
-    -C <repo-dir> -m <model> -c model_reasoning_effort="<level>" -s read-only
-  ```
+- Reviewers may read repository files and run shell commands (such as read-only `git`
+  queries, binary inspection, or targeted builds and tests) when useful to verify a
+  concern.
+- **Repository boundary:** reviewers must **not** modify tracked repository files or leave
+  non-ignored untracked files; the complete report goes to `<dir>/<report>.md`. Temporary
+  build artifacts and gitignored files are acceptable.
+- **Verification:** repository `.agents/hooks/` guards block destructive git commands;
+  after the review finishes, the main agent verifies `git status --porcelain` is unchanged
+  (which automatically ignores gitignored build artifacts) and reads `<dir>/<report>.md`.
 
-  Because `-s read-only` blocks writes, collect the complete report from the session
-  output into `<dir>/<report>.md` (or write `<dir>/<report>.md` with a non-interactive
-  `codex exec -o <dir>/<report>.md` fallback outside Herdr).
-- **`agy` (`--kind agy`):** `agy` has no strict read-only tool mode (its plan mode keeps
-  edit and shell tools). Launch via Herdr with explicit working directory, model, effort,
-  and `--add-dir <dir>`:
+Open the tab first:
 
-  ```sh
-  herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo-dir> --label <label> --no-focus
-  herdr agent start <name> --kind agy --pane <root-pane> -- \
-    --model <model> --effort <level> --add-dir <dir>
-  ```
+```sh
+herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo-dir> --label <label> --no-focus
+```
 
-  Confirm the exact model ID and `--effort` combination accepted by `agy models`.
-  `--add-dir <dir>` lets `agy` read pinned inputs and write its report file inside `<dir>`
-  without triggering non-workspace file-access prompts. The brief must forbid editing
-  repository files and running shell commands, and the main agent verifies afterward
-  (`git status`) that the worktree is unchanged.
-- **`pi` (`--kind pi`):** launch via Herdr with explicit working directory, model,
-  thinking level, and read-only tools:
+Then start the chosen reviewer in `<root-pane>`:
 
-  ```sh
-  herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo-dir> --label <label> --no-focus
-  herdr agent start <name> --kind pi --pane <root-pane> -- \
-    --model <provider>/<id> --thinking <level> --tools read,grep,find,ls --no-mcp
-  ```
+| Runner (`--kind`) | Arguments after `herdr agent start <name> --kind <kind> --pane <root-pane> --` |
+| --- | --- |
+| `claude` | `--model <model> --effort <level> --add-dir <dir> --permission-mode auto` |
+| `codex` | `-C <repo-dir> -m <model> -c model_reasoning_effort="<level>" -s workspace-write --add-dir <dir>` |
+| `agy` | `--model <model> --effort <level> --add-dir <dir> --dangerously-skip-permissions` |
+| `cursor` | `--workspace <repo-dir> --add-dir <dir> --model <model> --trust --force` |
+| `pi` | `--model <provider>/<id> --thinking <level> --no-mcp` |
 
-  This guarantees strict read-only execution (no shell, no file edits). Pass pinned diff
-  and commit-list file paths in the brief, and save the complete answer into
-  `<dir>/<report>.md` from the captured output (verify completeness before accepting).
+Confirm the exact model ID and effort syntax accepted by each installed CLI (`agy models`,
+`agent models`, `pi --list-models`).
 
 ### Context and result checks
 
 - Pass a self-contained prompt naming the task objective, exact files to read (relevant
-  plan/spec, code paths, pinned diff, or prior findings), read/write boundaries, and the
-  target output file path.
-- Match tool permissions to the task — read-only access for reviews and investigations,
-  and scoped write access for implementation slices.
-- After execution, verify the process exit status, check for model/API errors, confirm the
-  worktree is unchanged after read-only runs, and confirm the report is complete. Missing,
-  truncated, or errored runs do not count as completed tasks or passing reviews.
+  plan/spec, code paths, pinned diff, or prior findings), the repository non-modification
+  boundary, and the target report path `<dir>/<report>.md`.
+- After execution, verify the session completed without model/API errors, confirm
+  `git status --porcelain` is unchanged, and confirm `<dir>/<report>.md` is complete.
+  Missing, truncated, or errored runs do not count as completed tasks or passing reviews.

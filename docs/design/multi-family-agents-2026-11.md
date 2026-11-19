@@ -17,9 +17,10 @@ Runner availability is tracked separately from model family: when a primary fami
 ### D2. Model tiers and current versions (sanitized for public repository)
 
 - **XL tier** holds only Claude `Fable`; other families start at Large.
-- **Claude:** XL `Fable`, Large `Opus`, Medium `Sonnet`, Small `Haiku`.
+- **Claude:** XL `Fable`, Large `Opus`, Medium `Sonnet`, Small `Haiku` (native Claude Code; limited `Opus` / `Sonnet` also available in Cursor CLI; backup in `pi`).
 - **OpenAI:** Large `Astra` (`gpt-6.2-astra`), Medium `Sol` (`gpt-6.2-sol`), Small `Terra` (`gpt-6.1-terra`).
-- **Gemini:** Large and Medium both list `Carbon` (`gemini-4-carbon`) and `Neon` (`gemini-4-neon`) while their relative strength remains under evaluation; Small `Hydrogen` (`gemini-4-hydrogen`). `gemini-4-argon` and `gemini-3.8-flash` are retired.
+- **Gemini:** Large and Medium both list `Carbon` (`gemini-4-carbon`) and `Neon` (`gemini-4-neon`) while their relative strength remains under evaluation (`Carbon` / `Neon` also available in Cursor CLI); Small `Hydrogen` (`gemini-4-hydrogen`). `gemini-4-argon` and `gemini-3.8-flash` are retired.
+- **Grok (via Cursor CLI):** Small `Grok-4.7` (`grok-4.7`). Other Cursor CLI models are unused.
 - **Additional families via `pi`:** Medium `Kimi-K3.1-Pro`; Small `DeepSeek-V4.1-Flash`, `GLM-5.3`, and any project-configured supplementary models.
 
 Internal provider names and internal deployment suffixes are removed from `bstack` templates and replaced with `<provider>` placeholders (consistent with D6 of [`bstack-control.md`](./bstack-control.md)). Consumer repositories fill in their own provider identifiers.
@@ -60,7 +61,12 @@ When running inside Herdr (`HERDR_ENV=1`), every cross-family dispatch (for exam
 
 Every cross-family dispatch passes explicit model, reasoning effort or thinking level, and working directory (`--cwd`).
 
-For `agy` read-only reviews, pass `--add-dir <report-dir>` so `agy` can read pinned diff inputs and write its complete report file inside `<report-dir>` without non-workspace file-access prompts. The brief forbids editing repository files and running shell commands, and the main agent verifies afterward (`git status`) that the worktree is unchanged.
+All review stages (spec design, regular, and expert) share one simple permission model across all five Herdr runners (`claude`, `codex`, `agy`, `cursor`, and `pi`):
+
+- Reviewers may read repository files and run verification commands (such as read-only `git` queries or targeted builds/tests) when useful.
+- The brief forbids modifying tracked repository files or leaving non-ignored untracked files (temporary build outputs and gitignored files are acceptable), and requires writing the complete report to `<report-dir>/<report>.md`.
+- Herdr is used only to observe session state; the main agent always reads the full report from `<report-dir>/<report>.md` (never scraping Herdr scrollback) and verifies `git status --porcelain` is unchanged afterward.
+- `agy` launches through Herdr with `--dangerously-skip-permissions` and `--add-dir <report-dir>`; `claude` remains a full first-class runner (`--model <model> --effort <level> --add-dir <report-dir> --permission-mode auto`) while the config stays ready for periods when Claude Code is unavailable; `codex` uses `-s workspace-write --add-dir <report-dir>`; `cursor` uses `--workspace <repo-dir> --add-dir <report-dir> --model <model> --trust --force`; `pi` uses `--model <provider>/<id> --thinking <level> --no-mcp`.
 
 ### D6. `agy` promoted to a primary harness with hook wiring
 

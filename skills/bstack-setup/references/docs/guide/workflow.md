@@ -220,9 +220,10 @@ family other than the spec author's). If the owner skips it, record `Skipped by 
 briefing.
 
 When the owner approves it, the chosen reviewer model checks the design with fresh context
-and read-only access so design problems are found before code is written. The brief names
-the files to read (the spec, the source design and decisions it cites, the architecture,
-and the glossary) and the output file for the report.
+and without modifying tracked repository files, writing its report to an explicit file
+outside the repository so design problems are found before code is written. The brief
+names the files to read (the spec, the source design and decisions it cites, the
+architecture, and the glossary) and the output file for the report.
 
 The reviewer acts as an independent senior engineer. The following are prompts for
 judgment, not a complete list:
@@ -438,8 +439,12 @@ type, round, reviewed commit, evidence, disposition, and verification; preserve 
 findings and their reasons so they are not reopened without new evidence. Record each
 round's model and effort.
 
-Launch confirmed reviewers with fresh context and read-only access to repository files
-according to [agent-environment.md](../agents/agent-environment.md):
+Launch confirmed reviewers with fresh context according to
+[agent-environment.md](../agents/agent-environment.md). Reviewers may read files and run
+verification commands as needed, but must not modify tracked repository files or leave
+non-ignored untracked files; gitignored build outputs are fine. Every reviewer writes its
+complete report to `<dir>/<report>.md`, and the main agent verifies
+`git status --porcelain` is unchanged afterward:
 
 1. **Regular review (`code-review`, up to 3 rounds).** After implementation tickets and
    local checks pass, stop and ask the owner whether to run regular review and which
@@ -451,7 +456,7 @@ according to [agent-environment.md](../agents/agent-environment.md):
    design and goals as they are.
 2. **Expert review (up to 2 rounds).** After regular review converges (or is skipped),
    stop again and ask the owner whether to run expert review and which independent
-   read-only reviewer (runner, model, and effort) to use. Prefer a family other than the
+   reviewer (runner, model, and effort) to use. Prefer a family other than the
    implementer's; the implementer never acts as its own expert reviewer. Prompts for
    judgment, not a checklist: architecture, responsibilities, and simpler alternatives;
    concurrency and lifetime; resource and performance costs; error propagation and edge
