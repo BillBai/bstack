@@ -15,8 +15,8 @@ topology.
    required harness flags (for example `--add-dir <dir>` for `agy` when accessing files
    outside the working directory) — after `--`.
 3. **First prompt.** If `AGENTS.local.md` names a first prompt for new sessions (for
-   example a slash command such as `/i-have-adhd`), send it alone with `herdr agent prompt
-   <name> "<text>" --wait`.
+   example a slash command such as `/i-have-adhd`, or `/skill:i-have-adhd` in `pi`), send
+   it alone with `herdr agent prompt <name> "<text>" --wait`.
 4. **Brief prompt.** Send a short prompt that names the brief: "Read `<brief path>` and
    follow it."
 5. **Check it arrived.** Read the screen. The first prompt to a freshly started agent can
@@ -38,7 +38,9 @@ and the harness and model the owner chooses for the coordinator.
    have not stated a coordinator preference; `bstack-control` imposes no required model or
    tier.
 4. **Prompts.** Send the first prompt for new sessions, if `AGENTS.local.md` names one,
-   then `/bstack-control <role>`. Check each arrived, as in "Open a work session", step 5.
+   then invoke `bstack-control` (`/bstack-control <role>` in Claude Code and `agy`, or
+   `/skill:bstack-control <role>` in `pi`; check the harness's skill-invocation syntax for
+   others). Check each arrived, as in "Open a work session", step 5.
 5. **Hand over.** Tell the owner to switch to the Herdr workspace `<label>`. Your part ends
    there; this session keeps its own role.
 
