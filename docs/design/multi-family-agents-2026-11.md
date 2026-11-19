@@ -28,15 +28,31 @@ Internal provider names and internal deployment suffixes are removed from `bstac
 
 Only the **Large** and **XL** tiers of the primary families implement, merge `implement-spec` work, or run regular, design, or expert reviews. Medium and Small tiers serve only read-only lightweight lookups and summaries (and coordinators impose no tier rule, see D7).
 
-### D4. Cross-family review routing
+### D4. Owner-confirmed review gates and proportionality (revised 2026-11-19)
 
-All four operating cases (Claude main, Codex main, Gemini main, and single-family-disabled projects) reduce to two invariants and one optional switch:
+In practice, GPT-family models proved poor as automatic reviewers: they frequently raised
+extreme or contrived edge cases that drove over-complicated changes and damaged
+architectural clarity. Owner, 2026-11-19: "实际测试体验中，发现目前 gpt 系列的模型，作为
+review 角色不是特别好，经常会找一些特别极端的场景，导致代码修改的比较复杂，破坏了架构。
+因此，我想把 bstack 的工作流中的 review 模型，改为手动确认选择，是否 review，选哪个模型
+review，都停下来问我和我确认。"
 
-1. **Expert review (post-implementation):** Large or XL tier of another available primary family at its highest supported effort (`xhigh`, or `high` for models without `xhigh`). When Claude Code and Codex are both natively available, Claude and OpenAI review each other; when Claude is restricted, OpenAI and Gemini review each other.
-2. **Design review of a spec (pre-implementation):** prefer a third family that neither implements nor runs the expert review, at Large tier and its highest supported effort (Gemini when Claude is main; restricted Claude via `pi` when OpenAI or Gemini is main). When a project disables a family so only two primary families are allowed, the opposite primary family runs the design review in its own fresh-context session.
-3. **Optional extra post-implementation round:** when OpenAI or Gemini is the main session and the project permits a restricted third family (such as Claude `Opus` via `pi`), the owner may request one extra review round on that third family. It never runs automatically.
+This replaces the earlier automatic cross-family routing table with two simpler rules:
 
-Regular code review stays on the Large tier of the implementer's own family at its highest supported effort.
+1. **Stop before every review stage.** Before starting each of the three review stages —
+   spec design review (after writing `spec.md`, before briefing), regular code review
+   (after implementation tickets and local checks pass), and expert review (after regular
+   review converges or is skipped) — the agent stops and asks the owner whether to run
+   that review and which runner, model, and effort to use, presenting eligible Large/XL
+   candidates and a recommendation. Once the owner confirms a stage and its reviewer,
+   repairs and follow-up rounds within that stage proceed automatically up to its round
+   limit (design: 2, regular: 3, expert: 2). If the owner skips a review, record
+   `Skipped by owner` (and any stated reason) in `review.md`.
+2. **Proportionality over contrived edge cases.** Reviewers must not demand complex
+   defenses or workarounds for extreme, low-probability, or contrived scenarios that
+   degrade architectural simplicity. When repairing a finding would noticeably complicate
+   the architecture, the implementing agent must not apply it blindly; it either rejects
+   the finding with clear reasoning in `review.md` or escalates the tradeoff to the owner.
 
 ### D5. Cross-family dispatch through Herdr with explicit arguments
 

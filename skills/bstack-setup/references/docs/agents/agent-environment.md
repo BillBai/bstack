@@ -76,29 +76,25 @@ In `agy`, `gemini-4-neon` and `gemini-4-hydrogen` support `low`, `medium`, `high
 
 ### Roles
 
-- **Implementation and code review:** only the **Large** and **XL** tiers of the primary
-  families (Claude, OpenAI, Gemini) implement, merge `implement-spec` work, or run
-  regular, design, or expert reviews. A family on a restricted backup runner does not
-  implement or run regular reviews.
-- **Regular code review:** Large tier of the implementer's own family at its highest
-  supported effort (`xhigh`, or `high` for `gemini-4-carbon`).
-- **Expert review (post-implementation):** Large or XL tier of another available primary
-  family at its highest supported effort:
-  - When Claude Code and Codex are both natively available: Claude and OpenAI review each
-    other.
-  - When Claude Code is unavailable (OpenAI + Gemini primary mode): OpenAI (Codex) and
-    Gemini (`agy`) review each other.
-  - **Optional extra round:** when OpenAI or Gemini is the main session and the project
-    permits a restricted third family (such as Claude `Opus` via `pi`), the owner may
-    request one extra post-implementation review round on that third family. It never runs
-    automatically.
-- **Design review of a spec (pre-implementation):** prefer a third family that neither
-  implements nor runs the expert review, at Large tier and its highest supported effort:
-  - Claude main session: Gemini (`agy`).
-  - OpenAI or Gemini main session: restricted Claude (`Opus` via `pi`), unless project
-    policy disables Claude.
-  - Projects limited to two families (for example no-Claude projects): the opposite
-    primary family runs the design review in its own fresh-context session.
+- **Eligibility for implementation and code review:** only the **Large** and **XL** tiers
+  of the primary families (Claude, OpenAI, Gemini) implement, merge `implement-spec` work,
+  or run regular, design, or expert reviews. A family on a restricted backup runner (`pi`)
+  does not implement or run routine multi-round work; it is eligible only for low-frequency
+  read-only reviews when the owner chooses it.
+- **Review selection (always owner-confirmed):** never start a review stage or pick a
+  reviewer model automatically. Before each of the three review stages — **spec design
+  review**, **regular code review**, and **expert review** — stop and ask the owner
+  whether to run it and which eligible runner, model, and effort to use:
+  - Present the available Large/XL candidates permitted by project policy (respecting any
+    disabled family), with a recommendation and brief reason.
+  - For design review and expert review, prefer a family other than the implementer's when
+    making a recommendation; the implementer never acts as its own expert reviewer.
+  - Note practical reviewer tradeoffs when recommending (for example avoiding models that
+    tend to over-engineer extreme edge cases at the cost of architectural simplicity
+    unless the owner explicitly wants that check).
+  - Once the owner confirms a stage and its reviewer, follow-up rounds within that stage
+    use the confirmed model up to the workflow's round limit. If the owner skips a stage,
+    record `Skipped by owner` in `review.md`.
 - **Lightweight tasks:** the Medium or Small tier may locate code and documents, look up
   facts in reference checkouts or upstream documentation, read a long build log and point
   to the failing step, or summarize reference source with file and line citations. A
@@ -111,12 +107,12 @@ In `agy`, `gemini-4-neon` and `gemini-4-hydrogen` support `low`, `medium`, `high
 - **Main session choice:** the owner chooses which primary agent runs each work session at
   start; do not hardcode a single work-session agent in project documentation.
 - **Same-family subtasks** (codebase exploration, parallel implementation slices, and
-  same-family regular code reviews): use the active harness's built-in **subagent**
-  mechanism with a fresh context.
-- **Cross-family tasks** (design reviews, expert reviews, architecture second opinions,
-  and cross-checking hard bugs): invoke the target family's native agent (Codex for
-  OpenAI, `agy` for Gemini, Claude Code for Claude), or `pi` when that family is only
-  available through a restricted backup provider.
+  same-family regular code reviews when the owner picks the main family): use the active
+  harness's built-in **subagent** mechanism with a fresh context.
+- **Cross-family tasks** (reviews where the owner picks another family, architecture
+  second opinions, and cross-checking hard bugs): invoke the target family's native agent
+  (Codex for OpenAI, `agy` for Gemini, Claude Code for Claude), or `pi` when that family
+  is only available through a restricted backup provider.
 
 ### Thinking effort reference
 
@@ -132,9 +128,8 @@ Use these levels as defaults unless the task or owner specifies otherwise:
 
 ### Permission for `pi` runs
 
-When a workflow-authorized stage assigns a `pi` model in this document (such as a spec
-design review on a restricted backup channel), authorizing that stage authorizes the `pi`
-run.
+When the owner explicitly selects a `pi` model during review confirmation, that choice
+authorizes the `pi` run without a second permission prompt.
 
 For ad-hoc lightweight tasks or unexpected harness fallbacks from Codex, `agy`, or Claude
 Code, ask the owner before the first `pi` run; the permission covers the scope the owner
@@ -149,9 +144,9 @@ and effort that ran (for a review, in `review.md`).
 ### Unavailable models
 
 Before dispatch, confirm that the runner accepts the requested model and effort; after the
-run, confirm the model the run reports. When a required model is unavailable, report it
-and record any substitution. Do not substitute silently, and do not count the missing
-step as passed. For the design review, the owner decides the substitute.
+run, confirm the model the run reports. When a confirmed model is unavailable, report it
+and let the owner decide the substitute. Do not substitute silently, and do not count the
+missing step as passed.
 
 ## Dispatching tasks and collecting results
 

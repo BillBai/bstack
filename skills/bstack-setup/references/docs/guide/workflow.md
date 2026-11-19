@@ -161,10 +161,11 @@ stop; do not prepare the next stage's artifacts in advance.
    not exist yet, record resolved points, verbatim owner quotes, and open questions in
    `work-docs/<change>/grill.md`; consolidate them into `spec.md` once spec writing
    begins. **Stop after the grill and wait for the owner to invoke `to-spec`.**
-3. **Spec (`to-spec`).** Write `spec.md` as [The spec](#the-spec) describes, run the
-   [design review](#design-review-of-a-spec), then present the spec with a
-   [briefing](#briefing-on-a-spec-or-tickets). **Stop and wait for the owner to invoke
-   `to-tickets`.**
+3. **Spec (`to-spec`).** Write `spec.md` as [The spec](#the-spec) describes, stop to ask
+   the owner whether to run the [design review](#design-review-of-a-spec) and which model
+   to use (running it if confirmed, or recording `Skipped by owner` in `review.md`), then
+   present the spec with a [briefing](#briefing-on-a-spec-or-tickets). **Stop and wait
+   for the owner to invoke `to-tickets`.**
 4. **Tickets (`to-tickets`).** Write one independently verifiable task per file under
    `tickets/<NN>-<slug>.md`, numbered in dependency order with explicit blockers and
    acceptance criteria. Present them with a briefing. **Stop and wait for the owner to
@@ -211,14 +212,17 @@ Two plain-language parts follow, before the `to-spec` template sections:
 
 ### Design review of a spec
 
-After the spec is written and before its briefing, a reviewer model checks the design
-with fresh context and read-only access, so that a design problem is found before any code
-is written. Use the design reviewer named in
-[agent-environment.md](../agents/agent-environment.md): a family other than the
-implementer's, preferably a third family that neither implements nor runs the expert
-review (or the opposite primary family in a fresh-context session when the project uses
-only two families). The brief names the files to read (the spec, the source design and
-decisions it cites, the architecture, and the glossary) and the output file for the report.
+After the spec is written and before its briefing, **stop and ask the owner** whether to
+run a design review and which runner, model, and effort to use from the eligible Large/XL
+candidates in [agent-environment.md](../agents/agent-environment.md) (recommending a
+family other than the spec author's). If the owner skips it, record `Skipped by owner`
+(and any stated reason) in `work-docs/<change>/review.md` and proceed directly to the spec
+briefing.
+
+When the owner approves it, the chosen reviewer model checks the design with fresh context
+and read-only access so design problems are found before code is written. The brief names
+the files to read (the spec, the source design and decisions it cites, the architecture,
+and the glossary) and the output file for the report.
 
 The reviewer acts as an independent senior engineer. The following are prompts for
 judgment, not a complete list:
@@ -233,19 +237,22 @@ judgment, not a complete list:
    a decision, and an acceptance statement that disagree, in what they ask for or in how
    much, are a finding.
 
-The agent corrects the spec where a finding is plainly right. A finding that would change
-a decision is not applied; it goes to the owner in the briefing, written as
+Do not demand complex defenses for extreme, low-probability, or contrived scenarios that
+would make the design needlessly complicated. The agent corrects the spec where a finding
+is plainly right. A finding that would change a decision or noticeably complicate the
+architecture is not applied blindly; it is either rejected with concrete rationale in
+`review.md` or brought to the owner in the briefing, written as
 [Decisions made in implementation](#decisions-made-in-implementation) describes for a
 decision put to the owner. Record each round, its model and effort, and each finding's
 disposition in the change's `review.md`.
 
-Allow at most **two rounds**. The second runs when the first round's material findings
+Allow at most **two rounds** once approved. The second runs when the first round's material findings
 changed the spec, after every one of them is settled (the agent's corrections are made and
 the owner has decided the rest), and before the revision's briefing. It reads `review.md`,
 checks the dispositions, and reviews the changed text in the context of the whole spec.
-Material findings that remain after round two go to the owner. If the design reviewer's
-model is unavailable, report it and let the owner decide the substitute; do not
-substitute on your own or count the step as passed.
+Material findings that remain after round two go to the owner. If the chosen model is
+unavailable, report it and let the owner decide the substitute; do not substitute on your
+own or count the step as passed.
 
 ### Briefing on a spec or tickets
 
@@ -349,11 +356,11 @@ configuration, without unrelated product suites.
 Once remote CI exists, push the branch after each group of related tickets passes its
 local checks, and continue with the next unblocked ticket rather than waiting for the
 build. Handle the result when the build ends; diagnose a failure before fixing it. After
-the last group, regular review starts without waiting for the build; a failure found
-during review is repaired as a review finding is. Record each build, its tested commit,
-and its result in the Comments of the ticket whose commit it tested, and commit that
-record with the next commit rather than in a commit of its own. Such a push needs no
-approval and does not replace the [remote CI gate](#ci-gate).
+the last group, stop to ask the owner about regular review without waiting for the build;
+a failure found during review is repaired as a review finding is. Record each build, its
+tested commit, and its result in the Comments of the ticket whose commit it tested, and
+commit that record with the next commit rather than in a commit of its own. Such a push
+needs no approval and does not replace the [remote CI gate](#ci-gate).
 
 ### Execution notes and probes
 
@@ -396,12 +403,16 @@ difference found by the rebase check before implementation are written the same 
 
 ### Stopping points
 
-After the owner approves implementation, routine implementation, testing, in-scope review
-repairs, and commits continue without further approval. A test that fails at first calls
-for diagnosis, not escalation. Stop and consult the owner for:
+After the owner approves implementation, routine implementation, testing, in-scope
+repairs within an approved review stage, and commits continue without further approval. A
+test that fails at first calls for diagnosis, not escalation. Stop and consult the owner
+for:
 
+- before starting each review stage (spec design review, regular code review, and expert
+  review), to confirm whether to run it and which runner, model, and effort to use;
 - a finding that shakes the approved design or goals (the second kind above), an
-  architecture conflict, or scope expansion;
+  architecture conflict, a review fix that would noticeably complicate the architecture,
+  or scope expansion;
 - a spec whose texts disagree, or a ticket that contradicts it;
 - a weaker acceptance criterion, or required verification that cannot run;
 - a new user-facing name;
@@ -410,8 +421,16 @@ for diagnosis, not escalation. Stop and consult the owner for:
 
 ## 5. Change review, acceptance, and landing
 
-Review the complete change after its implementation tickets and local checks pass. Pin the
-comparison base commit and candidate commit, export the diff and commit list to a
+Review the complete change after its implementation tickets and local checks pass. **Do
+not start regular review or expert review automatically.** Before each review stage, stop
+and ask the owner whether to run it and which runner, model, and effort to use from the
+eligible candidates in [agent-environment.md](../agents/agent-environment.md). Once the
+owner approves a stage and its reviewer, repairs and follow-up rounds within that stage
+run automatically up to its round limit. If the owner skips a stage, record
+`Skipped by owner` (and any stated reason) in `work-docs/<change>/review.md` rather than
+leaving the step unrecorded or counting it as passed.
+
+Pin the comparison base commit and candidate commit, export the diff and commit list to a
 temporary directory outside the repository, and have each reviewer write its report to a
 file there, such as `<dir>/r2-spec.md`. Before repairs start, record the round's findings
 in `work-docs/<change>/review.md`. For each finding, record a stable ID, reviewer and review
@@ -419,27 +438,31 @@ type, round, reviewed commit, evidence, disposition, and verification; preserve 
 findings and their reasons so they are not reopened without new evidence. Record each
 round's model and effort.
 
-Select runners, models, thinking levels, and Herdr tabs according to
-[agent-environment.md](../agents/agent-environment.md). Reviewers run with fresh context
-and read-only access to repository files:
+Launch confirmed reviewers with fresh context and read-only access to repository files
+according to [agent-environment.md](../agents/agent-environment.md):
 
-1. **Regular review (`code-review`, up to 3 rounds).** Dispatch separate Standards and
-   Spec subagents using the Large tier of the main agent's family at its highest supported
-   effort (`xhigh`, or the model's highest effort). The
-   brief includes the architecture invariants. The Spec reviewer also checks that formal
-   decisions and code match recorded owner quotes without narrowing or widening them, and
-   that each implementation detail recorded in the spec leaves the design and goals as
-   they are.
-2. **Expert review (up to 2 rounds).** After regular review converges, dispatch an
-   independent read-only reviewer from another available primary model family (per
-   [agent-environment.md](../agents/agent-environment.md), or an owner-specified family).
-   The implementer never acts as its own expert reviewer. When a restricted third family
-   is permitted by the project, the owner may request one optional extra review round on
-   that family after expert review. Prompts for judgment, not a checklist: architecture,
-   responsibilities, and simpler alternatives; concurrency and lifetime; resource and
-   performance costs; error propagation and edge cases; realistic test gaps. Findings
-   state concrete triggers, consequences, and evidence, and distinguish reproduced
-   behavior from static evidence and unverified concerns.
+1. **Regular review (`code-review`, up to 3 rounds).** After implementation tickets and
+   local checks pass, stop and ask the owner whether to run regular review and which
+   runner, model, and effort to use. When approved, dispatch separate Standards and Spec
+   subagents (or external reviewers when the owner picks another family) on the confirmed
+   model. The brief includes the architecture invariants. The Spec reviewer also checks
+   that formal decisions and code match recorded owner quotes without narrowing or
+   widening them, and that each implementation detail recorded in the spec leaves the
+   design and goals as they are.
+2. **Expert review (up to 2 rounds).** After regular review converges (or is skipped),
+   stop again and ask the owner whether to run expert review and which independent
+   read-only reviewer (runner, model, and effort) to use. Prefer a family other than the
+   implementer's; the implementer never acts as its own expert reviewer. Prompts for
+   judgment, not a checklist: architecture, responsibilities, and simpler alternatives;
+   concurrency and lifetime; resource and performance costs; error propagation and edge
+   cases; realistic test gaps. Findings state concrete triggers, consequences, and
+   evidence, and distinguish reproduced behavior from static evidence and unverified
+   concerns. Any additional review round afterward runs only on explicit owner request.
+
+**Proportionality:** reviewers must not demand complex defenses or workarounds for
+extreme, low-probability, or contrived scenarios that harm architectural simplicity. When
+fixing a finding would noticeably complicate the architecture, do not apply it blindly:
+either reject it with clear rationale in `review.md` or bring the tradeoff to the owner.
 
 Convergence means no unresolved material defect, verification gap, or design dispute;
 naming preferences and other nitpicks do not require extra rounds. Later rounds read

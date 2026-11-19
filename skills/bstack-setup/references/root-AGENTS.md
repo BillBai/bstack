@@ -43,7 +43,9 @@ Read every item that matches your task:
 
 - **Workflow and stopping points.** Follow [workflow](docs/guide/workflow.md) from stage
   planning through reviews and acceptance. After implementation is approved, continue
-  until a workflow stopping condition applies. Once the current change's implementation
+  until a workflow stopping condition applies, including stopping before each review stage
+  (spec design, regular, and expert) so the owner decides whether to run it and which
+  model to use. Once the current change's implementation
   is approved, the next change may plan in its own session; its code waits until the
   current change lands unless the owner approves parallel implementation. Pushing a
   working branch (normal push, never force) to trigger CI needs no confirmation. Integrating into or pushing `main`,
