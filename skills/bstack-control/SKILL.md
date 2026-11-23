@@ -1,6 +1,6 @@
 ---
 name: bstack-control
-description: "Run a project's control session or the cross-project chief-of-staff in Herdr: recap, dispatch work sessions, track them, and keep a status file."
+description: "Run a project's control session or the cross-project chief-of-staff in T3 Code or Herdr: recap, dispatch work sessions, track them, and keep a status file."
 disable-model-invocation: true
 ---
 
@@ -9,29 +9,38 @@ disable-model-invocation: true
 You are a **coordinator**: you sit above the work and spend the owner's attention only on
 decisions. You dispatch **work sessions**, track them, gather information, and give
 **recaps**. The real work (a change, a plan discussion, a retro, a small task) happens in
-the work sessions, each in its own Herdr tab, where the owner talks to it directly.
+the work sessions, each in its own T3 Code thread or Herdr tab, where the owner talks to
+it directly.
 
 There are two coordinator roles:
 
-- **Control session**: one per project. It runs in the first tab of the project's Herdr
-  workspace, with its cwd in the project's main checkout.
-- **Chief-of-staff**: one across all projects. It runs in its own Herdr workspace, with its
-  cwd in the chief workspace, and handles work that belongs to no project.
+- **Control session**: one per project. It runs in the project's T3 Code project or in the
+  first tab of the project's Herdr workspace, with its cwd in the project's main checkout.
+- **Chief-of-staff**: one across all projects. It runs in its own T3 Code project or Herdr
+  workspace, with its cwd in the chief workspace, and handles work that belongs to no
+  project.
 
 Coordinators impose no required harness, model, or tier; the owner chooses them when
 starting the session. Work sessions do not inherit the coordinator's agent kind or model
 (see [references/sessions.md](references/sessions.md)).
 
-## 1. Check Herdr
+## 1. Detect host
 
-Run `test "${HERDR_ENV:-}" = 1`. If it fails, tell the owner you are not inside Herdr and
-stop. Otherwise load the `herdr` skill, then read
-[references/herdr.md](references/herdr.md).
+Determine which supported host is active before reading a role file:
+
+1. **T3 Code:** check whether T3 Code orchestration and thread tools (such as
+   `t3_thread_list` and `orchestrator_capabilities`) are present — try calling one once if
+   tools load late — or whether `T3_ACP_MCP_NODE` is set in the environment. If so, T3 Code
+   is the active host; read [references/t3.md](references/t3.md).
+2. **Herdr:** otherwise run `test "${HERDR_ENV:-}" = 1`. If it succeeds, Herdr is the active
+   host; load the `herdr` skill, then read [references/herdr.md](references/herdr.md).
+3. **Neither:** tell the owner you are inside neither T3 Code nor Herdr and stop.
 
 ## 2. Pick the role
 
 An argument picks the role: `control`, `control <path to a main checkout>` (opens that
-project's control session in its own Herdr workspace), or `chief`. Without one:
+project's control session in its own T3 Code project or Herdr workspace), or `chief`.
+Without one:
 
 - The cwd holds `projects.md`: you are the chief-of-staff.
 - The cwd is the top of a repository's main checkout (`git rev-parse --show-toplevel`
@@ -57,7 +66,7 @@ chief-workspace/                  the chief-of-staff's cwd
 ├── sources.md                    outside sources and how to read each one
 ├── status.md
 ├── briefs/<name>.md
-├── work/<name>/                  cwd of each outside work session
+├── work/<name>/                  working directory of each outside work session
 └── reports/                      drafts of documents such as monthly reports
 ```
 
@@ -69,21 +78,23 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 
 - **The owner decides.** Answering a work session's question, approving a stage,
   accepting a result, landing, and pushing the main branch are the owner's acts, done by
-  the owner in the work session's tab. You pass a message into a work session only when
-  the owner asks, and you pass it unchanged.
+  the owner in the work session's thread or tab. You pass a message into a work session
+  only when the owner asks, and you pass it unchanged.
 - **Stages advance on the owner's word.** The project's workflow sets the stage order and
   the stopping points; read them from the target repository at run time. Agreement with an
   answer or an artifact is not an instruction to start the next stage.
 - **The main checkout stays clean.** Project work happens in worktrees. The control
   session's only change to the main checkout is fast-forwarding its main branch after the
   owner lands a change.
-- **Close only what you created.** Remove a tab, session, or worktree you created only
-  with the owner's permission, and keep branches. Tabs, review sessions, and worktrees that
-  a work session opens itself (the workflow's review tabs, `implement-spec` worktrees)
-  belong to that work session.
-- **Screens for state, files for conclusions.** Read a session's screen to learn its state
-  and the kind of question it waits on; report that as a pointer, not a copy. Take results and progress from files: the work's records,
-  its branch's commits, or a report file it writes.
+- **Close only what you created.** Archive or close a thread, tab, session, or worktree
+  you created only with the owner's permission, and keep branches. Child threads, review
+  tabs, and worktrees that a work session opens itself (the workflow's review sessions,
+  `implement-spec` worktrees) belong to that work session.
+- **Live state for status, files for conclusions.** Inspect a session's live state (T3 Code
+  thread status, pending requests, and recent messages, or the Herdr screen) to learn its
+  state and the kind of question it waits on; report that as a pointer, not a copy. Take
+  results and progress from files: the work's records, its branch's commits, or a report
+  file it writes.
 - **Keep `status.md` current.** Rewrite it whenever a session's state changes, so a
   restart, a new day, or the chief-of-staff can rebuild the picture from it. Its format and
   the recap layout are in [references/status.md](references/status.md).
@@ -96,10 +107,18 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 
 ## Operating modes: active and pull
 
-A coordinator runs in one of two modes based on its harness:
+A coordinator's refresh mode depends on the active host and harness:
 
-- **Active mode** (harnesses with a built-in recurring scheduler and background completion
-  notifications, such as Claude Code or `agy`):
+- **In T3 Code (pull mode by default across all runners):**
+  - Do not start per-thread wait loops (`t3_thread_wait` blocks a single turn and is not a
+    multi-thread watcher).
+  - Refresh on every owner message before answering, and whenever the owner enters the
+    project or asks for a recap.
+  - Because T3 Code `schedule_task` jobs persist across restarts, create a recurring
+    refresh task only when the owner explicitly asks for background periodic polling
+    ([references/t3.md](references/t3.md), "Periodic refresh (opt-in)").
+- **In Herdr — active mode** (harnesses with a built-in recurring scheduler and background
+  completion notifications, such as Claude Code or `agy`):
   - Run the Herdr wait loop for tracked work sessions
     ([references/herdr.md](references/herdr.md), "Wait loop").
   - Schedule a recurring refresh every 30 minutes, or at the interval the owner sets,
@@ -107,8 +126,8 @@ A coordinator runs in one of two modes based on its harness:
     `7,37 * * * *`; `agy`: `schedule` with a cron expression and the prompt "Refresh the
     bstack-control status"). Scheduled jobs end with the session, so schedule again at
     each start.
-- **Pull mode** (harnesses without a recurring scheduler or background completion
-  notifications, such as `pi` or Codex):
+- **In Herdr — pull mode** (harnesses without a recurring scheduler or background
+  completion notifications, such as `pi` or Codex):
   - Do not start wait loops or fake a recurring schedule.
   - Refresh on every owner message before answering, and whenever the owner enters the
     project or asks for a recap.

@@ -11,10 +11,11 @@ project's control session there instead of running it here:
 
 1. **Check the path.** It is the top of a repository's main checkout (as in `SKILL.md`,
    "Pick the role"). Otherwise tell the owner what you found and stop.
-2. **Open it**: [../references/herdr.md](../references/herdr.md), "Open a coordinator",
-   with that path as the directory, the label `<project>` (the checkout's directory name),
-   the agent name `<project>-control` (lowercase, at most 32 characters), and the role
-   `control`.
+2. **Open it**: use "Open a coordinator" in the active host reference
+   ([../references/t3.md](../references/t3.md) or
+   [../references/herdr.md](../references/herdr.md)), with that path as the directory, the
+   project label `<project>` (the checkout's directory name), the session name
+   `<project>-control` (lowercase, at most 32 characters), and the role `control`.
 
 The new control session checks the project's layout itself (Start, step 2).
 
@@ -40,10 +41,11 @@ The new control session checks the project's layout itself (Start, step 2).
    stated a default work-session agent kind for this session yet, ask which agent kind
    (and model, if any) to use by default for dispatched sessions; the owner can change it
    at any time in conversation.
-5. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in
-   active mode, schedule the recurring refresh (telling the owner only when a refresh
-   finds something new under Needs you or Overlaps, otherwise updating `status.md`
-   silently); in pull mode, refresh on each owner message.
+5. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in Herdr
+   active mode, schedule the recurring refresh (telling the owner only when a refresh finds
+   something new under Needs you or Overlaps, otherwise updating `status.md` silently); in
+   T3 Code (unless the owner asks for a recurring `schedule_task`) or Herdr pull mode,
+   refresh on each owner message.
 
 ## Refresh
 
@@ -63,8 +65,8 @@ checked in both directions and every section of the file holds the current state
 Two pieces of work **overlap** when they change the same area. For each active branch, list
 its changes: `git diff --name-only <main>...<branch>`, plus `git -C <worktree> status
 --porcelain` for uncommitted files. Judge by area, not only by path: a module's code and
-its design document are one area. A work session and its own review tabs or
-`implement-spec` worktrees do not overlap with each other.
+its design document are one area. A work session and its own review sessions (child threads
+or review tabs) or `implement-spec` worktrees do not overlap with each other.
 
 For each overlap, find the order in the project's plan (the change plan, the iteration
 plan, or the planned order in `status.md`):
@@ -88,10 +90,11 @@ The owner lands a change in its work session. On the owner's word afterwards:
    --ff-only <ref>`, where `<ref>` is the landed change branch or, after `git fetch`,
    `origin/<main>`. Stop and ask the owner if it cannot fast-forward. If the harness's
    permission check blocks the command, give the owner the command to run with `!`.
-2. **Propose cleanup**: the tab, the session, and the worktree you created for it. Keep the
-   branch. Before removing a worktree, check that it and any initialized submodule are
-   clean and that the submodule's commit is on its remote; a worktree with an initialized
-   submodule needs `git worktree remove --force`.
+2. **Propose cleanup**: the work session (archive the T3 Code thread, or close the Herdr
+   tab and agent) and the worktree you created for it. Keep the branch. Before removing a
+   worktree, check that it and any initialized submodule are clean and that the submodule's
+   commit is on its remote; a worktree with an initialized submodule needs
+   `git worktree remove --force`.
 3. **Remind about a change planned beside it.** When a work session planned the next change
    while this one was implemented, tell the owner that its session rebases onto the new
    main branch and checks its spec and tickets against the landed code before it

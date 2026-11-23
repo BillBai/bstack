@@ -8,8 +8,9 @@ Daily model tiers, provider IDs, and task-routing rules are maintained in
 
 Set up the primary interactive agents you use — **Claude Code**, **Codex**, and **`agy`
 (Antigravity)** — along with **Cursor CLI (`agent` / `cursor-agent`)** and **`pi`** for
-supplementary and backup model providers, and **`herdr`** (recommended) for launching and
-observing delegated cross-family sessions in separate tabs.
+supplementary and backup model providers, and a multi-agent host such as **T3 Code** or
+**`herdr`** (either is recommended) for launching and observing delegated cross-family
+sessions.
 
 Keep API credentials and authentication tokens in user-global configuration rather than
 committing them to this repository. Put personal agent preferences for this repository,
@@ -22,12 +23,14 @@ start from the team's suggested defaults if the owner shares them.
   `domain-modeling`, `to-spec`, `to-tickets`, `implement`, `implement-spec`,
   `code-review`, and `tdd`), made available to every active agent harness (`codex`, `agy`,
   `claude`, and `pi`).
-- **Optional helpers (not required):** `herdr` (terminal multiplexer for watching
-  delegated agent sessions in separate tabs), `bstack`, `pstack`, and `i-have-adhd`. Keep
-  shared user-level skills aligned across harnesses; note that `agy` scans
-  `~/.gemini/config/skills/` globally rather than `~/.agents/skills/`, so symlink shared
-  skills such as `herdr` into `~/.gemini/config/skills/` (or register `~/.agents/skills`
-  in `~/.gemini/config/skills.json`).
+- **Optional hosts and helpers (not required):** **T3 Code** (desktop/web multi-agent host
+  with built-in orchestration across all five runners; enable providers in T3 Code
+  settings without needing the `herdr` skill), **`herdr`** (terminal multiplexer for
+  watching delegated agent sessions in separate tabs), `bstack`, `pstack`, and
+  `i-have-adhd`. Keep shared user-level skills aligned across harnesses; note that `agy`
+  scans `~/.gemini/config/skills/` globally rather than `~/.agents/skills/`, so symlink
+  shared skills (such as `herdr` when using Herdr) into `~/.gemini/config/skills/` (or
+  register `~/.agents/skills` in `~/.gemini/config/skills.json`).
 
 Project-specific skill settings live in [domain.md](domain.md),
 [issue-tracker.md](issue-tracker.md), and [triage-labels.md](triage-labels.md).

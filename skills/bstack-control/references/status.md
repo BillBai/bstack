@@ -12,7 +12,7 @@ content shown to the owner. Both keep one order, so the owner can read either in
 Updated: <YYYY-MM-DD HH:MM>
 
 ## Needs you
-1. `<session>` (tab `<label>`): <pointer, see "Pointers">.
+1. `<session>` (`<thread link>` or tab `<label>`): <pointer, see "Pointers">.
 
 ## Overlaps
 - `<a>` and `<b>` both change <area>. Plan order: `<a>` lands first; `<b>` rebases after.
@@ -20,7 +20,7 @@ Updated: <YYYY-MM-DD HH:MM>
 ## Work
 | Work | Branch | Session | Stage | State | Waiting on | Progress |
 | --- | --- | --- | --- | --- | --- | --- |
-| <name> | <branch> | <agent name> | <stage> | working / waiting / idle / closed | owner / CI / nobody | <one line> |
+| <name> | <branch> | <thread link or agent name> | <stage> | working / waiting / idle / closed | owner / CI / nobody | <one line> |
 
 ## Host
 <machine slept, low disk, a service down; "OK" otherwise>
@@ -39,7 +39,8 @@ refers to when you mention it.
 
 A session needs the owner when:
 
-- it is blocked on an approval or a question dialog;
+- it has a pending user question (`t3_pending_request` in T3 Code) or is blocked on an
+  approval or question dialog;
 - its last reply asks the owner for a decision or an action not yet given, including an
   action a permission check refused;
 - it reports a failure it cannot fix;
@@ -48,26 +49,35 @@ A session needs the owner when:
 A session does not need the owner when:
 
 - it waits on CI or on another person's approval;
-- its input box holds text: that is usually the agent's own suggested reply
+- its input box holds text in Herdr: that is usually the agent's own suggested reply
   (Claude Code), not the owner's unsent typing;
 - its question was already answered.
 
 A definition too wide fills the recap with noise; one too narrow misses a session that is
-blocked. When unsure, read the screen again rather than guess.
+blocked. When unsure, re-check the thread's latest messages or re-read the screen rather
+than guess.
 
 ## Pointers
 
-When a session waits on the owner, the owner reads and answers it in that session's tab.
-Report a **pointer** to it: the session, the tab, and the kind of wait, in one line, such
-as "fix-login (tab fix-login): grill question 4 of about 7" or "add-cache: approve
-`to-tickets`". The question's text, background, options, and recommendation stay in the
-work session's tab; a coordinator that copies them makes the owner read everything twice.
+When a session waits on the owner, the owner reads and answers it in that session's thread
+or tab. Report a **pointer** to it in one line:
+
+- In T3 Code: cite the thread by its verbatim `link` and name the kind of wait (such as
+  "`<thread link>`: grill question 4 of about 7" or "`<thread link>`: approve
+  `to-tickets`").
+- In Herdr: name the session, its tab, and the kind of wait (such as
+  "fix-login (tab fix-login): grill question 4 of about 7" or "add-cache: approve
+  `to-tickets`").
+
+The question's text, background, options, and recommendation stay in the work session; a
+coordinator that copies them makes the owner read everything twice.
 
 ## Recap
 
 Lead with the first item under Needs you as the owner's next action. Then the sections in
 order, each as short as its content allows; leave out an empty section except Host. End
-with Next.
+with Next. (In T3 Code, replace `fix-login (tab fix-login)` with the thread's verbatim
+`link`.)
 
 ```text
 Needs you

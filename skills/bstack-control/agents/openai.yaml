@@ -1,6 +1,6 @@
 interface:
   display_name: "bstack Control"
-  short_description: "Run a project's control session or the cross-project chief-of-staff in Herdr"
+  short_description: "Run a project's control session or the cross-project chief-of-staff in T3 Code or Herdr"
   default_prompt: "Run bstack-control: pick the role from the current directory, refresh the status file, and give me the recap."
 policy:
   allow_implicit_invocation: false

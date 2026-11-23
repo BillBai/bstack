@@ -16,8 +16,12 @@ this document maps them to a family, runner, model ID, and reasoning effort.
   plus `grok-4.7`.
 - **`pi`:** interactive agent and CLI runner for additional model families and for
   restricted backup endpoints (such as Claude when Claude Code is unavailable).
-- **Herdr:** terminal multiplexer. When `HERDR_ENV=1`, cross-family agents run in their
-  own Herdr tab so the owner can inspect their sessions directly.
+- **T3 Code:** desktop/web multi-agent host providing built-in cross-provider orchestration
+  (`orchestrator_capabilities`, `delegate_task`) across all five runners (`claudeAgent`,
+  `codex`, `antigravity`, `cursor`, and `pi`) so delegated sessions run as observable child
+  threads inside the T3 Code UI.
+- **Herdr:** terminal multiplexer. When `HERDR_ENV=1` (outside T3 Code), cross-family
+  agents run in their own Herdr tab so the owner can inspect their sessions directly.
 
 A change's **model family** is the family of the model it runs on (Claude, OpenAI, or
 Gemini), not the harness. In `pi` and Cursor CLI, the selected model determines the
@@ -158,29 +162,49 @@ missing step as passed.
 
 ## Dispatching tasks and collecting results
 
-### Execution and Herdr integration
+### Execution and host integration
 
-- **Inside Herdr (`HERDR_ENV=1`):** for every cross-family dispatch (for example Codex
-  dispatching `agy`, `agy` dispatching Codex, or any harness dispatching `claude`,
-  `cursor`, or `pi`), open a new **Herdr tab** (`--no-focus`, not a split pane) so the
-  owner can inspect the external agent's session directly. Do not fall back to print mode
-  (such as `agy -p`) when Herdr is available.
-- **Explicit launch arguments:** always specify the working directory (`--cwd`), model,
-  and reasoning effort or thinking level explicitly rather than relying on user defaults.
-- **Outside Herdr (or in a desktop app):** invoke the external agent CLI non-interactively
-  with the same explicit model, effort, and directory arguments.
+Choose the dispatch path based on the active host:
+
+1. **Inside T3 Code** (T3 Code MCP tools such as `orchestrator_capabilities` and
+   `delegate_task` are available, or `T3_ACP_MCP_NODE` is set for ACP CLI fallback):
+   - Call `orchestrator_capabilities` once per thread before the first `delegate_task`
+     (and again only after an error or a user-named provider change) to confirm live
+     `providerInstanceId`, model IDs, and option keys.
+   - Dispatch cross-family subtasks and reviews with `delegate_task`, passing explicit
+     `target: { providerInstanceId, model, options }`, `role` (for example `"review"`),
+     and `mode: "async"` unless the current turn must block for the result.
+   - **No CLI fallback inside T3 Code:** never fall back to raw non-interactive CLIs,
+     Herdr, or native same-provider subagent tools when dispatching another provider or
+     model. If the requested provider or model is unavailable in
+     `orchestrator_capabilities`, report it and stop for the owner.
+   - **Follow-up rounds and lifecycle:** start every new review round or re-check as a
+     fresh `delegate_task` with a self-contained brief (never `t3_thread_send` into a
+     finished child thread). Follow the returned `next` instruction instead of polling
+     `task_status` or running `sleep`. Cancel unneeded delegates with `task_cancel` (never
+     `t3_thread_interrupt`).
+   - Same-family subtasks with no custom model, provider, options, or separate worktree
+     still use the active harness's built-in subagent mechanism.
+2. **Inside Herdr (`HERDR_ENV=1`, outside T3 Code):** for every cross-family dispatch
+   (for example Codex dispatching `agy`, `agy` dispatching Codex, or any harness
+   dispatching `claude`, `cursor`, or `pi`), open a new **Herdr tab** (`--no-focus`, not a
+   split pane) so the owner can inspect the external agent's session directly. Do not fall
+   back to print mode (such as `agy -p`) when Herdr is available. Always specify the
+   working directory (`--cwd`), model, and reasoning effort or thinking level explicitly.
+3. **Outside both hosts:** invoke the external agent CLI non-interactively with explicit
+   model, effort, and working directory arguments.
+
+### Unified reviewer permissions and handoff
+
+All three host paths and all review stages (spec design, regular, and expert) share one
+permission model and handoff format:
+
 - **File-based result handoff (always, never screen-scraping):** export pinned inputs
   (diff, commit list) to a temporary directory outside the repository (`<dir>`, such as
-  from `mktemp -d`), and instruct **every** Herdr-launched reviewer to write its complete
-  report to `<dir>/<report>.md`. Use Herdr (`herdr agent wait` / `read`) only to monitor
-  session state (`working`, `idle`, `blocked`, `done`), and always read the complete
-  review report from `<dir>/<report>.md` rather than scraping Herdr terminal scrollback.
-
-### Unified reviewer permissions and Herdr launch table
-
-All review stages (spec design, regular, and expert) share one simple permission model
-across every harness:
-
+  from `mktemp -d`), and instruct **every** reviewer to write its complete report to
+  `<dir>/<report>.md`. Use T3 Code delegate status or Herdr (`herdr agent wait` / `read`)
+  only to monitor completion; always read the complete review report from
+  `<dir>/<report>.md`.
 - Reviewers may read repository files and run shell commands (such as read-only `git`
   queries, binary inspection, or targeted builds and tests) when useful to verify a
   concern.
@@ -191,7 +215,25 @@ across every harness:
   after the review finishes, the main agent verifies `git status --porcelain` is unchanged
   (which automatically ignores gitignored build artifacts) and reads `<dir>/<report>.md`.
 
-Open the tab first:
+### T3 Code provider reference
+
+Use `orchestrator_capabilities` as the live authority for exact model IDs and option names;
+this table maps the five runners to their T3 Code `target` fields:
+
+| Runner | `providerInstanceId` | Effort option in `target.options` | Notes |
+| --- | --- | --- | --- |
+| Claude Code | `claudeAgent` | `effort` (e.g. `high`, `xhigh`, `max`) | Native Claude models |
+| Codex | `codex` | `reasoningEffort` (e.g. `high`, `xhigh`) | Native OpenAI models |
+| `agy` | `antigravity` | `thought_level` (e.g. `high`, `xhigh`) | Native Gemini models |
+| Cursor CLI | `cursor` | `effort` or `reasoning_effort` (per model) | Check exact model ID and option key in `orchestrator_capabilities` |
+| `pi` | `pi` | `thinking` (e.g. `high`, `max`) | Model ID `<provider>/<id>` |
+
+If T3 Code MCP tools are absent while `T3_ACP_MCP_NODE` is set in the environment, invoke
+them via the ACP CLI fallback (`ELECTRON_RUN_AS_NODE=1 "$T3_ACP_MCP_NODE" ${T3_ACP_MCP_ENTRYPOINT:+"$T3_ACP_MCP_ENTRYPOINT"} acp-mcp-call <tool> '<json>'`).
+
+### Herdr launch table
+
+When running inside Herdr (`HERDR_ENV=1`), open the tab first:
 
 ```sh
 herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <repo-dir> --label <label> --no-focus

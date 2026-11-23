@@ -15,8 +15,10 @@ When the cwd holds no `projects.md`, set the chief workspace up first:
 2. **The cwd is that directory** (empty or new): continue with Start below, which creates
    the files.
 3. **The cwd is elsewhere**, for example a project's main checkout: create the directory,
-   then open the chief there ([../references/herdr.md](../references/herdr.md), "Open a
-   coordinator": label `chief`, agent name `chief`, role `chief`).
+   then open the chief there using "Open a coordinator" in the active host reference
+   ([../references/t3.md](../references/t3.md) or
+   [../references/herdr.md](../references/herdr.md)): label `chief`, session name `chief`,
+   role `chief`.
 
 ## Start
 
@@ -31,9 +33,9 @@ When the cwd holds no `projects.md`, set the chief workspace up first:
    not stated a default work-session agent kind for this session yet, ask which agent
    kind (and model, if any) to use by default for dispatched sessions; the owner can
    change it at any time in conversation.
-4. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in
-   active mode, schedule the recurring refresh; in pull mode, refresh on each owner
-   message.
+4. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in Herdr
+   active mode, schedule the recurring refresh; in T3 Code (unless the owner asks for a
+   recurring `schedule_task`) or Herdr pull mode, refresh on each owner message.
 
 ## Refresh
 
@@ -41,11 +43,15 @@ A refresh is done when every project in `projects.md`, every source in `sources.
 your own work sessions have been read, and `status.md` holds the result.
 
 1. **Projects.** Read each project's `control/status.md`. Note its update time; if it is
-   older than the refresh interval, look for that project's control session in
-   `herdr agent list` and say whether it is running. You read control sessions' files and
-   their sessions' state; you send them no messages.
-2. **Project sessions.** Check the live state of the sessions named in those files with
-   `herdr agent list`, and read a screen when a file and the live state disagree.
+   stale, check whether that project's control session is live using the active host
+   reference (`t3_thread_list` with `allProjects: true` in T3 Code, or `herdr agent list`
+   in Herdr) and say whether it is running. You read control sessions' files and their
+   sessions' state; you send them no messages.
+2. **Project sessions.** Check the live state of the sessions named in those files via the
+   active host reference ([../references/t3.md](../references/t3.md), "Inspect live state",
+   or [../references/herdr.md](../references/herdr.md), `herdr agent list` / "Read a
+   screen"), and inspect recent messages or the screen when a file and the live state
+   disagree.
 3. **Sources.** Read each source in `sources.md` the way its entry says, and note new
    items that need the owner. An empty `sources.md` means the summary covers the projects
    alone.
@@ -60,16 +66,19 @@ project or source.
 ## Outside work
 
 Customer questions, consultations, ad-hoc ideas, file organization, agent configuration,
-and other work that belongs to no project come to you. Dispatch it in your own Herdr
-workspace, in `work/<name>/`. When a piece of work needs a project's repository changed,
-recommend that the owner hand it to that project's control session.
+and other work that belongs to no project come to you. Dispatch it in your own T3 Code
+project or Herdr workspace, using `work/<name>/` for the work's notes and outputs. When a
+piece of work needs a project's repository changed, recommend that the owner hand it to
+that project's control session.
 
 ## Open a project's control session
 
 When the owner asks, or a refresh finds a project in `projects.md` whose control session
-is not running, offer to open it: [../references/herdr.md](../references/herdr.md), "Open
-a coordinator", with the project's main checkout as the directory, the label `<project>`,
-the agent name `<project>-control`, and the role `control`.
+is not running, offer to open it using "Open a coordinator" in the active host reference
+([../references/t3.md](../references/t3.md) or
+[../references/herdr.md](../references/herdr.md)), with the project's main checkout as the
+directory, the label `<project>`, the session name `<project>-control`, and the role
+`control`.
 
 ## Documents
 
