@@ -245,10 +245,13 @@ Then start the chosen reviewer in `<root-pane>`:
 | --- | --- |
 | `claude` | `--model <model> --effort <level> --add-dir <dir> --permission-mode auto` |
 | `codex` | `-C <repo-dir> -m <model> -c model_reasoning_effort="<level>" -s workspace-write --add-dir <dir>` |
-| `agy` | `--model <model> --effort <level> --add-dir <dir> --dangerously-skip-permissions` |
+| `agy` | `--dangerously-skip-permissions --model <model> --effort <level> --add-dir <dir>` |
 | `cursor` | `--workspace <repo-dir> --add-dir <dir> --model <model> --trust --force` |
 | `pi` | `--model <provider>/<id> --thinking <level> --no-mcp` |
 
+Always keep `--dangerously-skip-permissions` when launching `agy` in Herdr — **including for
+read-only reviews** — so the session does not stall on interactive tool or permission prompts;
+enforce the read-only boundary through the review prompt and post-run `git status --porcelain`.
 Confirm the exact model ID and effort syntax accepted by each installed CLI (`agy models`,
 `agent models`, `pi --list-models`).
 
