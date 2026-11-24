@@ -29,20 +29,19 @@ Workspace-level `AGENTS.md` is still read for mission and workspace policies, bu
 
 The owner, 2026-11-24: "管控仓库，直接在 README.md 里面记录就行".
 
-### D3. Worktree layout convention
+### D3. Unified worktree layout convention
 
-- Single managed repository (default): `worktrees/<name>/`.
-- Two or more managed repositories (default), or when explicitly specified in `control/README.md`: `worktrees/<repo>/<name>/`.
+- All repository worktrees (single-repository and multi-repository workspaces alike): `worktrees/<repo>/<name>/`. Dropping the flat `worktrees/<name>/` single-repo special case avoids future migration when a single-repository workspace adds another repository and removes conditional path logic across `bstack-control` and `bstack-setup`.
 - Workspace-wide work with no owning repository: agree on a plain directory (such as `control/work/<name>/`) and record destination with the owner before dispatch.
 
-`skills/bstack-setup/references/docs/guide/workflow.md` adds a brief clause noting `worktrees/<repo>/<name>/` for multi-repository workspaces, while `skills/bstack-setup/references/workspace-AGENTS.md` remains independent of `bstack-control` (per [`bstack-control.md`](./bstack-control.md), D13). The owner accepted this recommendation (2026-11-24).
+`skills/bstack-setup/references/docs/guide/workflow.md` reflects `<project>_workspace/worktrees/<repo>/<name>/`, while `skills/bstack-setup/references/workspace-AGENTS.md` remains independent of `bstack-control` (per [`bstack-control.md`](./bstack-control.md), D13). The owner decided on the unified nested path (2026-11-24).
 
 ### D4. Two-level `AGENTS.local.md` support
 
 Control sessions support both repository-level `<repo>/AGENTS.local.md` and workspace-level `<project>_workspace/AGENTS.local.md` without forcing duplication:
 
 - The coordinator reads workspace-level `AGENTS.local.md` and each managed `<repo>/AGENTS.local.md` when present.
-- When dispatching a worktree: if `<repo>/AGENTS.local.md` exists and is gitignored (`git -C <repo> check-ignore -q AGENTS.local.md`), symlink it into the worktree (`../../<repo>/AGENTS.local.md` for flat worktrees, `../../../<repo>/AGENTS.local.md` for nested `worktrees/<repo>/<name>/`); otherwise cite `<project>_workspace/AGENTS.local.md` by absolute path in the brief (symlinking only if Git ignores it in `<repo>`).
+- When dispatching a worktree: if `<repo>/AGENTS.local.md` exists and is gitignored (`git -C <repo> check-ignore -q AGENTS.local.md`), symlink it into the worktree (`../../../<repo>/AGENTS.local.md`); otherwise cite `<project>_workspace/AGENTS.local.md` by absolute path in the brief (symlinking only if Git ignores it in `<repo>`).
 
 The owner accepted this recommendation (2026-11-24).
 

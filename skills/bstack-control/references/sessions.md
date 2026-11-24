@@ -16,16 +16,12 @@ On the owner's word to start a piece of work:
    branch in that repository's convention, and its base. Wait for agreement or corrections.
 2. **Create the place it works.**
    - *Control session (repository work):*
-     - Single managed repository (default):
-       `git -C <repo> worktree add -b <branch> ../worktrees/<name> <base>`.
-     - Two or more managed repositories (or when `control/README.md` specifies nested
-       worktrees): `mkdir -p worktrees/<repo>`, then
+     - `mkdir -p worktrees/<repo>`, then
        `git -C <repo> worktree add -b <branch> ../worktrees/<repo>/<name> <base>`.
      - `AGENTS.local.md`: when `<repo>/AGENTS.local.md` exists and Git ignores it
        (`git -C <repo> check-ignore -q AGENTS.local.md`), link it into the worktree:
-       `ln -s ../../<repo>/AGENTS.local.md worktrees/<name>/AGENTS.local.md` (or
-       `ln -s ../../../<repo>/AGENTS.local.md worktrees/<repo>/<name>/AGENTS.local.md` for
-       nested worktrees). Otherwise, when workspace-level
+       `ln -s ../../../<repo>/AGENTS.local.md worktrees/<repo>/<name>/AGENTS.local.md`.
+       Otherwise, when workspace-level
        `<project>_workspace/AGENTS.local.md` exists, cite its absolute path directly in the
        brief (and symlink it into the worktree only if
        `git -C <repo> check-ignore -q AGENTS.local.md` succeeds).

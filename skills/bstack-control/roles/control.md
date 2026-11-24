@@ -32,7 +32,7 @@ The new control session checks the project's layout itself (Start, step 2).
      exists.
    - Determine the managed repository or repositories:
      - If `control/README.md` lists the managed repository or repositories (and any
-       worktree path convention or workspace policy), use that list.
+       workspace policy), use that list.
      - Otherwise inspect immediate child directories (depth 1 only, skipping `control/`,
        `worktrees/`, `ref/`, and hidden directories) for Git main checkouts
        (`git -C <child> rev-parse --git-dir` is `.git` and `--show-toplevel` equals
@@ -59,9 +59,9 @@ The new control session checks the project's layout itself (Start, step 2).
      worktree.
 3. **Prepare.** Create whichever of `worktrees/`, `control/briefs/`, and
    `control/status.md` (from [../references/status.md](../references/status.md)) is
-   missing. When the owner confirmed a multi-repository managed list (or a non-default
-   worktree path convention) and `control/README.md` does not exist yet, offer to write a
-   concise `control/README.md` recording it.
+   missing. When the owner confirmed a multi-repository managed list and
+   `control/README.md` does not exist yet, offer to write a concise `control/README.md`
+   recording it.
 4. **Recap.** Run the refresh below, then give the owner the recap. If the owner has not
    stated a default work-session agent kind for this session yet, ask which agent kind
    (and model, if any) to use by default for dispatched sessions; the owner can change it

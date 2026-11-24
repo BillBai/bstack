@@ -82,9 +82,7 @@ Then read only your role's file: [roles/control.md](roles/control.md) or
 │   ├── README.md                 optional control notes and managed repository list
 │   ├── status.md
 │   └── briefs/<name>.md
-├── worktrees/
-│   ├── <name>/                   default for 1 managed repository
-│   └── <repo>/<name>/            default for 2+ managed repositories (or per control/README.md)
+├── worktrees/<repo>/<name>/      one per repository work session
 ├── <repo>/                       main checkout (often <project>/ for single-repo)
 ├── <repo-2>/                     additional main checkout (multi-repo workspaces)
 └── ref/                          optional strictly read-only reference checkouts
