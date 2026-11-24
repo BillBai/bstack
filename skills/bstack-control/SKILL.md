@@ -14,8 +14,9 @@ it directly.
 
 There are two coordinator roles:
 
-- **Control session**: one per project. It runs in the project's T3 Code project or in the
-  first tab of the project's Herdr workspace, with its cwd in the project's main checkout.
+- **Control session**: one per project. It runs in the project's T3 Code workspace project
+  or in the first tab of the project's Herdr workspace, with its cwd at
+  `<project>_workspace/` (whether the workspace holds one repository or several).
 - **Chief-of-staff**: one across all projects. It runs in its own T3 Code project or Herdr
   workspace, with its cwd in the chief workspace, and handles work that belongs to no
   project.
@@ -38,15 +39,35 @@ Determine which supported host is active before reading a role file:
 
 ## 2. Pick the role
 
-An argument picks the role: `control`, `control <path to a main checkout>` (opens that
-project's control session in its own T3 Code project or Herdr workspace), or `chief`.
-Without one:
+An argument picks the role: `control`, `control <path to <project>_workspace>` (opens that
+project's control session in its own T3 Code project or Herdr workspace), or `chief`. Even
+with an explicit `control` argument, run the workspace guardrails below rather than
+silently running inside a child checkout, a worktree, or a directory with a stray `.git`.
 
-- The cwd holds `projects.md`: you are the chief-of-staff.
-- The cwd is the top of a repository's main checkout (`git rev-parse --show-toplevel`
-  equals the cwd, and `git rev-parse --git-dir` is `.git`): you are its control session.
-- Anything else, such as a worktree or an empty directory: tell the owner what you found
-  and ask which role, and where, the coordinator should run.
+Without an argument, check in this order:
+
+1. **Chief-of-staff:** the cwd holds `projects.md`.
+2. **Stray `.git` guard:** the cwd has a `.git` entry **and** also looks like a workspace
+   (holds `control/`, or its directory name ends with `_workspace` and it contains at least
+   one immediate child Git main checkout). Stop, warn the owner about the stray `.git`, and
+   ask how to proceed.
+3. **Child checkout or worktree guard:** the cwd is inside a Git checkout or worktree
+   (`git rev-parse --is-inside-work-tree` succeeds). Check whether an ancestor (`..` for a
+   main checkout, or `../..` / `../../..` for a worktree under `worktrees/`) looks like
+   `<project>_workspace/` (ends with `_workspace` or holds `control/`). Control sessions
+   run at `<project>_workspace/`, not inside a child checkout or worktree — report what you
+   found and offer to open `control <workspace-path>` (or, for a standalone repository with
+   no workspace parent, ask where the coordinator should run).
+4. **Project control session:** the cwd is **not** inside a Git work tree
+   (`git rev-parse --is-inside-work-tree` fails), and either:
+   - `control/` exists in the cwd, **or**
+   - the cwd's directory name ends with `_workspace` and it contains at least one immediate
+     child directory (excluding `control/`, `worktrees/`, `ref/`, and hidden directories)
+     that is a Git main checkout (`git -C <child> rev-parse --git-dir` is `.git` and
+     `--show-toplevel` equals `<child>`).
+5. **Anything else** (such as an empty directory, an umbrella folder like `~/Workspace`, or
+   a custom-named workspace without `control/` yet): tell the owner what you found and ask
+   which role, and where, the coordinator should run.
 
 Then read only your role's file: [roles/control.md](roles/control.md) or
 [roles/chief.md](roles/chief.md).
@@ -54,15 +75,22 @@ Then read only your role's file: [roles/control.md](roles/control.md) or
 ## Layout
 
 ```text
-<project>_workspace/              one per project
-├── <project>/                    main checkout, the control session's cwd
-├── worktrees/<name>/             one per work session
-└── control/                      outside git
-    ├── status.md
-    └── briefs/<name>.md
+<project>_workspace/              one per project; the control session's cwd
+├── AGENTS.md                     optional workspace mission and subproject routing
+├── AGENTS.local.md               optional workspace-level personal preferences (outside git)
+├── control/                      outside git
+│   ├── README.md                 optional control notes and managed repository list
+│   ├── status.md
+│   └── briefs/<name>.md
+├── worktrees/
+│   ├── <name>/                   default for 1 managed repository
+│   └── <repo>/<name>/            default for 2+ managed repositories (or per control/README.md)
+├── <repo>/                       main checkout (often <project>/ for single-repo)
+├── <repo-2>/                     additional main checkout (multi-repo workspaces)
+└── ref/                          optional strictly read-only reference checkouts
 
 chief-workspace/                  the chief-of-staff's cwd
-├── projects.md                   each project: name, workspace path, main checkout
+├── projects.md                   each project: name, workspace path, managed checkout(s)
 ├── sources.md                    outside sources and how to read each one
 ├── status.md
 ├── briefs/<name>.md
@@ -83,9 +111,9 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 - **Stages advance on the owner's word.** The project's workflow sets the stage order and
   the stopping points; read them from the target repository at run time. Agreement with an
   answer or an artifact is not an instruction to start the next stage.
-- **The main checkout stays clean.** Project work happens in worktrees. The control
-  session's only change to the main checkout is fast-forwarding its main branch after the
-  owner lands a change.
+- **Main checkouts stay clean.** Project work happens in worktrees. The control session's
+  only change to a main checkout is fast-forwarding its main branch (`git -C <repo> merge
+  --ff-only ...`) after the owner lands a change.
 - **Close only what you created.** Archive or close a thread, tab, session, or worktree
   you created only with the owner's permission, and keep branches. Child threads, review
   tabs, and worktrees that a work session opens itself (the workflow's review sessions,
@@ -101,7 +129,8 @@ own records (`AGENTS.md` Current Focus, plans, spec Status lines).
 - **Work sessions** are dispatched, settled, and checked as
   [references/sessions.md](references/sessions.md) says.
 - **Briefs are files.** Every work session gets a brief written from
-  [references/work-brief.md](references/work-brief.md) and stored under `briefs/`.
+  [references/work-brief.md](references/work-brief.md) and stored under `control/briefs/`
+  (control session) or `briefs/` (chief-of-staff).
 - **Destructive or outward actions need the owner's word**: removing worktrees, deleting
   branches, force pushes, publishing a document, sending a message outside this machine.
 

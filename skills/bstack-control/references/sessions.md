@@ -12,29 +12,43 @@ On the owner's word to start a piece of work:
    model and effort (using the default the owner chose for this coordinator session, or
    asking the owner if none is set; never inherit the coordinator's own kind and do not
    rely on a repository-hardcoded default), the stage you take the owner to authorize, and,
-   for the control session, the branch in the project's convention and its base. Wait for
-   agreement or corrections.
+   for the control session, the owning repository (in a multi-repository workspace), the
+   branch in that repository's convention, and its base. Wait for agreement or corrections.
 2. **Create the place it works.**
-   - *Control session:* from the main checkout,
-     `git worktree add -b <branch> ../worktrees/<name> <base>`. When the main checkout has
-     an `AGENTS.local.md` that Git ignores (`git check-ignore -q AGENTS.local.md`), link
-     it: `ln -s ../../<project>/AGENTS.local.md ../worktrees/<name>/AGENTS.local.md`.
-     Uninitialized submodules stay uninitialized; the brief says how the project
-     initializes them. Work that edits nothing in the repository still gets its own
-     worktree unless the owner says otherwise, so the main checkout stays clean. (In T3
-     Code, bind this worktree via `workspaceStrategy: { type: "existing_worktree",
-     worktreePath }` so the layout stays identical across hosts.)
+   - *Control session (repository work):*
+     - Single managed repository (default):
+       `git -C <repo> worktree add -b <branch> ../worktrees/<name> <base>`.
+     - Two or more managed repositories (or when `control/README.md` specifies nested
+       worktrees): `mkdir -p worktrees/<repo>`, then
+       `git -C <repo> worktree add -b <branch> ../worktrees/<repo>/<name> <base>`.
+     - `AGENTS.local.md`: when `<repo>/AGENTS.local.md` exists and Git ignores it
+       (`git -C <repo> check-ignore -q AGENTS.local.md`), link it into the worktree:
+       `ln -s ../../<repo>/AGENTS.local.md worktrees/<name>/AGENTS.local.md` (or
+       `ln -s ../../../<repo>/AGENTS.local.md worktrees/<repo>/<name>/AGENTS.local.md` for
+       nested worktrees). Otherwise, when workspace-level
+       `<project>_workspace/AGENTS.local.md` exists, cite its absolute path directly in the
+       brief (and symlink it into the worktree only if
+       `git -C <repo> check-ignore -q AGENTS.local.md` succeeds).
+     - Uninitialized submodules stay uninitialized; the brief says how the repository
+       initializes them. Work that edits nothing in the repository still gets its own
+       worktree unless the owner says otherwise, so main checkouts stay clean. (In T3 Code,
+       bind this worktree via `workspaceStrategy: { type: "existing_worktree",
+       worktreePath }` so the layout stays identical across hosts.)
+   - *Control session (workspace-wide work with no owning repository):* agree on a plain
+     directory (such as `control/work/<name>/` or the workspace root) and record
+     destination with the owner before dispatch.
    - *Chief-of-staff:* `mkdir work/<name>`, a plain directory. (In Herdr this is the tab's
      cwd; in T3 Code the thread runs under the chief project root and the brief directs its
      notes and outputs to `work/<name>/`.)
-3. **Write the brief** to `briefs/<name>.md` from [work-brief.md](work-brief.md).
+3. **Write the brief** to `control/briefs/<name>.md` (control session) or
+   `briefs/<name>.md` (chief-of-staff) from [work-brief.md](work-brief.md).
 4. **Open the session** using "Open a work session" in the active host reference
    ([t3.md](t3.md) or [herdr.md](herdr.md)).
-5. **Record and track.** Add the row to `status.md` (recording the thread `link` and
-   `threadId` in T3 Code, or the agent name and tab label in Herdr). In Herdr active mode,
-   start the wait loop ([herdr.md](herdr.md), "Wait loop"); in T3 Code or Herdr pull mode,
-   skip the wait loop. Tell the owner which thread (by its verbatim `link`) or tab holds
-   the session.
+5. **Record and track.** Add the row to `control/status.md` (control session) or
+   `status.md` (chief-of-staff), recording the thread `link` and `threadId` in T3 Code, or
+   the agent name and tab label in Herdr. In Herdr active mode, start the wait loop
+   ([herdr.md](herdr.md), "Wait loop"); in T3 Code or Herdr pull mode, skip the wait loop.
+   Tell the owner which thread (by its verbatim `link`) or tab holds the session.
 
 ## Settle
 
@@ -48,20 +62,21 @@ you"), update `status.md`, and tell the owner only when it needs them, as a **po
 Checking your work sessions is done when every row of the work table and every worktree
 or work directory and live session you can see has been accounted for, in both directions.
 
-1. **Rows to reality.** Check each row of `status.md` against `git worktree list` (control
-   session) or `work/` (chief-of-staff), and live sessions from the active host
-   (`t3_thread_list` in T3 Code, or `herdr agent list` in Herdr). A session that is gone or
-   archived while its worktree or directory remains becomes "session closed; worktree
-   kept" under Needs you, with the offer to reopen it.
+1. **Rows to reality.** Check each row of `status.md` against `git -C <repo> worktree list`
+   across each managed repository (control session) or `work/` (chief-of-staff), and live
+   sessions from the active host (`t3_thread_list` across `<project>_workspace` and each
+   managed repository project in T3 Code, or `herdr agent list` in Herdr). A session that
+   is gone or archived while its worktree or directory remains becomes "session closed;
+   worktree kept" under Needs you, with the offer to reopen it.
 2. **Reality to rows.** List every worktree or work directory, and every top-level session
-   in your T3 Code project or Herdr workspace, that has no row. Show them to the owner and
-   add a row only on the owner's word; child threads (`delegate_task`), review tabs, and
-   worktrees a work session opened itself join that session's row. On a first run this is
-   how existing work enters the table.
+   in your T3 Code project(s) or Herdr workspace, that has no row. Show them to the owner
+   and add a row only on the owner's word; child threads (`delegate_task`), review tabs,
+   and worktrees a work session opened itself join that session's row. On a first run this
+   is how existing work enters the table.
 3. **State.** For each live session, inspect its live state using the active host reference
    ([t3.md](t3.md), "Inspect live state", or [herdr.md](herdr.md), "Read a screen") and
    classify it ([status.md](status.md), "Needs you").
-4. **Progress.** For each work item, read its records and branch: `git log` on the branch
-   since the main branch, the Status and Stage lines of its spec or tickets, and new review
-   comments; for outside work, the files in its directory. Write one line of what it has
-   produced, not only whether it waits.
+4. **Progress.** For each work item, read its records and branch: `git -C <repo> log` on
+   the branch since the main branch, the Status and Stage lines of its spec or tickets, and
+   new review comments; for outside or workspace-wide work, the files in its directory.
+   Write one line of what it has produced, not only whether it waits.

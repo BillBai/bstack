@@ -27,8 +27,9 @@ When the cwd holds no `projects.md`, set the chief workspace up first:
    `status.md` (from [../references/status.md](../references/status.md)), `briefs/`,
    `work/`, and `reports/` is missing; for a new `projects.md`, ask the owner for the
    projects and write them in the format below.
-2. **Check `projects.md`.** Each entry names the project, its `<project>_workspace` path,
-   and its main checkout. Tell the owner about any path missing on disk.
+2. **Check `projects.md`.** Each entry names the project, its `<project>_workspace` path
+   (the control session's cwd), and its managed repository checkout(s) (or notes a simple
+   standalone repository with no workspace). Tell the owner about any path missing on disk.
 3. **Summarize.** Run the refresh below, then give the owner the summary. If the owner has
    not stated a default work-session agent kind for this session yet, ask which agent
    kind (and model, if any) to use by default for dispatched sessions; the owner can
@@ -76,8 +77,9 @@ that project's control session.
 When the owner asks, or a refresh finds a project in `projects.md` whose control session
 is not running, offer to open it using "Open a coordinator" in the active host reference
 ([../references/t3.md](../references/t3.md) or
-[../references/herdr.md](../references/herdr.md)), with the project's main checkout as the
-directory, the label `<project>`, the session name `<project>-control`, and the role
+[../references/herdr.md](../references/herdr.md)), with the project's
+`<project>_workspace` path as the directory, the label `<project>` (Herdr) or project title
+`<project>_workspace` (T3 Code), the session name `<project>-control`, and the role
 `control`.
 
 ## Documents
@@ -97,8 +99,8 @@ source.
 ```markdown
 # Projects
 
-- **<project>**: workspace `<path>/<project>_workspace`, main checkout
-  `<path>/<project>_workspace/<project>`.
+- **<project>**: workspace `<path>/<project>_workspace` (control cwd), managed repo(s)
+  `<path>/<project>_workspace/<repo>`.
 ```
 
 `sources.md`:

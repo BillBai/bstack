@@ -33,7 +33,9 @@ Updated: <YYYY-MM-DD HH:MM>
 ```
 
 Rewrite the whole file on each update. Keep Needs you numbered, and say what each number
-refers to when you mention it.
+refers to when you mention it. In a multi-repository project workspace, add a `Repo` column
+right after `Work` (`| Work | Repo | Branch | Session | Stage | State | Waiting on |
+Progress |`).
 
 ## Needs you
 

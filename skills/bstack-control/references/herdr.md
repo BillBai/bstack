@@ -8,16 +8,18 @@ topology.
 
 ## Open a work session
 
-1. **Tab.** `herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <worktree or work
-   dir> --label <name> --no-focus`. Read the pane ID from `.result.root_pane`.
+1. **Tab.** `herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd <abs path to worktree
+   or work dir> --label <name> --no-focus`. Read the pane ID from `.result.root_pane`.
 2. **Agent.** `herdr agent start <name> --kind <kind> --pane <pane-id> -- <explicit args>`.
    Pass explicit native arguments — model, reasoning effort or thinking level, and any
    required harness flags — after `--`. When starting `agy` through Herdr, pass
    `--dangerously-skip-permissions` (and `--add-dir <dir>` when accessing files outside
-   the working directory) so the session does not stall on interactive trust or
-   permission prompts; for review sessions, the brief forbids modifying tracked repository
-   files or leaving non-ignored untracked files (gitignored build outputs are fine), and
-   the caller verifies `git status --porcelain` afterward.
+   the working directory, such as `--add-dir <abs path to <project>_workspace>` so a
+   worktree session can read `control/briefs/<name>.md` and workspace-level
+   `AGENTS.local.md`) so the session does not stall on interactive trust or permission
+   prompts; for review sessions, the brief forbids modifying tracked repository files or
+   leaving non-ignored untracked files (gitignored build outputs are fine), and the caller
+   verifies `git status --porcelain` afterward.
 3. **First prompt.** If `AGENTS.local.md` names a first prompt for new sessions (for
    example a slash command such as `/i-have-adhd`, or `/skill:i-have-adhd` in `pi`), send
    it alone with `herdr agent prompt <name> "<text>" --wait`.
@@ -29,8 +31,9 @@ topology.
 ## Open a coordinator
 
 A coordinator gets its own Herdr workspace, with itself in the first tab. Inputs: the
-directory, the workspace label, the agent name, the role argument (`control` or `chief`),
-and the harness and model the owner chooses for the coordinator.
+directory (`<project>_workspace/` or `chief-workspace/`), the workspace label (`<project>`
+or `chief`), the agent name (`<project>-control` or `chief`), the role argument (`control`
+or `chief`), and the harness and model the owner chooses for the coordinator.
 
 1. **Check for a live one.** If `herdr agent list` already shows the agent name, or
    `herdr workspace list` a workspace with that label, tell the owner and stop; one

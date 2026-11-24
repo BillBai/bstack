@@ -2,8 +2,9 @@
 
 A brief is the work session's complete handoff: it starts with no chat history, so
 everything it needs is in the brief or in files the brief names. Write it to
-`briefs/<name>.md`; the first prompt names that file. Fill every section from the project's
-own records; a section with nothing to say is left out, except the stage and the rules.
+`control/briefs/<name>.md` (control session) or `briefs/<name>.md` (chief-of-staff); the
+first prompt names that file. Fill every section from the project's own records; a section
+with nothing to say is left out, except the stage and the rules.
 
 Write it for any kind of work: a change, a plan discussion, a retro, a small task, or work
 outside the workflow. Cite files and commits rather than restating them.
@@ -16,22 +17,25 @@ outside the workflow. Cite files and commits rather than restating them.
 You are a work session. A <control session | chief-of-staff> opened you and tracks your
 state; the owner (the human user) works with you directly in this session (thread or tab).
 Read `<path to AGENTS.local.md>` for the owner's preferences.
-<Control session: `AGENTS.local.md` in the worktree. Chief-of-staff: the chief workspace's
-`AGENTS.local.md`. Leave the sentence out when the file does not exist.>
+<Control session: `AGENTS.local.md` in the worktree when symlinked, or the absolute path to
+`<project>_workspace/AGENTS.local.md`. Chief-of-staff: the chief workspace's
+`AGENTS.local.md`. Leave the sentence out when neither exists.>
 
 ## Where you work
 
-<Project work:>
+<Project work (repository):>
+- <Multi-repository workspace only:> Repository: `<repo>` (main checkout `<path>`).
 - Worktree: `<path>` (your cwd). Branch: `<branch>`, created from `<main>` at `<commit>`.
-- Records: `<where this work's records go, per the project's workflow>`.
+- Records: `<where this work's records go, per the repository's workflow>`.
 - <Submodules or setup this worktree lacks, and the project document that says how to
   prepare them.>
 - Edit only this worktree; the main checkout (`<path>`) stays untouched.
 
-<Outside work:>
-- Directory: `<chief workspace>/work/<name>/` (a plain directory for this work's notes and
-  outputs; in Herdr it is also your cwd, while in T3 Code your cwd is `<chief workspace>/`
-  and your outputs go under `work/<name>/`).
+<Outside work or workspace-wide work without an owning repository:>
+- Directory: `<agreed directory, e.g. <chief workspace>/work/<name>/ or
+  <project>_workspace/control/work/<name>/>` (a plain directory for this work's notes and
+  outputs; in Herdr it is also your cwd, while in T3 Code your cwd is the workspace root
+  and your outputs go under this directory).
 - <Files, folders, or systems the work reads or changes, and which of them are read-only.>
 
 ## The work
