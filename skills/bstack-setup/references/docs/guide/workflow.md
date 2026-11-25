@@ -209,16 +209,19 @@ its result, and stop; do not prepare later stages' code in advance.
    effort to use (recording `Skipped by owner` in `review.md` if skipped).
 4. **Tickets and combined briefing (`to-tickets`).**
    - *Standard path (design review skipped or raises no core design dispute):* apply clear
-     fixes to `spec.md`, generate `tickets/<NN>-<slug>.md` using `to-tickets`'s native
-     local template, and present the spec, worthwhile design suggestions, and ticket
-     breakdown together in a **single combined briefing**
+     fixes to `spec.md`, draft the ticket breakdown (following `to-tickets` steps 1–4 without
+     writing `tickets/<NN>-<slug>.md` yet), and present the spec, worthwhile design
+     suggestions, and proposed ticket breakdown together in a **single combined briefing**
      ([Briefing on a spec or tickets](#briefing-on-a-spec-or-tickets)).
    - *Dispute path (design review challenges an approved decision, goal, or module
-     boundary):* hold off on generating tickets, brief the owner on the disputed decision
+     boundary):* hold off on drafting tickets, brief the owner on the disputed decision
      first, revise `spec.md` once settled (running a targeted second design-review check on
-     the changed design only if warranted), and then generate tickets and present the
-     combined briefing.
-   - **Stop and wait for the owner to approve implementation.**
+     the changed design only if warranted), and then draft the ticket breakdown and present
+     the combined briefing.
+   - **Stop and wait for the owner to approve the ticket breakdown** before publishing
+     `tickets/<NN>-<slug>.md` using `to-tickets`'s native local template (step 5). Approving
+     the breakdown alone publishes the tickets and stops; approving both the breakdown and
+     implementation in the same reply publishes the tickets and starts implementation.
 
 Agreement with grill answers or an artifact does not authorize implementation; only the
 grill follows from agreement with the discussion's summary. An instruction to create or

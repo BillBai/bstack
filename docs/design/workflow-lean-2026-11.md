@@ -88,10 +88,13 @@ Owner quotes (2026-11-25):
 
 Spec Design Review remains an owner-confirmed gate before briefing. When skipped or when
 Round 1 raises no dispute that shakes an approved decision or module boundary, the agent
-applies clear fixes to `spec.md`, runs `to-tickets` immediately, and presents the spec,
-surfaced design suggestions, and tickets in one combined briefing. Only when Design Review
-exposes a core design dispute does the agent pause to settle that decision with the owner
-before generating tickets.
+applies clear fixes to `spec.md`, drafts the ticket breakdown (`to-tickets` steps 1–4),
+and presents the spec, surfaced design suggestions, and proposed breakdown in one combined
+briefing. Only when Design Review exposes a core design dispute does the agent pause to
+settle that decision with the owner before drafting tickets. Consistent with `to-tickets`
+steps 4–5, `tickets/<NN>-<slug>.md` files are published only after the owner approves the
+breakdown (if the owner approves both the breakdown and implementation in the same reply,
+the agent publishes the tickets and starts implementation without an extra round).
 
 Owner quote (2026-11-25): "我觉得 spec 的 review 还是有必要的".
 
