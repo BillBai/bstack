@@ -15,8 +15,8 @@ outside the workflow. Cite files and commits rather than restating them.
 # Brief: <the work, in a few words>
 
 You are a work session. A <control session | chief-of-staff> opened you and tracks your
-state; the owner (the human user) works with you directly in this session (thread or tab).
-Read `<path to AGENTS.local.md>` for the owner's preferences.
+state; the owner (the human user) works with you directly in this tab. Read
+`<path to AGENTS.local.md>` for the owner's preferences.
 <Control session: `AGENTS.local.md` in the worktree when symlinked, or the absolute path to
 `<project>_workspace/AGENTS.local.md`. Chief-of-staff: the chief workspace's
 `AGENTS.local.md`. Leave the sentence out when neither exists.>
@@ -33,9 +33,8 @@ Read `<path to AGENTS.local.md>` for the owner's preferences.
 
 <Outside work or workspace-wide work without an owning repository:>
 - Directory: `<agreed directory, e.g. <chief workspace>/work/<name>/ or
-  <project>_workspace/control/work/<name>/>` (a plain directory for this work's notes and
-  outputs; in Herdr it is also your cwd, while in T3 Code your cwd is the workspace root
-  and your outputs go under this directory).
+  <project>_workspace/control/work/<name>/>` (your cwd; a plain directory for this work's
+  notes and outputs).
 - <Files, folders, or systems the work reads or changes, and which of them are read-only.>
 
 ## The work
@@ -65,8 +64,8 @@ Stop after it and wait for the owner to start the next stage explicitly.
   artifact does not start the next stage.
 - Landing, pushing the main branch, and destructive or hard-to-reverse actions follow
   `AGENTS.md` and the workflow: <quote the project's push rule for working branches>.
-- Remove only the worktrees, branches, child threads, tabs, or sessions you created, and
-  only with the owner's permission. <Branches the project keeps.>
+- Remove only the worktrees, branches, tabs, or sessions you created, and only with the
+  owner's permission. <Branches the project keeps.>
 - Write conclusions and reports to files (the records above, or a report file the owner
   names); chat history and terminal scrollback are not durable records.
 - Messages from the <control session | chief-of-staff> that say they pass the owner's

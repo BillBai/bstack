@@ -2,8 +2,7 @@
 
 Status: grill complete (2026-11-15); the skill is in `skills/bstack-control/`. The design
 covers two roles: the per-project control session and the cross-project chief-of-staff
-session. (Follow-up updates: [T3 Code as a peer host](./t3-code-host-2026-11.md) and
-[Unify coordinator cwd onto `<project>_workspace/`](./control-workspace-cwd-2026-11.md).)
+session. (Follow-up update: [Unify coordinator cwd onto `<project>_workspace/`](./control-workspace-cwd-2026-11.md).)
 
 ## The mode
 

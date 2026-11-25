@@ -20,7 +20,7 @@ Replace the Git main-checkout detection in `skills/bstack-control/SKILL.md` ("Pi
 
 ### D2. Managed repository list via `control/README.md` (with zero-config single-repo default)
 
-On Start and Refresh, a control session needs to know which child repositories to `git -C <repo> fetch`, inspect for worktrees and overlaps, read `AGENTS.md` / workflow docs from, and query in T3 Code:
+On Start and Refresh, a control session needs to know which child repositories to `git -C <repo> fetch`, inspect for worktrees and overlaps, and read `AGENTS.md` / workflow docs from:
 
 1. If `control/README.md` lists the managed repository or repositories, use that list directly.
 2. Otherwise inspect immediate child directories (depth 1 only, skipping `control/`, `worktrees/`, `ref/`, and hidden directories): if there is **exactly one** Git main checkout, use it with zero extra config; if there are **zero or two or more**, ask the owner and offer to record the confirmed list in `control/README.md` so future starts do not re-ask.
@@ -54,9 +54,8 @@ Because the coordinator's cwd is `<project>_workspace/` rather than a child repo
 - Control state paths sit directly under cwd (`control/status.md`, `control/briefs/<name>.md`, `worktrees/...`) without `../` escapes.
 - Multi-repository workspaces add an optional `Repo` column in `control/status.md`'s Work table and check cross-repository overlaps alongside per-repository diffs.
 
-### D6. Host mechanics in T3 Code and Herdr
+### D6. Host mechanics in Herdr
 
-- **T3 Code (`references/t3.md`):** register `<project>_workspace` (title `<project>_workspace`) for the coordinator thread (`<project>-control`, `workspaceStrategy: { type: "root" }`) and workspace-wide threads, and register each managed repository `<project>_workspace/<repo>` (title `<repo>`) for its work threads (`workspaceStrategy: { type: "existing_worktree", worktreePath }`). During live-state inspection, control sessions list top-level threads across `<project>_workspace` **and** each managed repository's `projectId`. This guarantees T3 Code's worktree validation and Git UI bind to the real repository while cleanly grouping multi-repo work threads. The owner accepted this recommendation (2026-11-24).
 - **Herdr (`references/herdr.md`):** one Herdr workspace per project with `--cwd <project>_workspace` and label `<project>`; work-session tabs open in the same Herdr workspace with `--cwd <worktree or work dir>` (noting `--add-dir <project>_workspace` for `agy` when reading briefs or workspace-level `AGENTS.local.md`).
 
 ## Files touched
@@ -67,7 +66,6 @@ Because the coordinator's cwd is `<project>_workspace/` rather than a child repo
 - `skills/bstack-control/roles/control.md`
 - `skills/bstack-control/roles/chief.md`
 - `skills/bstack-control/references/sessions.md`
-- `skills/bstack-control/references/t3.md`
 - `skills/bstack-control/references/herdr.md`
 - `skills/bstack-control/references/status.md`
 - `skills/bstack-control/references/work-brief.md`

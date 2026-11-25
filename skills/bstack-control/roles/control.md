@@ -16,12 +16,10 @@ control session there instead of running it here:
    workspace and offer to open `control <workspace-path>` instead. Otherwise, if it fails
    validation, tell the owner what you found and stop.
 2. **Open it**: derive `<project>` by stripping a trailing `_workspace` (or `-workspace`)
-   suffix from `<path>`'s basename, then use "Open a coordinator" in the active host
-   reference ([../references/t3.md](../references/t3.md) or
-   [../references/herdr.md](../references/herdr.md)), with `<path>` as the directory,
-   workspace label `<project>` (Herdr) or project title `<path-basename>` such as
-   `<project>_workspace` (T3 Code), session name `<project>-control` (lowercase, at most 32
-   characters), and the role `control`.
+   suffix from `<path>`'s basename, then follow
+   [../references/herdr.md](../references/herdr.md), "Open a coordinator", with `<path>` as
+   the directory, workspace label `<project>`, agent name `<project>-control` (lowercase,
+   at most 32 characters), and the role `control`.
 
 The new control session checks the project's layout itself (Start, step 2).
 
@@ -66,11 +64,10 @@ The new control session checks the project's layout itself (Start, step 2).
    stated a default work-session agent kind for this session yet, ask which agent kind
    (and model, if any) to use by default for dispatched sessions; the owner can change it
    at any time in conversation.
-5. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in Herdr
+5. **Set operating mode** as `SKILL.md`, "Operating modes: active and pull", says: in
    active mode, schedule the recurring refresh (telling the owner only when a refresh finds
    something new under Needs you or Overlaps, otherwise updating `control/status.md`
-   silently); in T3 Code (unless the owner asks for a recurring `schedule_task`) or Herdr
-   pull mode, refresh on each owner message.
+   silently); in pull mode, refresh on each owner message.
 
 ## Refresh
 
@@ -93,8 +90,8 @@ managed repository `<repo>`, list its changes: `git -C <repo> diff --name-only
 <main>...<branch>`, plus `git -C <worktree> status --porcelain` for uncommitted files.
 Judge by area, not only by path: a module's code and its design document are one area, and
 in a multi-repository workspace also note cross-repository shared areas or dependencies. A
-work session and its own review sessions (child threads or review tabs) or `implement-spec`
-worktrees do not overlap with each other.
+work session and its own review tabs or `implement-spec` worktrees do not overlap with each
+other.
 
 For each overlap, find the order in the project's plan (the change plan, the iteration
 plan, or the planned order in `control/status.md`):
@@ -119,11 +116,11 @@ The owner lands a change in its work session. On the owner's word afterwards:
    after `git -C <repo> fetch`, `origin/<main>`. Stop and ask the owner if it cannot
    fast-forward. If the harness's permission check blocks the command, give the owner the
    command to run with `!`.
-2. **Propose cleanup**: the work session (archive the T3 Code thread, or close the Herdr
-   tab and agent) and the worktree you created for it. Keep the branch. Before removing a
-   worktree (`git -C <repo> worktree remove <worktree>`), check that it and any initialized
-   submodule are clean and that the submodule's commit is on its remote; a worktree with an
-   initialized submodule needs `git -C <repo> worktree remove --force <worktree>`.
+2. **Propose cleanup**: the tab, the session, and the worktree you created for it. Keep the
+   branch. Before removing a worktree (`git -C <repo> worktree remove <worktree>`), check
+   that it and any initialized submodule are clean and that the submodule's commit is on
+   its remote; a worktree with an initialized submodule needs
+   `git -C <repo> worktree remove --force <worktree>`.
 3. **Remind about a change planned beside it.** When a work session planned the next change
    while this one was implemented, tell the owner that its session rebases onto the new
    main branch and checks its spec and tickets against the landed code before it
