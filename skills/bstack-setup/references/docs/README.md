@@ -16,7 +16,7 @@ agent configurations, and archived history.
 | [`agents/`](agents/) | New-machine setup, daily agent/model routing, and Matt Pocock skill configurations. |
 | [`adr/`](adr/) | Architectural Decision Records (`NNNN-slug.md`) for hard-to-reverse, non-obvious tradeoff decisions. |
 | [`archive/`](archive/) | Superseded designs, plans, and records kept for provenance. Not the current source of truth; no routine reading. |
-| [`../work-docs/`](../work-docs/) | Per-change execution records (`<change>/`: `grill.md`, `spec.md`, `tickets/`, `review.md`, `probes/`) and `backlog.md`. |
+| [`../work-docs/`](../work-docs/) | Per-change execution records (`<change>/`: `task.md` for lightweight tasks; `spec.md`, `tickets/`, `review.md` for full changes; optional `probes/`) and `backlog.md`. |
 
 ## Primary entry points
 

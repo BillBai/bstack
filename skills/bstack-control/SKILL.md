@@ -89,7 +89,7 @@ chief-workspace/                  the chief-of-staff's cwd
 
 `status.md` holds only what the repositories do not: live sessions, who waits on whom, the
 next step, and the owner's to-dos and ideas. Project progress stays in each repository's
-own records (`AGENTS.md` Current Focus, plans, spec Status lines).
+own records (`AGENTS.md` Current Focus, plans, `spec.md` or `task.md` Status lines).
 
 ## Rules
 

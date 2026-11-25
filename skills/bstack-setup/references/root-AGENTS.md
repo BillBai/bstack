@@ -41,21 +41,24 @@ Read every item that matches your task:
 
 ## Working rules
 
-- **Workflow and stopping points.** Follow [workflow](docs/guide/workflow.md) from stage
-  planning through reviews and acceptance. After implementation is approved, continue
+- **Workflow and stopping points.** Match each task to its execution track in
+  [workflow](docs/guide/workflow.md) (prototype/research, lightweight task via
+  `/poteto-mode`, or full Matt Pocock change). After implementation starts, continue
   until a workflow stopping condition applies, including stopping before each review stage
-  (spec design, regular, and expert) so the owner decides whether to run it and which
-  model to use. Once the current change's implementation
+  (spec design review and post-implementation code review) so the owner decides whether to
+  run it and which model(s) to use. Once the current change's implementation
   is approved, the next change may plan in its own session; its code waits until the
   current change lands unless the owner approves parallel implementation. Pushing a
   working branch (normal push, never force) to trigger CI needs no confirmation. Integrating into or pushing `main`,
   force-pushing, deleting remote refs, and other destructive or hard-to-reverse actions
   require explicit owner instruction.
 - **Work records.** Record planning and design decisions in their owning document under
-  `docs/plans/` or in the change's `spec.md`, execution evidence in ticket `Comments`, and
-  review findings in `review.md`. Preserve verbatim owner decisions and corrections in
-  their original language. A change's stage lives only in its spec's Status and Stage
-  lines; Current Focus routes and carries no stage text.
+  `docs/plans/`, in a research note (`research/` or `docs/topics/`), or in the change's
+  `spec.md` or `task.md`, concise verification evidence in ticket `Comments` (or
+  `task.md`), and compact review dispositions in `review.md` (or `task.md`). Preserve
+  verbatim owner decisions and corrections in their original language. A change's stage
+  lives only in the `Status` and `Stage` lines of its `spec.md` or `task.md`; Current
+  Focus routes and carries no stage text.
 - **Ownership.** Work as the engineer who owns this codebase and will maintain it for
   years. Understand the surrounding code and the reasons behind it before changing it.
   Prefer the design that stays clear and easy to change over the one that is quickest to

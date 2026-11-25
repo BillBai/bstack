@@ -90,25 +90,32 @@ Cursor CLI, model IDs encode effort (for example `claude-opus-5-5-xhigh`,
   Cursor CLI models) do not replace primary interactive development; use them only when
   the owner selects them.
 - **Review selection (always owner-confirmed):** never start a review stage or pick a
-  reviewer model automatically. Before each of the three review stages — **spec design
-  review**, **regular code review**, and **expert review** — stop and ask the owner
-  whether to run it and which eligible runner, model, and effort to use:
+  reviewer model automatically. Before **spec design review** (full changes) and before
+  **post-implementation code review** (1 correctness reviewer for lightweight tasks;
+  default concurrent `code-review` `Standards`/`Spec` + cross-family Expert for full
+  changes, or owner-selected sequential stages), stop and ask the owner whether to run it
+  and which eligible runner(s), model(s), and effort(s) to use:
   - Present the available Large/XL candidates permitted by project policy (respecting any
     disabled family), with a recommendation and brief reason.
-  - For design review and expert review, prefer a family other than the implementer's when
-    making a recommendation; the implementer never acts as its own expert reviewer.
+  - For design review and expert review, prefer a family other than the author's or
+    implementer's when making a recommendation; the implementer never acts as its own
+    expert reviewer.
   - Note practical reviewer tradeoffs when recommending (for example avoiding models that
     tend to over-engineer extreme edge cases at the cost of architectural simplicity
     unless the owner explicitly wants that check).
-  - Once the owner confirms a stage and its reviewer, follow-up rounds within that stage
-    use the confirmed model up to the workflow's round limit. If the owner skips a stage,
-    record `Skipped by owner` in `review.md`.
-- **Lightweight tasks:** the Medium or Small tier may locate code and documents, look up
+  - Once the owner confirms a stage and its reviewer(s), a targeted Round 2 check (when
+    triggered by [workflow.md](../guide/workflow.md#convergence-and-review-records)) uses
+    the confirmed model(s) up to the 2-round cap. If the owner skips a stage, record
+    `Skipped by owner` in `review.md` (or `task.md` for a lightweight task).
+- **`/poteto-mode` delegation:** when running prototypes or lightweight tasks via `pstack`
+  (`/poteto-mode`), map subagent roles through `/setup-pstack` (`~/.claude/rules/pstack-models.md`
+  or `~/.cursor/rules/pstack-models.mdc`) or to the Large/Medium tiers in this file.
+- **Read-only lookups:** the Medium or Small tier may locate code and documents, look up
   facts in reference checkouts or upstream documentation, read a long build log and point
   to the failing step, or summarize reference source with file and line citations. A
-  lightweight task reads and reports only: it does not edit the repository, commit, or
-  run a review or gate, and it does not replace the main agent's diagnosis. Its output is
-  a lead; the main agent checks the cited files and lines before relying on it.
+  read-only lookup does not edit the repository, commit, or run a review or gate, and it
+  does not replace the main agent's diagnosis. Its output is a lead; the main agent checks
+  the cited files and lines before relying on it.
 
 ### Task routing
 
@@ -131,7 +138,7 @@ Use these levels as defaults unless the task or owner specifies otherwise:
   level when `xhigh` is unavailable, such as `high` for `gemini-4-carbon`, or `high`/`max`
   on a `pi` endpoint).
 - **Codebase exploration and straightforward implementation:** `Large` with `high` or
-  `medium` effort (or `Medium`/`Small` for read-only lightweight lookups).
+  `medium` effort (or `Medium`/`Small` for read-only lookups).
 - **When uncertain:** inherit the main agent's current model and effort, or ask the owner.
 
 ### Permission for `pi` runs
@@ -139,15 +146,15 @@ Use these levels as defaults unless the task or owner specifies otherwise:
 When the owner explicitly selects a `pi` model during review confirmation, that choice
 authorizes the `pi` run without a second permission prompt.
 
-For ad-hoc lightweight tasks or unexpected harness fallbacks from Claude Code, Codex,
+For ad-hoc read-only lookups or unexpected harness fallbacks from Claude Code, Codex,
 `agy`, or Cursor CLI, ask the owner before the first `pi` run; the permission covers the
-scope the owner states (one task, the session, or the change). When the main agent runs in
-`pi`, it uses `pi` without asking.
+scope the owner states (one lookup, the session, or the change). When the main agent runs
+in `pi`, it uses `pi` without asking.
 
 When a stage's native harness is unavailable and `pi` stands in as a fallback on the same
 tier and family, the task, its boundaries, its round limits, and its pass conditions stay
 the same. Record the unavailable harness, the reason, and the `pi` model and effort that
-ran (for a review, in `review.md`).
+ran (for a review, in `review.md` or `task.md`).
 
 ### Unavailable models
 

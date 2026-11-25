@@ -20,10 +20,12 @@ start from the team's suggested defaults if the owner shares them.
 
 - **Required skills:** Matt Pocock's engineering skills (`grill-with-docs`, `grilling`,
   `domain-modeling`, `to-spec`, `to-tickets`, `implement`, `implement-spec`,
-  `code-review`, and `tdd`), made available to every active agent harness (`codex`, `agy`,
-  `claude`, and `pi`).
+  `code-review`, `prototype`, `research`, and `tdd`) and **`pstack`** (`poteto-mode`,
+  `interrogate`, `setup-pstack`) for prototypes, lightweight tasks, and contested-claim
+  repros, made available to every active agent harness (`codex`, `agy`, `claude`, and
+  `pi`).
 - **Optional helpers (not required):** **`herdr`** (terminal multiplexer for watching
-  delegated agent sessions in separate tabs), `bstack`, `pstack`, and `i-have-adhd`. Keep
+  delegated agent sessions in separate tabs), `bstack`, and `i-have-adhd`. Keep
   shared user-level skills aligned across harnesses; note that `agy` scans
   `~/.gemini/config/skills/` globally rather than `~/.agents/skills/`, so symlink shared
   skills such as `herdr` into `~/.gemini/config/skills/` (or register `~/.agents/skills`

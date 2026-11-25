@@ -77,7 +77,7 @@ coordinator"), with the project's `<project>_workspace` path as the directory, t
 ## Documents
 
 For documents such as monthly reports, gather from the projects' records (commits on the
-main branch, plans, spec Status lines, each `control/status.md`) and from `sources.md`.
+main branch, plans, `spec.md` or `task.md` Status lines, each `control/status.md`) and from `sources.md`.
 Write the draft under `reports/` and show the owner. Publishing it anywhere outside this
 machine is the owner's word.
 

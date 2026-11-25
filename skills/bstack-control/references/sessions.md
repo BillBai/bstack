@@ -63,6 +63,7 @@ or work directory and live session you can see has been accounted for, in both d
 3. **State.** For each live session, read its screen ([herdr.md](herdr.md), "Read a
    screen") and classify it ([status.md](status.md), "Needs you").
 4. **Progress.** For each work item, read its records and branch: `git -C <repo> log` on
-   the branch since the main branch, the Status and Stage lines of its spec or tickets, and
-   new review comments; for outside or workspace-wide work, the files in its directory.
+   the branch since the main branch, the Status and Stage lines of its `spec.md` or
+   `task.md`, its tickets, and its review notes; for outside or workspace-wide work, the
+   files in its directory.
    Write one line of what it has produced, not only whether it waits.
